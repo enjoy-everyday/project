@@ -25,10 +25,16 @@ public class InvokerController {
         return new RestTemplate();
     }
 
+
+    /**
+     * @date: 2020/1/12
+     * @description: Lab1
+     */
+
     @RequestMapping(value = "router", method = RequestMethod.GET)
     public String router(){
         RestTemplate restTemplate = getRestTemplate();
-        String str = restTemplate.getForObject("http://first-service-provider/Tom", String.class);
+        String str = restTemplate.getForObject("http://first-service-provider/9001", String.class);
         return str;
     }
 
