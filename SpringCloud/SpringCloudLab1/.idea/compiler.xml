@@ -9,8 +9,8 @@
         <module name="ribbon" />
         <module name="invoker" />
         <module name="provider" />
-        <module name="SpringCloudLab1" />
         <module name="eureka" />
+        <module name="SpringCloudLab1" />
       </profile>
     </annotationProcessing>
   </component>
