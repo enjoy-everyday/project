@@ -1,0 +1,12 @@
+#Lab2
+server:
+  port: 8762
+spring:
+  application:
+    name: server
+eureka:
+  instance:
+    hostname: slave2
+  client:
+    service-url:
+      defaultZone: http://slave1:8761/eureka
