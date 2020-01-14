@@ -19,17 +19,16 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class InvokerController {
 
+    /**
+     * @date: 2020/1/12
+     * @description: Lab1
+     */
+
     @Bean
     @LoadBalanced
     public RestTemplate getRestTemplate(){
         return new RestTemplate();
     }
-
-
-    /**
-     * @date: 2020/1/12
-     * @description: Lab1
-     */
 
     @RequestMapping(value = "router", method = RequestMethod.GET)
     public String router(){
