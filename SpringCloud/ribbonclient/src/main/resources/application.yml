@@ -1,0 +1,4 @@
+my-client.ribbon.listOfServers: localhost:8081, localhost:8085
+my-client:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netlix.loadbalancer.RandomRule
