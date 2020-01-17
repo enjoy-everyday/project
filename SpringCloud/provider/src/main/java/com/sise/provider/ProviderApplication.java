@@ -39,8 +39,22 @@ public class ProviderApplication {
      * @description: Lab2-2
      */
 
+//    public static void main(String[] args) {
+//        SpringApplication.run(ProviderApplication.class, args);
+//    }
+
+
+    /**
+     * @date: 2020/1/16
+     * @description: Lab4
+     */
+
     public static void main(String[] args) {
-        SpringApplication.run(ProviderApplication.class, args);
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
+        String port = scanner.nextLine();    //从控制台读取端口号
+        System.out.println(port);
+        new SpringApplicationBuilder(ProviderApplication.class).properties("spring.config.location=classpath:/application.yml").properties("server.port=" + port).run(args);
     }
 
 }
