@@ -1,12 +1,14 @@
+#Lab3-1
+#my-client.ribbon.listOfServers: localhost:8081, localhost:8085
+#Lab3-2
+#my-client.ribbon.listOfServers: localhost:8081, localhost:8085
+#my-client.ribbon.NFLoadBalancerRuleClassName: com.sise.ribbonClient.Rule
+#my-client.ribbon.NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+#Lab3-3
+#my-client.ribbon.listOfServers: localhost:8081, localhost:8888
+#my-client.ribbon.NFLoadBalancerPingClassName: com.netflix.loadbalancer.PingUrl
+#my-client.ribbon.NFLoadBalancerPingClassName: com.sise.ribbonClient.Ping
+#my-client.ribbon.NFLoadBalancerPingInterval: 2
+#Lab3-4
 my-client.ribbon.listOfServers: localhost:8081, localhost:8085
-#my-client:
-#  ribbon:
-#    NFLoadBalancerRuleClassName: com.sise.ribbonClient.Rule
-#my-client:
-#  ribbon:
-#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
-my-client:
-  ribbon:
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.PingUrl
-    NFLoadBalancerPingInterval: 2
-
+my-client.ribbon.NFLoadBalancerRuleClassName: com.sise.ribbonClient.Rule
