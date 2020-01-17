@@ -50,27 +50,46 @@ public class InvokerController {
      * @description: Lab2-2
      */
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
-    @RequestMapping(value = "/router", method = RequestMethod.GET)
-    public String router(){
-        List<ServiceInstance> instances = getServiceInstance();
-        for (ServiceInstance serviceInstance : instances){
-            EurekaServiceInstance eurekaServiceInstance = (EurekaServiceInstance) serviceInstance;
-            InstanceInfo instanceInfo = eurekaServiceInstance.getInstanceInfo();
-            System.out.println(instanceInfo.getAppName() + "***" + instanceInfo.getInstanceId() + "***" + instanceInfo.getStatus());
-        }
-        return "";
+//    @Autowired
+//    private DiscoveryClient discoveryClient;
+//    @RequestMapping(value = "/router", method = RequestMethod.GET)
+//    public String router(){
+//        List<ServiceInstance> instances = getServiceInstance();
+//        for (ServiceInstance serviceInstance : instances){
+//            EurekaServiceInstance eurekaServiceInstance = (EurekaServiceInstance) serviceInstance;
+//            InstanceInfo instanceInfo = eurekaServiceInstance.getInstanceInfo();
+//            System.out.println(instanceInfo.getAppName() + "***" + instanceInfo.getInstanceId() + "***" + instanceInfo.getStatus());
+//        }
+//        return "";
+//    }
+//
+//    private List<ServiceInstance> getServiceInstance() {
+//        List<String> ids = discoveryClient.getServices();
+//        List<ServiceInstance> result = new ArrayList<ServiceInstance>();
+//        for (String id : ids){
+//            List<ServiceInstance> instances = discoveryClient.getInstances(id);
+//            result.addAll(instances);
+//        }
+//        return result;
+//    }
+
+    /**
+     * @date: 2020/1/16
+     * @description: Lab4
+     */
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate getRestTemplate(){
+        return new RestTemplate();
     }
 
-    private List<ServiceInstance> getServiceInstance() {
-        List<String> ids = discoveryClient.getServices();
-        List<ServiceInstance> result = new ArrayList<ServiceInstance>();
-        for (String id : ids){
-            List<ServiceInstance> instances = discoveryClient.getInstances(id);
-            result.addAll(instances);
-        }
-        return result;
+    @RequestMapping(value = "router", method = RequestMethod.GET)
+    public String router(){
+        RestTemplate restTemplate = getRestTemplate();
+        String str = restTemplate.getForObject("http://provider/9001", String.class);
+        return str;
     }
+
 
 }
