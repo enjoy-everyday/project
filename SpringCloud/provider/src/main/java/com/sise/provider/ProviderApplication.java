@@ -46,11 +46,11 @@ public class ProviderApplication {
 
     /**
      * @date: 2020/1/16
-     * @description: Lab4
+     * @description: Lab4、Lab4
      */
 
+    @SuppressWarnings("resource")
     public static void main(String[] args) {
-        @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
         String port = scanner.nextLine();    //从控制台读取端口号
         System.out.println(port);
