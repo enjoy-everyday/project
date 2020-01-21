@@ -37,7 +37,7 @@
 #server:
 #  port: 8083
 
-#Lab4
+#Lab4、lab6
 spring:
   application:
     name: provider
