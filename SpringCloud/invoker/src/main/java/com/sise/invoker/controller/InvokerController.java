@@ -1,6 +1,8 @@
 package com.sise.invoker.controller;
 
 import com.netflix.appinfo.InstanceInfo;
+import com.sise.invoker.client.Client;
+import com.sise.invoker.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -8,8 +10,10 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EurekaServiceInstance;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -78,18 +82,52 @@ public class InvokerController {
      * @description: Lab4
      */
 
-    @Bean
-    @LoadBalanced
-    public RestTemplate getRestTemplate(){
-        return new RestTemplate();
-    }
+//    @Bean
+//    @LoadBalanced
+//    public RestTemplate getRestTemplate(){
+//        return new RestTemplate();
+//    }
+//
+//    @RequestMapping(value = "router", method = RequestMethod.GET)
+//    public String router(){
+//        RestTemplate restTemplate = getRestTemplate();
+//        String str = restTemplate.getForObject("http://provider/9001", String.class);
+//        return str;
+//    }
 
-    @RequestMapping(value = "router", method = RequestMethod.GET)
+    /**
+     * @date: 2020/1/20
+     * @description: Lab6
+     */
+
+    @Autowired
+    private Client client;
+
+//    @RequestMapping(value = "/invokeHello", method = RequestMethod.GET)
+//    public String invokeHello(){
+//        return client.hello();
+//    }
+
+    @RequestMapping(value = "/router", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String router(){
-        RestTemplate restTemplate = getRestTemplate();
-        String str = restTemplate.getForObject("http://provider/9001", String.class);
-        return str;
+        Person person = client.getPerson(2);
+        return person.getMessage();
     }
 
+    /**
+     * @date: 2020/1/20
+     * @description: Lab6 实验2
+     */
+
+    @RequestMapping(value = "/custom", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String custom(){
+        String springResult = client.customHello();
+        System.out.println("@RequestMapping结果：" + springResult);
+        String result = client.custom();
+        System.out.println("自定义注解结果：" + result);
+        return "控制台";
+    }
 
 }
