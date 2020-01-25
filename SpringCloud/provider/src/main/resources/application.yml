@@ -38,6 +38,18 @@
 #  port: 8083
 
 #Lab4、lab6
+#spring:
+#  application:
+#    name: provider
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone:
+#        http://localhost:8761/eureka
+
+#Lab9
 spring:
   application:
     name: provider
@@ -48,3 +60,5 @@ eureka:
     service-url:
       defaultZone:
         http://localhost:8761/eureka
+server:
+  port: 8081
