@@ -48,13 +48,22 @@ public class ProviderApplication {
      * @date: 2020/1/16
      * @description: Lab4、Lab4
      */
+//
+//    @SuppressWarnings("resource")
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        String port = scanner.nextLine();    //从控制台读取端口号
+//        System.out.println(port);
+//        new SpringApplicationBuilder(ProviderApplication.class).properties("spring.config.location=classpath:/application.yml").properties("server.port=" + port).run(args);
+//    }
 
-    @SuppressWarnings("resource")
+    /**
+     * @date: 2020/1/24
+     * @description: Lab9
+     */
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String port = scanner.nextLine();    //从控制台读取端口号
-        System.out.println(port);
-        new SpringApplicationBuilder(ProviderApplication.class).properties("spring.config.location=classpath:/application.yml").properties("server.port=" + port).run(args);
+        SpringApplication.run(ProviderApplication.class, args);
     }
 
 }
