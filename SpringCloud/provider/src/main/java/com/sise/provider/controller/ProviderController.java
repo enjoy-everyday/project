@@ -3,6 +3,7 @@ package com.sise.provider.controller;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.sise.provider.entity.Person;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,16 +59,37 @@ public class ProviderController {
      * @description: Lab6
      */
 
-    @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
-    public Person findPerson(@PathVariable("personId") Integer personId, HttpServletRequest request){
-        Person person = new Person(personId, "TOM", 23);
-        person.setMessage(request.getRequestURL().toString());
+//    @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
+//    public Person findPerson(@PathVariable("personId") Integer personId, HttpServletRequest request){
+//        Person person = new Person(personId, "TOM", 23);
+//        person.setMessage(request.getRequestURL().toString());
+//        return person;
+//    }
+//
+//    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String hello(){
+//        return "Hello";
+//    }
+
+    /**
+     * @date: 2020/1/24
+     * @description: Lab9
+     */
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person findPerson(@PathVariable("id") Integer id, HttpServletRequest httpServletRequest){
+        Person person = new Person();
+        person.setId(id);
+        person.setName("Tommy");
+        person.setAge(33);
+        person.setMessage(httpServletRequest.getRequestURL().toString());
         return person;
     }
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    @ResponseBody
-    public String hello(){
+    public String hello() throws InterruptedException {
+        Thread.sleep(800);
         return "Hello";
     }
 
