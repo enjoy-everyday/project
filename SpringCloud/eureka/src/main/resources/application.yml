@@ -15,7 +15,7 @@
 #  profiles:
 #    active: prod
 
-#Lab4、Lab6
+#Lab4、Lab6、Lab9
 server:
   port: 8761
 eureka:
