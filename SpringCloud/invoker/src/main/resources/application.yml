@@ -34,6 +34,19 @@
 #spring:
 # main:
 #  allow-bean-definition-overriding: true
+#server:
+#  port: 9000
+#spring:
+#  application:
+#    name: invoker
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+
+#Lab9
 server:
   port: 9000
 spring:
@@ -44,4 +57,12 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://slave1:8761/eureka
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    Client#hello():
+      execution.isolation.thread.timeoutInMilliseconds: 500
+      circuitBreaker.requestVolumeThreshold: 3
