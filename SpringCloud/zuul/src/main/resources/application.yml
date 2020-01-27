@@ -1,0 +1,5 @@
+server:
+  port: 8081
+zuul:
+  routes:
+    books.url: http://localhost:8090    #路由配置，省略path，直接取routeId为books
