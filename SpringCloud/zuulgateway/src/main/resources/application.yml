@@ -1,0 +1,18 @@
+#Lab10
+spring:
+  application:
+    name: zuulGateway
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+  routes:
+    sale.path: /sale/**
+    sale.serviceId: sale-service
+    helloRoute.path: /test/**
+    helloRoute.url: forward:/source
+server:
+  port: 8081
