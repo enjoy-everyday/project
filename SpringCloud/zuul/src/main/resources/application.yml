@@ -1,5 +1,13 @@
+#Lab10
+#server:
+#  port: 8081
+#zuul:
+#  routes:
+#    books.url: http://localhost:8090    #璺敱閰嶇疆锛岀渷鐣ath,鐩存帴鍙杛outeId涓簆ath
+
+#Lab10 瀹為獙
 server:
-  port: 8081
+  port: 8083
 zuul:
   routes:
-    books.url: http://localhost:8090    #路由配置，省略path，直接取routeId为books
+    abc.url: http://localhost:8085
