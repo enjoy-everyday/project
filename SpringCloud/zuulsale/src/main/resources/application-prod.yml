@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: person-invoker
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://slave1:8761/eureka
+
