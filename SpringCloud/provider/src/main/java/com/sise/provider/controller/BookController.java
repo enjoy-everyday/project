@@ -1,6 +1,7 @@
 package com.sise.provider.controller;
 
 import com.sise.provider.entity.Book;
+import com.sise.provider.entity.Person;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,21 @@ public class BookController {
         book.setName("SpringCloud");
         book.setAuthor("Tommy");
         return book;
+    }
+
+    /**
+     * @date: 2020/1/27
+     * @description: Lab10 实验
+     */
+
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person findPerson(@PathVariable Integer id) {
+        Person person = new Person();
+        person.setId(id);
+        person.setName("张三");
+        person.setAge(20);
+        person.setMessage("hhhhhhh");
+        return person;
     }
 
 }
