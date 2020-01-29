@@ -18,6 +18,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BookController {
 
+//    @RequestMapping(value = "/book/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Book findBook(@PathVariable Integer id){
+//        Book book = new Book();
+//        book.setId(id);
+//        book.setName("SpringCloud");
+//        book.setAuthor("Tommy");
+//        return book;
+//    }
+
+    /**
+     * @date: 2020/1/27
+     * @description: Lab10 实验
+     */
+
+//    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Person findPerson(@PathVariable Integer id) {
+//        Person person = new Person();
+//        person.setId(id);
+//        person.setName("张三");
+//        person.setAge(20);
+//        person.setMessage("hhhhhhh");
+//        return person;
+//    }
+
+    /**
+     * @date: 2020/1/28
+     * @description: Lab11
+     */
+
     @RequestMapping(value = "/book/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Book findBook(@PathVariable Integer id){
         Book book = new Book();
@@ -27,19 +56,5 @@ public class BookController {
         return book;
     }
 
-    /**
-     * @date: 2020/1/27
-     * @description: Lab10 实验
-     */
-
-    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findPerson(@PathVariable Integer id) {
-        Person person = new Person();
-        person.setId(id);
-        person.setName("张三");
-        person.setAge(20);
-        person.setMessage("hhhhhhh");
-        return person;
-    }
 
 }
