@@ -12,6 +12,19 @@
 #      defaultZone: http://slave1:8761/eureka
 
 #Lab10 实验
+#spring:
+#  profiles:
+#    active: dev
+
+#Lab11
+server:
+  port: 9100
 spring:
-  profiles:
-    active: dev
+  application:
+    name: sale-service
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://slave1:8761/eureka

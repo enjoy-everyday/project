@@ -14,6 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @create: 2020-01-26 14:39
  **/
 
+//@FeignClient("book-server")        //声明调用服务
+//public interface BookService {
+//
+//    @RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
+//    Book getBook(@PathVariable("id") Integer id);
+//
+//}
+
+
+/**
+ * @date: 2020/1/28
+ * @description: Lab11
+ */
+
 @FeignClient("book-server")        //声明调用服务
 public interface BookService {
 
@@ -21,3 +35,4 @@ public interface BookService {
     Book getBook(@PathVariable("id") Integer id);
 
 }
+
