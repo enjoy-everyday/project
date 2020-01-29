@@ -78,6 +78,20 @@
 #  port: 9000
 
 #Lab10 实验
+#spring:
+#  profiles:
+#    active: prod
+
+#Lab11
 spring:
-  profiles:
-    active: prod
+  application:
+    name: book-server
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone:
+        http://localhost:8761/eureka
+server:
+  port: 9000
