@@ -17,7 +17,7 @@ public class SaleController {
     @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
     public String errorTest() throws InterruptedException {
         Thread.sleep(3000);
-        return "error";
+        return "error Fallback";
     }
 
 }
