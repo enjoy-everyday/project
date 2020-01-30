@@ -1,0 +1,24 @@
+#Lab11 实验
+spring:
+  application:
+    name: first-zuulGateway
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+  host:
+    connect-timeout-millis: 15000
+    socket-timeout-millis: 60000
+  routes:
+    books:
+      url: http://localhost:9000
+    book:
+      path: /book/**
+server:
+  port: 8082
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
