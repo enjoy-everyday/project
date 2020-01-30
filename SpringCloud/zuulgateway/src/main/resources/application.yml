@@ -40,6 +40,46 @@
 #  port: 8085
 
 #Lab11
+#spring:
+#  application:
+#    name: zuulGateway
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#zuul:
+#  host:
+#    connect-timeout-millis: 15000 #HTTP连接超时大于Hystrix的超时时间
+#    socket-timeout-millis: 60000   #socket超时
+#  routes:
+##    sale:
+##      path: /sale/**
+##      serviceId: sale-service
+#    restTestRoute:
+#      path: /rest-sale/**
+#      serviceId: sale-service
+#    exceptionTest:
+#      path: /exception/**
+#    helloRoute:
+#      path: /test/**
+#      url: forward:/source
+##  SendForwardFilter:1
+##    route:
+##      disable: true
+#server:
+#  port: 8081
+#ribbon:        #设置ribbon的超时时间小于zuul的超时时间
+#  ReadTimeout: 10000
+#  ConnectTimeout: 10000
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: routes
+
+#Lab11 实验
 spring:
   application:
     name: zuulGateway
@@ -54,27 +94,14 @@ zuul:
     connect-timeout-millis: 15000 #HTTP连接超时大于Hystrix的超时时间
     socket-timeout-millis: 60000   #socket超时
   routes:
-#    sale:
-#      path: /sale/**
-#      serviceId: sale-service
-    restTestRoute:
-      path: /rest-sale/**
-      serviceId: sale-service
-    exceptionTest:
-      path: /exception/**
-    helloRoute:
-      path: /test/**
-      url: forward:/source
-#  SendForwardFilter:1
-#    route:
-#      disable: true
+    sale:
+      path: /sale/**
+      url: http://localhost:8083/sale
+    books:
+      path: /books/**
+      url: http://localhost:8082
 server:
   port: 8081
 ribbon:        #设置ribbon的超时时间小于zuul的超时时间
   ReadTimeout: 10000
   ConnectTimeout: 10000
-management:
-  endpoints:
-    web:
-      exposure:
-        include: routes
