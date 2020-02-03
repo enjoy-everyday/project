@@ -1,0 +1,32 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+  mvc:
+    view:
+      suffix: .html
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resource/,classpath:/resource/,classpath:/static/,classpath:/public/
+  datasource:
+    url: jdbc:mysql://localhost:3306/family_education?useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+    initalization-size: 10
+    tomcat:
+      max-active: 20
+      max-idle: 8
+      min-idle: 8
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false   #不打印日志内容
+
+
