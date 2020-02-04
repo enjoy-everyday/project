@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:include="/parent/head"></div>
+    <div th:if="${session.code == 1}">
+        <div th:include="/parent/release"></div>
+    </div>
+</body>
+</html>
