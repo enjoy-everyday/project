@@ -1,7 +1,9 @@
 package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Parent;
 import com.sise.familyEducation.entity.User;
+import com.sise.familyEducation.repository.DetailRepository;
 import com.sise.familyEducation.service.LoginService;
 import com.sise.familyEducation.service.ParentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class ParentController {
     private LoginService loginService;
     @Autowired
     private ParentService parentService;
+    @Autowired
+    private DetailRepository detailRepository;
 
     /**
      * @date: 2020/2/3
@@ -52,12 +56,10 @@ public class ParentController {
 
     @RequestMapping("/publishContent")
     public String publishContent(Authentication authentication){
-        List<User> users = new ArrayList<>();
-        User user = loginService.findByPhone(authentication.getName());
-        users.add(user);
+        Parent parent = parentService.findParentByPhone(authentication.getName());
         Detail detail = new Detail();
-        detail.setUsers(users);
-        parentService.save(detail);
+        detail.setParent(parent);
+        detailRepository.save(detail);
         return "parent/parent_home";
     }
 

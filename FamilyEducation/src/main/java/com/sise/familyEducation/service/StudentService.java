@@ -1,6 +1,8 @@
 package com.sise.familyEducation.service;
 
 import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Student;
+import com.sise.familyEducation.entity.User;
 import com.sise.familyEducation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,12 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public List<Detail> findAll(){
+    public List<Student> findAllStudents(){
         return studentRepository.findAll();
+    }
+
+    public Student findStudentByUser(User user){
+        return studentRepository.findByUser(user);
     }
 
 }

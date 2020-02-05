@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.and()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .logout().logoutUrl("/logout").deleteCookies("JSESSIONID").logoutSuccessHandler(customLogOutSuccessHandler).permitAll()
+                .logout().deleteCookies("JSESSIONID").logoutSuccessHandler(customLogOutSuccessHandler).permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll();

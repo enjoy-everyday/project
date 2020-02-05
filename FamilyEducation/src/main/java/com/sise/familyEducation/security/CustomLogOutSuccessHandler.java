@@ -47,10 +47,7 @@ public class CustomLogOutSuccessHandler implements LogoutSuccessHandler {
                 }
             }
         }
-//        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-//        httpServletResponse.setContentType("application/json;charset=utf-8");
-//        httpServletResponse.getWriter().write("退出成功，请重新登录");
-        httpServletResponse.sendRedirect("hello");
+        httpServletResponse.sendRedirect("hello");      //重定向
     }
 
 }

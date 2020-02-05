@@ -44,7 +44,7 @@ public class LoginService implements UserDetailsService {
         return new User(user.getPhone(),user.getPassword(),authorities);
     }
 
-    public com.sise.familyEducation.entity.User findByPhone(String phone){
+    public com.sise.familyEducation.entity.User findUserByPhone(String phone){
         return loginRepository.findByPhone(phone);
     }
 

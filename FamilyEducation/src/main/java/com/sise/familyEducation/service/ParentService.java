@@ -1,6 +1,7 @@
 package com.sise.familyEducation.service;
 
 import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Parent;
 import com.sise.familyEducation.repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,12 @@ public class ParentService {
     @Autowired
     private ParentRepository parentRepository;
 
-    public Detail save(Detail detail){
-        return parentRepository.save(detail);
+    public Parent saveParent(Parent parent){
+        return parentRepository.save(parent);
+    }
+
+    public Parent findParentByPhone(String phone){
+        return parentRepository.findByPhone(phone);
     }
 
 }

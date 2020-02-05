@@ -21,19 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    private String name;
-    private String username;
     private String password;
     private String phone;
-    private String address;
-    private String area;
-    private String qualification;
 
     @ManyToOne(targetEntity = Role.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id",referencedColumnName = "id")
     private Role role;
-
-    @ManyToMany(mappedBy = "users")
-    private List<Detail> details;
 
 }

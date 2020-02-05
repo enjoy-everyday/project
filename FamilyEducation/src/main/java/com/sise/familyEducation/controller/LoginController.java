@@ -34,7 +34,7 @@ public class LoginController {
     @RequestMapping("/springboot")
     public String security(Authentication authentication){
         System.out.println("******" + authentication.getName() + "******");
-        User user = loginService.findByPhone(authentication.getName());
+        User user = loginService.findUserByPhone(authentication.getName());
 //        User user = loginService.saveRole(1);
 //        System.out.println(user);
 //        System.out.println(user.getPhone());
@@ -66,7 +66,7 @@ public class LoginController {
 
     @RequestMapping("/home")
     public String login(Authentication authentication){
-        User user = loginService.findByPhone(authentication.getName());
+        User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         if (role.equals("学生")){
             System.out.println(user.getRole().getRole());
