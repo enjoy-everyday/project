@@ -1,7 +1,11 @@
 package com.sise.familyEducation.repository;
 
+import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Student;
 import com.sise.familyEducation.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * @program: FamilyEducation

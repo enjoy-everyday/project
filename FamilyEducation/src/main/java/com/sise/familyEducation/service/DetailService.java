@@ -1,6 +1,7 @@
 package com.sise.familyEducation.service;
 
 import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Parent;
 import com.sise.familyEducation.repository.DetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class DetailService {
 
     public Detail findDetailsById(int id){
         return detailRepository.findById(id).get();
+    }
+
+    public List<Detail> findNoApplicationDetailsByStudentId(int id){
+        return detailRepository.findNoApplicationDetailsByStudentId(id);
     }
 
     @Transactional

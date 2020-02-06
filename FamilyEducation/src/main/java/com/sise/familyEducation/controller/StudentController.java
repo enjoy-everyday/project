@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,11 +54,13 @@ public class StudentController {
      */
 
     @RequestMapping("/findAllContent")
-    public String findAllContent(HttpSession session){
+    public String findAllContent(Authentication authentication, HttpSession session){
         int code = 11;
-        List<Detail> details = detailService.findAllDetails();
-        System.out.println(details.size());
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
+        List<Detail> details = detailService.findNoApplicationDetailsByStudentId(student.getId());
         session.setAttribute("details", details);
+        session.setAttribute("student", student);
         session.setAttribute("code", code);
         return "student/student_home";
     }
@@ -73,7 +77,7 @@ public class StudentController {
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         Task task = new Task();
-        task.setData("2020");
+        task.setDate(new Date().toString());
         task.setDetail(detail);
         task.setStudent(student);
         taskService.saveTask(task);
