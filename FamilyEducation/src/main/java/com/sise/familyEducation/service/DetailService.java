@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @program: FamilyEducation
@@ -27,7 +28,11 @@ public class DetailService {
     }
 
     public Detail findDetailsById(int id){
-        return detailRepository.findById(id).get();
+        Optional<Detail> detail = detailRepository.findById(id);
+        if (detail != null && detail.isPresent()){
+            return detail.get();
+        }
+        return null;
     }
 
     public List<Detail> findNoApplicationDetailsByStudentId(int id){

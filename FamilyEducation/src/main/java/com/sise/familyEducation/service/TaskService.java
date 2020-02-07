@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 /**
  * @program: FamilyEducation
@@ -21,12 +22,20 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     public Task findTaskById(int id){
-        return taskRepository.findById(id).get();
+        Optional<Task> task = taskRepository.findById(id);
+        if (task != null && task.isPresent()){
+            return task.get();
+        }
+        return null;
     }
 
     @Transactional
     public void saveTask(Task task){
         taskRepository.save(task);
+    }
+
+    public void deleteTaskById(int id){
+        taskRepository.deleteById(id);
     }
 
 }

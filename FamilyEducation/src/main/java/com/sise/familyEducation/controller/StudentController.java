@@ -1,13 +1,7 @@
 package com.sise.familyEducation.controller;
 
-import com.sise.familyEducation.entity.Detail;
-import com.sise.familyEducation.entity.Student;
-import com.sise.familyEducation.entity.Task;
-import com.sise.familyEducation.entity.User;
-import com.sise.familyEducation.service.DetailService;
-import com.sise.familyEducation.service.LoginService;
-import com.sise.familyEducation.service.StudentService;
-import com.sise.familyEducation.service.TaskService;
+import com.sise.familyEducation.entity.*;
+import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,13 +24,17 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private LoginService loginService;
+    private TaskService taskService;
     @Autowired
-    private StudentService studentService;
+    private LoginService loginService;
     @Autowired
     private DetailService detailService;
     @Autowired
-    private TaskService taskService;
+    private StudentService studentService;
+    @Autowired
+    private HistoricalTaskService historicalTaskService;
+    @Autowired
+    private HistoricalDetailService historicalDetailService;
 
     /**
      * @date: 2020/2/3
@@ -82,7 +80,55 @@ public class StudentController {
         task.setStudent(student);
         taskService.saveTask(task);
         session.setAttribute("code", code);
+        return "redirect:/findAllContent";
+    }
+
+    /**
+     * @date: 2020/2/6
+     * @description: 查看应聘结果
+     */
+
+    @RequestMapping("/findApplicationResult")
+    public String findApplicationResult(Authentication authentication, HttpSession session){
+        int code = 12;
+        int number = 0;
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
+        for (Task task : student.getTasks()){
+            if (task.getWhetherToPass().equals("是")){
+                number++;
+            }
+        }
+        session.setAttribute("code", code);
+        session.setAttribute("number", number);
+        session.setAttribute("student", student);
         return "student/student_home";
+    }
+
+    @RequestMapping("/cancelTheApplication")
+    public String cancelTheApplication(@RequestParam(value = "task_id") int id, HttpSession session){
+        Task task = taskService.findTaskById(id);
+        if (task.getHistoricalDetail() == null){
+            HistoricalDetail historicalDetail = new HistoricalDetail();
+            historicalDetail.setDate(new Date().toString());
+            historicalDetail.setContext(task.getDetail().getContext());
+            historicalDetail.setParent(task.getDetail().getParent());
+            historicalDetailService.saveHistoricalDetail(historicalDetail);
+            for (Task task1 : task.getDetail().getTasks()){
+                task1.setHistoricalDetail(historicalDetail);
+                taskService.saveTask(task1);
+            }
+        }
+        HistoricalTask historicalTask = new HistoricalTask();
+        historicalTask.setDate(new Date().toString());
+        historicalTask.setResult("取消");
+        historicalTask.setHistoricalDetail(task.getHistoricalDetail());
+        historicalTask.setStudent(task.getStudent());
+        historicalTaskService.saveHistoricalTask(historicalTask);
+        taskService.deleteTaskById(id);
+        int code = 12;
+        session.setAttribute("code", code);
+        return "redirect:/findApplicationResult";
     }
 
 }

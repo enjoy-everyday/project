@@ -12,37 +12,35 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:each="detail : ${session.parent.getDetails()}">
+    <th:block th:each="detail : ${session.parent.getDetails()}">
         <div th:text="${detail.id}"></div>
-        <div th:switch="${detail.getTasks().size() != 0}">
-            <div th:case="true">
-                <div th:each="task : ${detail.getTasks()}">
-                    <div th:switch="${task.whetherToPass ne '是'}">
-                        <div th:case="true">
-                            <table border="1">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>phone</th>
-                                    <th>操作</th>
-                                </tr>
-                                <tr>
-                                    <td th:text="${task.getStudent().id}"></td>
-                                    <td th:text="${task.getStudent().phone}"></td>
-                                    <td>
-                                        <form th:action="@{/enterTheInterview}" th:name="${task.id}" th:id="${task.id}" method="post">
-                                            <input type="hidden" name="task_id" th:value="${task.id}">
-                                        </form>
-                                        <button onclick="enterTheInterview(this)">接受</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <th:block th:switch="${detail.getTasks().size() != 0}">
+            <th:block th:case="true">
+                <th:block th:each="task : ${detail.getTasks()}" th:switch="${task.whetherToPass ne '是'}">
+                    <th:block th:case="true">
+                        <table border="1">
+                            <tr>
+                                <th>ID</th>
+                                <th>phone</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr>
+                                <td th:text="${task.getStudent().id}"></td>
+                                <td th:text="${task.getStudent().phone}"></td>
+                                <td>
+                                    <form th:action="@{/enterTheInterview}" th:name="${task.id}" th:id="${task.id}" method="post">
+                                        <input type="hidden" name="task_id" th:value="${task.id}">
+                                    </form>
+                                    <button onclick="enterTheInterview(this)">接受</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </th:block>
+                </th:block>
+            </th:block>
             <div th:case="false">暂无学生应聘</div>
-        </div>
-    </div>
+        </th:block>
+    </th:block>
 </body>
 
     <script type="text/javascript" src="js/jquery-3.4.0.js"></script>

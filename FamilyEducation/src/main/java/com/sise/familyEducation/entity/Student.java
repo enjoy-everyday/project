@@ -1,6 +1,8 @@
 package com.sise.familyEducation.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +14,8 @@ import java.util.List;
  * @create: 2020-02-01 16:55
  **/
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "student")
 public class Student {
@@ -33,5 +36,8 @@ public class Student {
 
     @OneToMany(mappedBy="student", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
     private List<Task> tasks;
+
+    @OneToMany(mappedBy="student", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
+    private List<HistoricalTask> historicalTasks;
 
 }
