@@ -5,6 +5,8 @@ import com.sise.familyEducation.repository.HistoricalTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * @program: FamilyEducation
  * @description: 历史任务
@@ -18,6 +20,7 @@ public class HistoricalTaskService {
     @Autowired
     private HistoricalTaskRepository historicalTaskRepository;
 
+    @Transactional
     public void saveHistoricalTask(HistoricalTask historicalTask){
         historicalTaskRepository.save(historicalTask);
     }

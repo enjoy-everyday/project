@@ -21,6 +21,7 @@ public class Detail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    private String date;
     private String context;
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)

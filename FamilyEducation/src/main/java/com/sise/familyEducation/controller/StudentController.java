@@ -2,12 +2,18 @@ package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.service.*;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.jpa.HibernateEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +41,9 @@ public class StudentController {
     private HistoricalTaskService historicalTaskService;
     @Autowired
     private HistoricalDetailService historicalDetailService;
+
+    @PersistenceContext
+    private EntityManager entityManager;         //获取Hibernate的session
 
     /**
      * @date: 2020/2/3
@@ -106,7 +115,7 @@ public class StudentController {
     }
 
     @RequestMapping("/cancelTheApplication")
-    public String cancelTheApplication(@RequestParam(value = "task_id") int id, HttpSession session){
+    public String cancelTheApplication(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
         if (task.getHistoricalDetail() == null){
             HistoricalDetail historicalDetail = new HistoricalDetail();
@@ -116,7 +125,6 @@ public class StudentController {
             historicalDetailService.saveHistoricalDetail(historicalDetail);
             for (Task task1 : task.getDetail().getTasks()){
                 task1.setHistoricalDetail(historicalDetail);
-                taskService.saveTask(task1);
             }
         }
         HistoricalTask historicalTask = new HistoricalTask();
@@ -126,8 +134,6 @@ public class StudentController {
         historicalTask.setStudent(task.getStudent());
         historicalTaskService.saveHistoricalTask(historicalTask);
         taskService.deleteTaskById(id);
-        int code = 12;
-        session.setAttribute("code", code);
         return "redirect:/findApplicationResult";
     }
 

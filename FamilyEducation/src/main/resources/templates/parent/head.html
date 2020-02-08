@@ -9,6 +9,8 @@
     <form th:action="@{/logout}" method="post">
         <input type="submit" value="退出">
     </form>
+    <div th:text="${session.province}"></div>
+    <div th:text="${session.city}"></div>
     <a href="/release">发布</a>
     <a href="/viewCandidates">应聘人员</a>
 </body>

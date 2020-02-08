@@ -1,11 +1,17 @@
 package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.User;
+import com.sise.familyEducation.location.GetPlaceByIp;
 import com.sise.familyEducation.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * @program: FamilyEducation
@@ -65,9 +71,15 @@ public class LoginController {
      */
 
     @RequestMapping("/home")
-    public String login(Authentication authentication){
+    public String login(Authentication authentication, HttpServletRequest request, HttpSession session) throws IOException {
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
+        System.out.println(GetPlaceByIp.getPlace(request));
+        Map<String, String> map = GetPlaceByIp.getPlace(request);
+        String province = map.get("province");
+        String city = map.get("city");
+        session.setAttribute("province", province);
+        session.setAttribute("city", city);
         if (role.equals("学生")){
             System.out.println(user.getRole().getRole());
             return "student/student_home";

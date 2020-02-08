@@ -2,9 +2,7 @@ package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.repository.DetailRepository;
-import com.sise.familyEducation.service.LoginService;
-import com.sise.familyEducation.service.ParentService;
-import com.sise.familyEducation.service.TaskService;
+import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * @program: FamilyEducation
@@ -24,13 +23,17 @@ import javax.servlet.http.HttpSession;
 public class ParentController {
 
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private LoginService loginService;
     @Autowired
     private ParentService parentService;
     @Autowired
     private DetailRepository detailRepository;
     @Autowired
-    private TaskService taskService;
+    private HistoricalTaskService historicalTaskService;
+    @Autowired
+    private HistoricalDetailService historicalDetailService;
 
     /**
      * @date: 2020/2/3
@@ -83,12 +86,39 @@ public class ParentController {
      */
 
     @RequestMapping("/enterTheInterview")
-    public String enterYheInterview(@RequestParam(value = "task_id") int id, HttpSession session){
+    public String enterYheInterview(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
         task.setWhetherToPass("是");
-        int code = 2;
-        session.setAttribute("code", code);
-        return "parent/parent_home";
+        taskService.saveTask(task);
+        return "redirect:/viewCandidates";
+    }
+
+    /**
+     * @date: 2020/2/7
+     * @description: 没有通过，拒绝进入面试
+     */
+
+    @RequestMapping("/refuseEntry")
+    public String refuseEntry(@RequestParam(value = "task_id") int id){
+        Task task = taskService.findTaskById(id);
+        if (task.getHistoricalDetail() == null){
+            HistoricalDetail historicalDetail = new HistoricalDetail();
+            historicalDetail.setDate(new Date().toString());
+            historicalDetail.setContext(task.getDetail().getContext());
+            historicalDetail.setParent(task.getDetail().getParent());
+            historicalDetailService.saveHistoricalDetail(historicalDetail);
+            for (Task task1 : task.getDetail().getTasks()){
+                task1.setHistoricalDetail(historicalDetail);
+            }
+        }
+        HistoricalTask historicalTask = new HistoricalTask();
+        historicalTask.setDate(new Date().toString());
+        historicalTask.setResult("拒绝");
+        historicalTask.setHistoricalDetail(task.getHistoricalDetail());
+        historicalTask.setStudent(task.getStudent());
+        historicalTaskService.saveHistoricalTask(historicalTask);
+        taskService.deleteTaskById(id);
+        return "redirect:/viewCandidates";
     }
 
 }

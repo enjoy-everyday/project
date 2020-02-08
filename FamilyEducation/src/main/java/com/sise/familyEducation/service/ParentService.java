@@ -6,6 +6,8 @@ import com.sise.familyEducation.repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * @program: FamilyEducation
  * @description: 订单
@@ -19,12 +21,13 @@ public class ParentService {
     @Autowired
     private ParentRepository parentRepository;
 
-    public Parent saveParent(Parent parent){
-        return parentRepository.save(parent);
-    }
-
     public Parent findParentByPhone(String phone){
         return parentRepository.findByPhone(phone);
+    }
+
+    @Transactional
+    public Parent saveParent(Parent parent){
+        return parentRepository.save(parent);
     }
 
 }

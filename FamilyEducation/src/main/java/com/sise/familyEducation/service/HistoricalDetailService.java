@@ -5,6 +5,8 @@ import com.sise.familyEducation.repository.HistoricalDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 /**
  * @program: FamilyEducation
  * @description: 历史发布
@@ -18,6 +20,7 @@ public class HistoricalDetailService {
     @Autowired
     private HistoricalDetailRepository historicalDetailRepository;
 
+    @Transactional
     public void saveHistoricalDetail(HistoricalDetail historicalDetail){
         historicalDetailRepository.save(historicalDetail);
     }

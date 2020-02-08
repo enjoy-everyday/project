@@ -34,8 +34,9 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    @Transactional
     public void deleteTaskById(int id){
-        taskRepository.deleteById(id);
+        taskRepository.deleteTaskById(id);
     }
 
 }
