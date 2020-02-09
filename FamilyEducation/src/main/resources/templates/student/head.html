@@ -11,7 +11,34 @@
     </form>
     <div th:text="${session.province}"></div>
     <div th:text="${session.city}"></div>
+    <select id="province">
+        <option>--请选择--</option>
+    </select>
+    <select id="city">
+        <option>--请选择--</option>
+    </select>
+    <select id="area">
+        <option>--请选择--</option>
+    </select>
     <a href="/findAllContent">查看找家教</a>
     <a href="/findApplicationResult">查看应聘结果</a>
+
+    <script src="js/jquery-3.4.0.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "",
+                dataType: "json",
+                success: function (result) {
+                    for (var i = 0; i < result.length; i++){
+                        $("#province").append("<option value=" + result[i].id + ">" + result[i].name + "</option>")
+                    }
+                }
+            })
+        })
+    </script>
+
 </body>
 </html>
