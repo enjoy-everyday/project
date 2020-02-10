@@ -42,9 +42,6 @@ public class StudentController {
     @Autowired
     private HistoricalDetailService historicalDetailService;
 
-    @PersistenceContext
-    private EntityManager entityManager;         //获取Hibernate的session
-
     /**
      * @date: 2020/2/3
      * @description: 请求转发

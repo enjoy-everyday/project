@@ -81,7 +81,6 @@ public class LoginController {
         session.setAttribute("province", province);
         session.setAttribute("city", city);
         if (role.equals("学生")){
-            System.out.println(user.getRole().getRole());
             return "student/student_home";
         }
         else if (role.equals("家长")){

@@ -11,33 +11,109 @@
     </form>
     <div th:text="${session.province}"></div>
     <div th:text="${session.city}"></div>
+
     <select id="province">
-        <option>--请选择--</option>
+        <option value="0">--请选择--</option>
     </select>
     <select id="city">
-        <option>--请选择--</option>
+        <option value="0">--请选择--</option>
     </select>
     <select id="area">
-        <option>--请选择--</option>
+        <option value="0">--请选择--</option>
     </select>
+
+    <form th:action="@{/changePosition}"  method="post" id="position">
+        <input type="hidden" name="province_name" id="province_name">
+        <input type="hidden" name="city_name" id="city_name">
+        <input type="hidden" name="area_name" id="area_name">
+    </form>
+    <button id="alter">更改位置</button>
+    <br>
+
+    <input type="hidden" th:value="${_csrf.token}" id="token">
     <a href="/findAllContent">查看找家教</a>
     <a href="/findApplicationResult">查看应聘结果</a>
 
     <script src="js/jquery-3.4.0.js"></script>
 
     <script type="text/javascript">
-        $(function () {
+        //获取csrf变量的token值放在_csrf变量中,此变量要作为所有请求的参数
+        var token = $("#token").val();
+        $(document).ready(function () {
             $.ajax({
                 type: "post",
-                url: "",
+                url: "/getProvince",
+                data: {_csrf: token},
                 dataType: "json",
                 success: function (result) {
                     for (var i = 0; i < result.length; i++){
-                        $("#province").append("<option value=" + result[i].id + ">" + result[i].name + "</option>")
+                        $("#province").append("<option value='" + result[i].id + "'>" + result[i].province_name + "</option>");
+                    }
+                }
+            });
+
+            $("#alter").click(function(){
+                var province_name = $("#province option:selected").text();
+                var city_name = $("#city option:selected").text();
+                var area_name = $("#area option:selected").text();
+                if ($("#province option:selected").val() == 0 || $("#city option:selected").val() == 0){
+                    alert("请选择省份以及城市");
+                }
+                else if ($("#area option:selected").val() == 0){
+                    $("#province_name").attr("value", province_name);
+                    $("#city_name").attr("value", city_name);
+                    $("#area_name").attr("value", "null");
+                    $("#position").submit();
+                }
+                else {
+                    $("#province_name").attr("value", province_name);
+                    $("#city_name").attr("value", city_name);
+                    $("#area_name").attr("value", area_name);
+                    $("#position").submit();
+                }
+            });
+
+        });
+
+        $("#province").change(function () {
+
+            var province_code = $("#province option:selected").val();
+
+            $("#city option:gt(0)").remove();
+            $("#area option:gt(0)").remove();
+
+            $.ajax({
+                type: "post",
+                url: "/getCities",
+                data: {_csrf: token, province_code: province_code},
+                dataType: "json",
+                success: function (result) {
+                    for (var i = 0; i < result.length; i++){
+                        $("#city").append("<option value=" + result[i].id + ">" + result[i].city_name + "</option>")
                     }
                 }
             })
-        })
+        });
+
+        $("#city").change(function () {
+
+            var city_code = $("#city option:selected").val();
+
+            $("#area option:gt(0)").remove();
+
+            $.ajax({
+                type: "post",
+                url: "/getAreas",
+                data: {_csrf: token, city_code: city_code},
+                dataType: "json",
+                success: function (result) {
+                    for (var i = 0; i < result.length; i++){
+                        $("#area").append("<option value=" + result[i].id + ">" + result[i].area_name + "</option>")
+                    }
+                }
+            })
+        });
+
     </script>
 
 </body>
