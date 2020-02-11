@@ -1,0 +1,62 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: ASUS
+  Date: 2020/2/10
+  Time: 16:40
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>推送内容：</h2>
+<h3 id="ids"></h3>
+</body>
+
+    <script type="text/javascript" src="js/reconnecting-websocket.js"></script>
+
+    <script type="text/javascript">
+
+        window.onload=function (){
+            var address = "localhost:8080";
+            var url = "ws://"+address+"/ws/sss";
+            //判断浏览器是否支持websocket
+            var websocket;
+            if ('WebSocket' in window) {
+                //如果支持，创建websocket对象，注意url格式
+                websocket = new WebSocket(url);
+                websocket.debug = true;
+                //websocket.timeoutInterval=2000;重连的最长等待时间
+            } else {
+                alert('浏览器版本不支持websocket！');
+            }
+            //定义连接错误的回调方法
+            websocket.onerror = function() {
+                console.log('websocket连接出错！');
+            };
+            //定义连接成功的回调方法
+            websocket.onopen = function() {
+                console.log('websocket连接成功！');
+            };
+            //定义websocket关闭的回调方法
+            websocket.onclose = function() {
+                console.log('websocket已关闭！')
+            };
+
+            //当窗口关闭时，主动去关闭websocket连接
+            window.onbeforeunload = function() {
+                closeWebSocket();
+            };
+
+            //接收到消息的回调方法
+            websocket.onmessage = function(event) {
+                document.getElementById("ids").innerHTML = event.data;
+            };
+
+        }
+    </script>
+
+</html>

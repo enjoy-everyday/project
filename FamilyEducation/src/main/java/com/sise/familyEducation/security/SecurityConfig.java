@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/springboot", "/publishContent").permitAll()
                 .antMatchers("/sysadmin").hasRole("ADMIN")
-                .antMatchers("/hello").permitAll()
+                .antMatchers("/hello", "/ws").permitAll()
                 .anyRequest().authenticated()
                 //.and()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

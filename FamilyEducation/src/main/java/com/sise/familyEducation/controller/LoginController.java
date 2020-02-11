@@ -52,7 +52,7 @@ public class LoginController {
 //    @ResponseBody
     @RequestMapping("/hello")
     public String hello(){
-        return "home_page";
+        return "websocket";
     }
 
     /**

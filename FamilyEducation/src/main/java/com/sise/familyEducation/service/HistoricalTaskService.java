@@ -20,6 +20,10 @@ public class HistoricalTaskService {
     @Autowired
     private HistoricalTaskRepository historicalTaskRepository;
 
+    public int getTotal(){
+        return historicalTaskRepository.getTotal();
+    }
+
     @Transactional
     public void saveHistoricalTask(HistoricalTask historicalTask){
         historicalTaskRepository.save(historicalTask);

@@ -2,6 +2,7 @@ package com.sise.familyEducation.repository;
 
 import com.sise.familyEducation.entity.HistoricalTask;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * @program: FamilyEducation
@@ -11,4 +12,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  **/
 
 public interface HistoricalTaskRepository extends JpaRepository<HistoricalTask, Integer> {
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM historical_task")
+    int getTotal();
+
 }
