@@ -42,11 +42,15 @@ public class TimingTask implements CommandLineRunner {
             String message = "5555555";
             Iterator<Map.Entry<Session, String>> iterator = WebSocketServer.map.entrySet().iterator();
             Iterator<String> set = WebSocketServer.map.values().iterator();
+            while (set.hasNext()) {
+                System.out.println("登录的账户："+set.next());
+            }
             WebSocketServer webSocketServer = new WebSocketServer();
             while (iterator.hasNext()){
                 Map.Entry<Session, String> entry = iterator.next();
                 Session session = entry.getKey();
                 String userPower = entry.getValue();
+                System.out.println(userPower);
                 System.out.println("推送内容：" + message);
                 webSocketServer.sendMessage(session, message);
             }
