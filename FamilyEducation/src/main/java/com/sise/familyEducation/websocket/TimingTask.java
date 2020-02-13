@@ -1,10 +1,10 @@
 package com.sise.familyEducation.websocket;
 
 import com.sise.familyEducation.service.HistoricalTaskService;
-import com.sise.familyEducation.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -26,38 +26,29 @@ import java.util.Map;
 public class TimingTask implements CommandLineRunner {
 
     @Autowired
-    private HistoricalTaskService historicalTaskService;
+    private SimpMessagingTemplate template;        //广播推送消息
 
-    private int oldTotal;
+    @Scheduled(cron = "0/30 * * * * ?")
+    private void configureTasks() throws IOException {
+        System.out.println("后台广播推送！");
+        this.template.convertAndSend("/topic/getResponse", "55555");
+    }
+
+    @Scheduled(cron = "0/10 * * * * ?")
+    private void configureT() throws IOException {
+        String value = "null";
+        System.out.println("一对一推送！");
+
+        if (WebsocketConnectListener.bidiMap.get("1") == null) {
+            System.out.println("没有key");
+        } else {
+            System.out.println("发送");
+            template.convertAndSendToUser("1", "/queue/getResponse", "6666");
+        }
+    }
 
     @Override
     public void run(String... args) throws Exception {
-        oldTotal = historicalTaskService.getTotal();
-    }
 
-    @Scheduled(cron = "0/5 * * * * ?")
-    private void configureTasks() throws IOException {
-        int newTotal = historicalTaskService.getTotal();
-        if (newTotal > oldTotal){
-            String message = "5555555";
-            Iterator<Map.Entry<Session, String>> iterator = WebSocketServer.map.entrySet().iterator();
-            Iterator<String> set = WebSocketServer.map.values().iterator();
-            while (set.hasNext()) {
-                System.out.println("登录的账户："+set.next());
-            }
-            WebSocketServer webSocketServer = new WebSocketServer();
-            while (iterator.hasNext()){
-                Map.Entry<Session, String> entry = iterator.next();
-                Session session = entry.getKey();
-                String userPower = entry.getValue();
-                System.out.println(userPower);
-                System.out.println("推送内容：" + message);
-                webSocketServer.sendMessage(session, message);
-            }
-            System.out.println("旧：" + oldTotal);
-            System.out.println("新：" + newTotal);
-            System.out.println("执行：" + LocalDateTime.now());
-            oldTotal = newTotal;
-        }
     }
 }

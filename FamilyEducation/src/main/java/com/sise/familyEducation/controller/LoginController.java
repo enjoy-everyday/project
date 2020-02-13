@@ -80,6 +80,7 @@ public class LoginController {
         String city = map.get("city");
         session.setAttribute("province", province);
         session.setAttribute("city", city);
+        session.setAttribute("authentication", authentication.getName());
         if (role.equals("学生")){
             return "student/student_home";
         }

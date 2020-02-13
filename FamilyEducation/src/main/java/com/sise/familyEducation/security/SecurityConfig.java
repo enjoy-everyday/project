@@ -9,6 +9,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -25,6 +27,7 @@ import javax.annotation.Resource;
  **/
 
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -36,6 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomLogOutSuccessHandler customLogOutSuccessHandler;
     @Autowired
     private AuthenticationProvider authenticationProvider;
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        //静态资源不做安全校验
+        web.ignoring().antMatchers("/webjars/**");///resources/static/目录下的静态资源，不拦截
+    }
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -59,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/springboot", "/publishContent").permitAll()
                 .antMatchers("/sysadmin").hasRole("ADMIN")
-                .antMatchers("/hello", "/ws/**").permitAll()
+                .antMatchers("/hello", "/endpointOyzc/**", "/endpointOne/**").permitAll()
                 .anyRequest().authenticated()
                 //.and()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
