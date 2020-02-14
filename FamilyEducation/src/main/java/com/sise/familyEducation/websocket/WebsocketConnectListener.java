@@ -1,5 +1,6 @@
 package com.sise.familyEducation.websocket;
 
+import com.sise.familyEducation.controller.LoginController;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.BidiMap;
 import org.apache.commons.collections4.bidimap.DualHashBidiMap;
@@ -24,15 +25,14 @@ import java.util.Map;
 @Component
 public class WebsocketConnectListener implements ApplicationListener<SessionConnectEvent> {
 
-    static BidiMap<String, String> bidiMap = new DualHashBidiMap<>();
+    public static BidiMap<String, String> bidiMap = new DualHashBidiMap<>();
 
     @Override
     public void onApplicationEvent(SessionConnectEvent event) {
         final StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(event.getMessage());
         System.out.println(stompHeaderAccessor);
         String sessionId = stompHeaderAccessor.getSessionId();
-        HttpSession session;
-        bidiMap.put(session.getAttribute("authentication"), sessionId);
+        bidiMap.put(LoginController.connectUser, sessionId);
         System.out.println(bidiMap);
     }
 

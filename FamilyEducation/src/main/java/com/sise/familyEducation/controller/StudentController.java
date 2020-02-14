@@ -2,10 +2,12 @@ package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.service.*;
+import com.sise.familyEducation.websocket.WebsocketConnectListener;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.jpa.HibernateEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,8 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private HistoricalTaskService historicalTaskService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
     @Autowired
     private HistoricalDetailService historicalDetailService;
 
@@ -130,6 +134,12 @@ public class StudentController {
         historicalTask.setHistoricalDetail(task.getHistoricalDetail());
         historicalTask.setStudent(task.getStudent());
         historicalTaskService.saveHistoricalTask(historicalTask);
+        if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) == null){
+
+        }
+        else {
+            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
+        }
         taskService.deleteTaskById(id);
         return "redirect:/findApplicationResult";
     }

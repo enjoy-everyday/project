@@ -26,6 +26,8 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    public static String connectUser;
+
     /**
      * @date: 2020/2/3
      * @description: 测试
@@ -52,7 +54,7 @@ public class LoginController {
 //    @ResponseBody
     @RequestMapping("/hello")
     public String hello(){
-        return "websocket";
+        return "home_page";
     }
 
     /**
@@ -71,7 +73,9 @@ public class LoginController {
      */
 
     @RequestMapping("/home")
-    public String login(Authentication authentication, HttpServletRequest request, HttpSession session) throws IOException {
+    public String login(Authentication authentication, HttpServletRequest request, HttpSession session) throws IOException, InterruptedException {
+        connectUser = authentication.getName();
+        Thread.sleep(500);
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         System.out.println(GetPlaceByIp.getPlace(request));

@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //静态资源不做安全校验
-        web.ignoring().antMatchers("/webjars/**");///resources/static/目录下的静态资源，不拦截
+        web.ignoring().antMatchers("/webjars/**", "/js/**");///resources/static/目录下的静态资源，不拦截
     }
 
     @Bean
