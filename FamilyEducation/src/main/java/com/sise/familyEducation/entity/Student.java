@@ -38,6 +38,9 @@ public class Student {
     private List<Task> tasks;
 
     @OneToMany(mappedBy="student", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
+    private List<Message> messages;
+
+    @OneToMany(mappedBy="student", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
     private List<HistoricalTask> historicalTasks;
 
 }

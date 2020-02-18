@@ -37,6 +37,9 @@ public class Parent {
     private List<Detail> details;
 
     @OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
+    private List<Message> messages;
+
+    @OneToMany(mappedBy="parent", cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval = true)
     private List<HistoricalDetail> historicalDetails;
 
 }

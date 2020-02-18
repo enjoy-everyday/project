@@ -8,24 +8,13 @@
 <body>
 <div id="response">
 </div>
-<div class="toast fade show">
-    <div class="toast-header">
-        <img src="image/face.png" class="rounded mr-2" alt="">
-        <strong class="mr-auto">钟迅科</strong>
-        <small>刚刚</small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-            <span>×</span>
-        </button>
-    </div>
-    <div class="toast-body">您好! 欢迎学习Bootstrap课程.</div>
-</div>
-<script th:src="@{/webjars/stomp-websocket/2.3.3-1/stomp.js}"></script>
-<script th:src="@{/webjars/sockjs-client/1.1.2/sockjs.js}"></script>
-<script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
-<!--<script src="js/jquery-3.4.0.js"></script>-->
-<script th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
-<!--<script src="js/popper.min.js"></script>-->
-<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<!--<script th:src="@{/webjars/stomp-websocket/2.3.3-1/stomp.js}"></script>-->
+<!--<script th:src="@{/webjars/sockjs-client/1.1.2/sockjs.js}"></script>-->
+<!--<script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>-->
+<!--&lt;!&ndash;<script src="js/jquery-3.4.0.js"></script>&ndash;&gt;-->
+<!--<script th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>-->
+<!--&lt;!&ndash;<script src="js/popper.min.js"></script>&ndash;&gt;-->
+<!--<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>-->
 <!--<script src="js/bootstrap.js"></script>-->
 <script>
 
@@ -100,7 +89,13 @@
             animation: true,
             autohide: true,
             delay: 8000
-        }).toast('show')
+        }).toast('show');
+
+        $("#response").on("click", ".toast", function () {
+            $(this).fadeOut(100);
+            $(this).attr("class", "toast fade hide");
+        });
+
     })
 </script>
 
