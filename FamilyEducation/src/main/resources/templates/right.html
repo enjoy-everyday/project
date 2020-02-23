@@ -1,0 +1,46 @@
+<section id="blog" class="padding">
+    <aside class="sidebar bg_grey border-radius wow fadeIn" data-wow-delay="300ms">
+        <div class="widget heading_space">
+            <form class="widget_search border-radius">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Search Here" required>
+                    <i class="input-group-addon icon-icons185"></i>
+                </div>
+            </form>
+        </div>
+
+        <div class="widget heading_space">
+            <h3 class="bottom20">公告</h3>
+            <p class="hours">标题<span>时间</span></p>
+            <p class="hours"><span><a href="" class="border_radius text-uppercase">更多</a></span></p>
+        </div>
+
+        <div class="widget heading_space" style="padding-top: 20%;">
+            <th:block th:switch="${session.role == '学生'}">
+                <h3 th:case="true" class="bottom20">最受欢迎家长</h3>
+                <h3 th:case="false" class="bottom20">最受欢迎学生</h3>
+            </th:block>
+            <div class="media">
+                <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
+                <div class="media-body">
+                    <h5 class="bottom5">昵称</h5>
+                    <form class="star_rating">
+                        <div class="stars">
+                            <input type="radio" name="star" class="star-1" id="star-01" />
+                            <label class="star-1" for="star-01">1</label>
+                            <input type="radio" name="star" class="star-2" id="star-02" />
+                            <label class="star-2" for="star-02">2</label>
+                            <input type="radio" name="star" class="star-3" id="star-03" />
+                            <label class="star-3" for="star-03">3</label>
+                            <input type="radio" name="star" class="star-4" id="star-04"  />
+                            <label class="star-4" for="star-04">4</label>
+                            <input type="radio" name="star" class="star-5"  id="star-05" checked  />
+                            <label class="star-5" for="star-05">5</label>
+                            <span></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </aside>
+</section>
