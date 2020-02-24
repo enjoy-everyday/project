@@ -22,6 +22,9 @@ public class Detail {
     @Column(name = "id")
     private int id;
     private String date;
+    private String address;
+    private String grade;
+    private String subject;
     private String context;
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)

@@ -20,7 +20,9 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    private String message;
+    private boolean state = false;       //false为未读，true为已读
+    private String date;
+    private String message;     //拒绝、取消、接受
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
     @JoinColumn(name="student_id")
