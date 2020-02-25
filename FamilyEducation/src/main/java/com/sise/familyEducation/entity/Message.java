@@ -23,6 +23,7 @@ public class Message {
     private boolean state = false;       //false为未读，true为已读
     private String date;
     private String message;     //拒绝、取消、接受
+    private boolean display = true;        //是否显示
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
     @JoinColumn(name="student_id")
