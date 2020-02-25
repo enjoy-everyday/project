@@ -14,49 +14,96 @@
                                 <form class="total_form" th:action="@{/changePosition}"  method="post" id="position">
                                     <div class="form-group">
                                         <label class="select">
-                                            <select name="province_name" id="province">
+                                            <select name="province" id="province">
                                                 <option value="0">--请选择--</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label class="select">
-                                            <select name="city_name" id="city">
+                                            <select name="city" id="city">
                                                 <option value="0">--请选择--</option>
                                             </select>
                                         </label>
                                     </div>
                                     <div class="form-group">
                                         <label class="select">
-                                            <select name="area_name" id="area">
+                                            <select name="area" id="area">
                                                 <option value="0">--请选择--</option>
                                             </select>
                                         </label>
                                     </div>
+                                    <input type="hidden" name="province_name" id="province_name">
+                                    <input type="hidden" name="city_name" id="city_name">
+                                    <input type="hidden" name="area_name" id="area_name">
                                     <button id="alter"  class="btn_common blue border_radius">更改</button>
                                 </form>
                             </div>
-                            <div id="tab2" class="tab_content">
-                                <h4 class="bottom25">搜索</h4>
-                                <form class="total_form">
+                            <th:block th:switch="${session.role == '学生'}">
+                            <div th:case="true"  id="tab2" class="tab_content">
+                                <h4 class="bottom25">年级</h4>
+                                <form class="total_form" th:action="@{/searchGradesAndSubjects}" th:name="searchGradesAndSubjects" th:id="searchGradesAndSubjects" method="post">
                                     <div class="form-group">
                                         <label class="select">
-                                            <select name="" id="">
-                                                <option>---请选择---</option>
+                                            <select name="grade" id="grade">
+                                                <option value="null">所有年级</option>
+                                                <option value="小学一年级">小学一年级</option>
+                                                <option value="小学二年级">小学二年级</option>
+                                                <option value="小学三年级">小学三年级</option>
+                                                <option value="小学四年级">小学四年级</option>
+                                                <option value="小学五年级">小学五年级</option>
+                                                <option value="小学六年级">小学六年级</option>
+                                                <option value="初一">初一</option>
+                                                <option value="初二">初二</option>
+                                                <option value="初三">初三</option>
+                                                <option value="高一">高一</option>
+                                                <option value="高二">高二</option>
+                                                <option value="高三">高三</option>
                                             </select>
                                         </label>
                                     </div>
                                     <h4 class="bottom25">科目</h4>
                                     <div class="form-group">
                                         <label class="select">
-                                            <select name="" id="">
-                                                <option>---请选择---</option>
+                                            <select name="subject" id="subject">
+                                                <option value="null">所有科目</option>
+                                                <option value="语文">语文</option>
+                                                <option value="数学">数学</option>
+                                                <option value="英语">英语</option>
+                                                <option value="生物">生物</option>
+                                                <option value="物理">物理</option>
+                                                <option value="化学">化学</option>
+                                                <option value="历史">历史</option>
+                                                <option value="地理">地理</option>
+                                                <option value="政治">政治</option>
                                             </select>
                                         </label>
                                     </div>
-                                    <a href=""  class="btn_common blue border_radius">搜索</a>
+                                    <button id="screen"  class="btn_common blue border_radius">搜索</button>
                                 </form>
                             </div>
+                                <div th:case="false"  id="tab2" class="tab_content">
+                                    <h4 class="bottom25">学历</h4>
+                                    <form class="total_form" th:action="@{/}" th:name="" th:id="" method="post">
+                                        <div class="form-group">
+                                            <label class="select">
+                                                <select name="" id="">
+                                                    <option value="null">所有学历</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <h4 class="bottom25">综合评分</h4>
+                                        <div class="form-group">
+                                            <label class="select">
+                                                <select name="" id="">
+                                                    <option value="null">所有评分</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <button id="screen"  class="btn_common blue border_radius">搜索</button>
+                                    </form>
+                                </div>
+                            </th:block>
                         </div>
                     </div>
                 </div>
@@ -70,20 +117,38 @@
                 <section id="events" class="padding-bottom">
                     <div class="container">
                         <div class="row">
-                            <div th:each="detail, detailStat : ${session.details}" class="col-sm-4 col-md-3">
-                                <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
-                                    <h4 class="top30"><a href="">标题</a></h4>
-                                    <p class="bottom20 margin10">介绍</p>
-                                    <div class="clearfix">
-                                        <ul class="comment pull-left">
-                                            <li><a href="" class="facebook"><i class="icon-map-pin"></i>距离</a></li>
-                                        </ul>
-                                        <ul class="comment pull-right">
-                                            <li><a href="" class="facebook"><i class="icon-icons20"></i>发布时间</a></li>
-                                        </ul>
+                            <th:block th:switch="${session.role == '学生'}">
+                                <div th:case="true" th:each="detail, detailStat : ${session.details}" class="col-sm-4 col-md-3">
+                                    <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
+                                        <h4 class="top30"><a href="">标题</a></h4>
+                                        <p class="bottom20 margin10">介绍</p>
+                                        <div class="clearfix">
+                                            <ul class="comment pull-left">
+                                                <li><a href="" class="facebook"><i class="icon-map-pin"></i>距离</a></li>
+                                            </ul>
+                                            <ul class="comment pull-right">
+                                                <li><a href="" class="facebook"><i class="icon-icons20"></i>发布时间</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div th:case="false" th:each="" class="col-sm-4 col-md-3">
+                                    <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
+                                        <h4 class="top30"><a href="">XXX</a></h4>
+                                        <p class="bottom20 margin10">XXX</p>
+                                        <div class="clearfix">
+                                            <ul class="comment pull-left">
+                                                <li><a href="" class="facebook"><i class="icon-map-pin"></i>XXX</a></li>
+                                            </ul>
+                                            <ul class="comment pull-right">
+                                                <li><a href="" class="facebook"><i class="icon-icons20"></i>XXX</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </th:block>
                         </div>
                     </div>
                 </section>

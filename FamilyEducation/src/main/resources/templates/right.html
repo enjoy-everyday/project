@@ -16,31 +16,30 @@
         </div>
 
         <div class="widget heading_space" style="padding-top: 20%;">
+            <h3 class="bottom20">评分排行榜</h3>
             <th:block th:switch="${session.role == '学生'}">
-                <h3 th:case="true" class="bottom20">最受欢迎家长</h3>
-                <h3 th:case="false" class="bottom20">最受欢迎学生</h3>
-            </th:block>
-            <div class="media">
-                <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
-                <div class="media-body">
-                    <h5 class="bottom5">昵称</h5>
-                    <form class="star_rating">
-                        <div class="stars">
-                            <input type="radio" name="star" class="star-1" id="star-01" />
-                            <label class="star-1" for="star-01">1</label>
-                            <input type="radio" name="star" class="star-2" id="star-02" />
-                            <label class="star-2" for="star-02">2</label>
-                            <input type="radio" name="star" class="star-3" id="star-03" />
-                            <label class="star-3" for="star-03">3</label>
-                            <input type="radio" name="star" class="star-4" id="star-04"  />
-                            <label class="star-4" for="star-04">4</label>
-                            <input type="radio" name="star" class="star-5"  id="star-05" checked  />
-                            <label class="star-5" for="star-05">5</label>
-                            <span></span>
-                        </div>
-                    </form>
+                <div th:case="true" class="media">
+                    <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
+                    <div class="media-body">
+                        <h5 class="bottom5">昵称</h5>
+                        <form class="star_rating">
+                            <div class="stars">
+                                <input type="radio" name="star" class="star-1" id="star-01" />
+                                <label class="star-1" for="star-01">1</label>
+                                <input type="radio" name="star" class="star-2" id="star-02" />
+                                <label class="star-2" for="star-02">2</label>
+                                <input type="radio" name="star" class="star-3" id="star-03" />
+                                <label class="star-3" for="star-03">3</label>
+                                <input type="radio" name="star" class="star-4" id="star-04"  />
+                                <label class="star-4" for="star-04">4</label>
+                                <input type="radio" name="star" class="star-5"  id="star-05" checked  />
+                                <label class="star-5" for="star-05">5</label>
+                                <span></span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </th:block>
         </div>
     </aside>
 </section>

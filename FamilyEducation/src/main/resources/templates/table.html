@@ -1,141 +1,150 @@
 <div class="table-responsive">
     <table class="table table-bordered border-radius">
-        <thead>
         <th:block th:switch="${session.role == '学生'}">
-            <tr th:case="true">
-                <th>内容</th>
-                <th>所教年级</th>
-                <th>接受时间</th>
-                <th>价格</th>
-                <th></th>
-            </tr>
-            <tr th:case="false">
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </th:block>
-        </thead>
-        <tbody>
-        <th:block th:if="${session.number == 1}">
-            <th:block th:each="task : ${session.student.getTasks()}">
-                <tr>
-                    <td>
-                        <div class="product-name">
-                            <h4 th:text="${task.getDetail().id}">标题</h4>
-                            <p th:text="${task.getDetail().id}">介绍</p>
-                        </div>
-                    </td>
-                    <td>
-                        <p th:text="${task.getDetail().id}" class="text-center">
-                            小学一年级
-                        </p>
-                    </td>
-                    <td>
-                        <p class="quote text-center" th:text="${task.getDetail().date}">
-                            2020
-                        </p>
-                    </td>
-                    <td>
-                        <p class="text-center" th:text="${task.getDetail().id}">
-                            100.00/时
-                        </p>
-                    </td>
-                    <td class="text-center">
-                        <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
-                            <input type="hidden" name="task_id" th:value="${task.id}">
-                        </form>
-                        <button class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
-                            <i class="icon-cross2" style="color: red;"></i>
-                        </button>
-                    </td>
-                </tr>
-            </th:block>
-        </th:block>
-
-        <th:block th:if="${session.number == 2}">
-            <th:block th:switch="${session.tasks.size() == 0}">
-                <th:block  th:case="false">
-                    <tr th:each="task : ${session.student.getTasks()}">
-                        <td>
-                            <div class="product-name">
-                                <h4 th:text="${task.getDetail().id}">标题</h4>
-                                <p th:text="${task.getDetail().id}">介绍</p>
-                            </div>
-                        </td>
-                        <td>
-                            <p th:text="${task.getDetail().id}" class="text-center">
-                                小学一年级
-                            </p>
-                        </td>
-                        <td>
-                            <p class="quote text-center" th:text="${task.getDetail().date}">
-                                2020
-                            </p>
-                        </td>
-                        <td>
-                            <p class="text-center" th:text="${task.getDetail().id}">
-                                100.00/时
-                            </p>
-                        </td>
-                        <td class="text-center">
-                            <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
-                                <input type="hidden" name="task_id" th:value="${task.id}">
-                            </form>
-                            <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
-                                <i class="icon-cross2" style="color: red;"></i>
-                            </button>
-                        </td>
+            <th:block th:case="true">
+                <thead>
+                    <tr>
+                        <th>内容</th>
+                        <th>所教年级</th>
+                        <th>接受时间</th>
+                        <th>价格</th>
+                        <th></th>
                     </tr>
-                </th:block>
-                <tr th:case="true">
-                    <td colspan="5" class="text-center">暂无</td>
-                </tr>
-            </th:block>
-        </th:block>
+                </thead>
+                <tbody>
+                    <th:block th:if="${session.number == 1}">
+                        <th:block th:each="task : ${session.student.getTasks()}">
+                            <tr>
+                                <td>
+                                    <div class="product-name">
+                                        <h4 th:text="${task.getDetail().id}">标题</h4>
+                                        <p th:text="${task.getDetail().id}">介绍</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p th:text="${task.getDetail().id}" class="text-center">
+                                        小学一年级
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="quote text-center" th:text="${task.getDetail().date}">
+                                        2020
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="text-center" th:text="${task.getDetail().id}">
+                                        100.00/时
+                                    </p>
+                                </td>
+                                <td class="text-center">
+                                    <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
+                                        <input type="hidden" name="task_id" th:value="${task.id}">
+                                    </form>
+                                    <button class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                        <i class="icon-cross2" style="color: red;"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </th:block>
 
-        <th:block th:if="${session.number == 3}">
-            <th:block th:switch="${session.tasks.size() == 0}">
-                <th:block  th:case="false">
-                    <tr th:each="task : ${session.student.getTasks()}">
-                        <td>
-                            <div class="product-name">
-                                <h4 th:text="${task.getDetail().id}">标题</h4>
-                                <p th:text="${task.getDetail().id}">介绍</p>
-                            </div>
-                        </td>
-                        <td>
-                            <p th:text="${task.getDetail().id}" class="text-center">
-                                小学一年级
-                            </p>
-                        </td>
-                        <td>
-                            <p class="quote text-center" th:text="${task.getDetail().date}">
-                                2020
-                            </p>
-                        </td>
-                        <td>
-                            <p class="text-center" th:text="${task.getDetail().id}">
-                                100.00/时
-                            </p>
-                        </td>
-                        <td class="text-center">
-                            <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
-                                <input type="hidden" name="task_id" th:value="${task.id}">
-                            </form>
-                            <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
-                                <i class="icon-cross2" style="color: red;"></i>
-                            </button>
-                        </td>
+                    <th:block th:if="${session.number == 2}">
+                        <th:block th:switch="${session.tasks.size() == 0}">
+                            <th:block  th:case="false">
+                                <tr th:each="task : ${session.student.getTasks()}">
+                                    <td>
+                                        <div class="product-name">
+                                            <h4 th:text="${task.getDetail().id}">标题</h4>
+                                            <p th:text="${task.getDetail().id}">介绍</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p th:text="${task.getDetail().id}" class="text-center">
+                                            小学一年级
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="quote text-center" th:text="${task.getDetail().date}">
+                                            2020
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-center" th:text="${task.getDetail().id}">
+                                            100.00/时
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
+                                            <input type="hidden" name="task_id" th:value="${task.id}">
+                                        </form>
+                                        <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                            <i class="icon-cross2" style="color: red;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <tr th:case="true">
+                                <td colspan="5" class="text-center">暂无</td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+
+                    <th:block th:if="${session.number == 3}">
+                        <th:block th:switch="${session.tasks.size() == 0}">
+                            <th:block  th:case="false">
+                                <tr th:each="task : ${session.student.getTasks()}">
+                                    <td>
+                                        <div class="product-name">
+                                            <h4 th:text="${task.getDetail().id}">标题</h4>
+                                            <p th:text="${task.getDetail().id}">介绍</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p th:text="${task.getDetail().id}" class="text-center">
+                                            小学一年级
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="quote text-center" th:text="${task.getDetail().date}">
+                                            2020
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-center" th:text="${task.getDetail().id}">
+                                            100.00/时
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
+                                            <input type="hidden" name="task_id" th:value="${task.id}">
+                                        </form>
+                                        <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                            <i class="icon-cross2" style="color: red;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <tr th:case="true">
+                                <td colspan="5" class="text-center">暂无</td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                </tbody>
+            </th:block>
+            <th:block th:case="false">
+                <thead>
+                    <tr>
+                        <th>昵称</th>
+                        <th>介绍</th>
+                        <th>学历</th>
+                        <th>综合评分</th>
+                        <th></th>
                     </tr>
-                </th:block>
-                <tr th:case="true">
-                    <td colspan="5" class="text-center">暂无</td>
-                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
             </th:block>
         </th:block>
-        </tbody>
     </table>
 </div>
