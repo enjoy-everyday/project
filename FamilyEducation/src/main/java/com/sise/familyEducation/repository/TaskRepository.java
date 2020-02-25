@@ -22,4 +22,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
     @Query(nativeQuery = true, value = "DELETE FROM task WHERE id = ?1")
     void deleteTaskById(int id);
 
+    List<Task> findTasksByWhetherToPassAndResult(String whetherToPass, String result);
+
 }
