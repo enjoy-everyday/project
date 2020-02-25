@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //静态资源不做安全校验
-        web.ignoring().antMatchers("/webjars/**", "/js/**");///resources/static/目录下的静态资源，不拦截
+        web.ignoring().antMatchers("/webjars/**", "/js/**", "/css/**", "/images/**", "/fonts/**");///resources/static/目录下的静态资源，不拦截
     }
 
     @Bean
@@ -76,7 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().deleteCookies("JSESSIONID").logoutSuccessHandler(customLogOutSuccessHandler).permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll();
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true).permitAll();
     }
 
     @Bean
