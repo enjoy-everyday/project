@@ -39,6 +39,22 @@ public class DetailService {
         return detailRepository.findNoApplicationDetailsByStudentId(id);
     }
 
+    public List<Detail> findNoApplicationDetailsByGrade(int id, String grade){
+        return detailRepository.findNoApplicationDetailsByGrade(id, grade);
+    }
+
+    public List<Detail> findNoApplicationDetailsBySubject(int id, String subject){
+        return detailRepository.findNoApplicationDetailsBySubject(id, subject);
+    }
+
+    public List<Detail> findNoApplicationDetailsByGradeAndSubject(int id, String grade, String subject){
+        return detailRepository.findNoApplicationDetailsByGradeAndSubject(id, grade, subject);
+    }
+
+    public List<Detail> findDetailsByAddressLike(String address){
+        return detailRepository.findDetailsByAddressLike(address);
+    }
+
     @Transactional
     public Detail saveDetail(Detail detail){
         return detailRepository.save(detail);
