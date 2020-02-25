@@ -2,12 +2,24 @@
     <div class="container">
         <div class="row padding-top">
             <div class="col-md-6"></div>
-            <form class="total_form">
+            <form class="total_form" th:action="@{/searchGradesAndSubjects}" th:name="searchGradesAndSubjects" th:id="searchGradesAndSubjects" method="post">
                 <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
                     <div class="form-group">
                         <label class="select">
-                            <select name="country" id="country">
-                                <option>年级</option>
+                            <select name="grade" id="grade">
+                                <option value="null">所有年级</option>
+                                <option value="小学一年级">小学一年级</option>
+                                <option value="小学二年级">小学二年级</option>
+                                <option value="小学三年级">小学三年级</option>
+                                <option value="小学四年级">小学四年级</option>
+                                <option value="小学五年级">小学五年级</option>
+                                <option value="小学六年级">小学六年级</option>
+                                <option value="初一">初一</option>
+                                <option value="初二">初二</option>
+                                <option value="初三">初三</option>
+                                <option value="高一">高一</option>
+                                <option value="高二">高二</option>
+                                <option value="高三">高三</option>
                             </select>
                         </label>
                     </div>
@@ -15,14 +27,23 @@
                 <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
                     <div class="form-group">
                         <label class="select">
-                            <select name="state" id="state">
-                                <option>一年级</option>
+                            <select name="subject" id="subject">
+                                <option value="null">所有科目</option>
+                                <option value="语文">语文</option>
+                                <option value="数学">数学</option>
+                                <option value="英语">英语</option>
+                                <option value="生物">生物</option>
+                                <option value="物理">物理</option>
+                                <option value="化学">化学</option>
+                                <option value="历史">历史</option>
+                                <option value="地理">地理</option>
+                                <option value="政治">政治</option>
                             </select>
                         </label>
                     </div>
                 </div>
                 <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms" style="float: right">
-                    <button class="btn_common blue border_radius">筛选</button>
+                    <button class="btn_common blue border_radius" id="screen">筛选</button>
                 </div>
             </form>
         </div>
