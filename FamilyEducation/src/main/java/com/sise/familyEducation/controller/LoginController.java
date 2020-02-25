@@ -1,8 +1,11 @@
 package com.sise.familyEducation.controller;
 
+import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Parent;
+import com.sise.familyEducation.entity.Student;
 import com.sise.familyEducation.entity.User;
 import com.sise.familyEducation.location.GetPlaceByIp;
-import com.sise.familyEducation.service.LoginService;
+import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +29,14 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private ParentService parentService;
+    @Autowired
+    private DetailService detailService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private MessageService messageService;
 
     public static String connectUser;
 
@@ -76,6 +88,7 @@ public class LoginController {
     public String login(Authentication authentication, HttpServletRequest request, HttpSession session) throws IOException, InterruptedException {
         connectUser = authentication.getName();
         Thread.sleep(500);
+        int code = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         System.out.println(GetPlaceByIp.getPlace(request));
@@ -85,14 +98,24 @@ public class LoginController {
         session.setAttribute("province", province);
         session.setAttribute("city", city);
         session.setAttribute("authentication", authentication.getName());
+        session.setAttribute("code", code);
+        session.setAttribute("role", role);
         if (role.equals("学生")){
-            return "student/student_home";
+            Student person = studentService.findStudentByUser(user);
+            List<Detail> details = detailService.findDetailsByAddressLike(province + city);
+            int messageNumber = messageService.countByStudentAndState(person, false);
+            session.setAttribute("messageNumber", messageNumber);
+            session.setAttribute("person", person);
+            session.setAttribute("details", details);
         }
         else if (role.equals("家长")){
-            System.out.println(user.getRole().getRole());
-            return "parent/parent_home";
+            Parent person = parentService.findParentByPhone(authentication.getName());
+            int messageNumber = messageService.countByParentAndState(person, false);
+            session.setAttribute("messageNumber", messageNumber);
+            session.setAttribute("person", person);
         }
-        else return "null";
+
+        return "student/student_home";
     }
 
 }

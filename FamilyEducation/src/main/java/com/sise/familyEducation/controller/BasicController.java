@@ -1,12 +1,9 @@
 package com.sise.familyEducation.controller;
 
-import com.sise.familyEducation.entity.Area;
-import com.sise.familyEducation.entity.City;
-import com.sise.familyEducation.entity.Province;
-import com.sise.familyEducation.entity.User;
-import com.sise.familyEducation.service.BasicService;
-import com.sise.familyEducation.service.LoginService;
+import com.sise.familyEducation.entity.*;
+import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +27,17 @@ public class BasicController {
     private BasicService basicService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private ParentService parentService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping(value = "/getProvince")
     @ResponseBody
     public List<Province> getAllProvinces(){
         List<Province> provinces = basicService.findAllProvince();
-        System.out.println(provinces.get(0));
         return provinces;
     }
 
@@ -53,6 +55,15 @@ public class BasicController {
         return areas;
     }
 
+    @RequestMapping(value = "/personalCenter")
+    public String personalCenter(HttpSession session){
+        int code = 1;
+        int number = 0;
+        session.setAttribute("code", code);
+        session.setAttribute("number", number);
+        return "student/student_home";
+    }
+
     @RequestMapping(value = "/changePosition")
     public String changePosition(Authentication authentication, @RequestParam(value = "province_name") String province_name, @RequestParam(value = "city_name") String city_name, @RequestParam(value = "area_name") String area_name, HttpSession session){
         User user = loginService.findUserByPhone(authentication.getName());
@@ -61,14 +72,67 @@ public class BasicController {
         session.setAttribute("city", city_name);
         session.setAttribute("area", area_name);
         if (role.equals("学生")){
-            System.out.println(user.getRole().getRole());
             return "student/student_home";
         }
         else if (role.equals("家长")){
-            System.out.println(user.getRole().getRole());
             return "parent/parent_home";
         }
         return "";
     }
+
+    /**
+     * @date: 2020/2/23
+     * @description: 查看消息
+     */
+
+    @RequestMapping(value = "/findInformation")
+    public String findInformation(Authentication authentication, HttpSession session){
+        int code = 3;
+        User user = loginService.findUserByPhone(authentication.getName());
+        String role = user.getRole().getRole();
+        if (role.equals("学生")){
+            Student student = studentService.findStudentByUser(user);
+            List<Message> messages = messageService.findAllByStudentAndDisplayOrderByDate(student, true);
+            int messageNumber = messageService.countByStudentAndState(student, false);
+            session.setAttribute("messageNumber", messageNumber);
+            session.setAttribute("messages", messages);
+        }
+        else if (role.equals("家长")){
+            Parent parent = parentService.findParentByPhone(authentication.getName());
+            List<Message> messages = messageService.findAllByParentAndDisplayOrderByDate(parent, true);
+            int messageNumber = messageService.countByParentAndState(parent, false);
+            session.setAttribute("messageNumber", messageNumber);
+            session.setAttribute("messages", messages);
+        }
+        session.setAttribute("code", code);
+        return "student/student_home";
+    }
+
+    /**
+     * @date: 2020/2/24
+     * @description: 删除消息
+     */
+
+    @RequestMapping(value = "/deleteInformation")
+    public String deleteInformation(@RequestParam(value = "message_id") int id){
+        Message message = messageService.findMessageById(id);
+        message.setDisplay(false);
+        messageService.saveMessage(message);
+        return "redirect:/findInformation";
+    }
+
+    /**
+     * @date: 2020/2/24
+     * @description: 消息已读
+     */
+
+    @RequestMapping(value = "/readInformation")
+    public String readInformation(@RequestParam(value = "message_id") int id){
+        Message message = messageService.findMessageById(id);
+        message.setState(true);
+        messageService.saveMessage(message);
+        return "redirect:/findInformation";
+    }
+
 
 }
