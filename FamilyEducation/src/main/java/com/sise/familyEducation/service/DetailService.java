@@ -23,8 +23,8 @@ public class DetailService {
     @Autowired
     private DetailRepository detailRepository;
 
-    public List<Detail> findAllDetails(){
-        return detailRepository.findAll();
+    public List<Detail> findDetailsByParentOrderByDate(Parent parent){
+        return detailRepository.findDetailsByParentOrderByDate(parent);
     }
 
     public Detail findDetailsById(int id){

@@ -1,5 +1,7 @@
 package com.sise.familyEducation.service;
 
+import com.sise.familyEducation.entity.Detail;
+import com.sise.familyEducation.entity.Student;
 import com.sise.familyEducation.entity.Task;
 import com.sise.familyEducation.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,12 @@ public class TaskService {
         return null;
     }
 
-    public List<Task> findTasksByWhetherToPassAndResult(String whetherToPass, String result){
-        return taskRepository.findTasksByWhetherToPassAndResult(whetherToPass, result);
+    public List<Task> findTasksByStudentAndResult(Student student, String result){
+        return taskRepository.findTasksByStudentAndResult(student, result);
+    }
+
+    public List<Task> findTasksByDetailAndResult(Detail detail, String result){
+        return taskRepository.findTasksByDetailAndResult(detail, result);
     }
 
     @Transactional
