@@ -30,4 +30,6 @@ public interface DetailRepository extends JpaRepository<Detail, Integer> {
 
     List<Detail> findDetailsByAddressLike(String address);
 
+    List<Detail> findDetailsByParentOrderByDate(Parent parent);
+
 }
