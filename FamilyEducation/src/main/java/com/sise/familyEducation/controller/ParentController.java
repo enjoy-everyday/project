@@ -3,7 +3,9 @@ package com.sise.familyEducation.controller;
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.repository.DetailRepository;
 import com.sise.familyEducation.service.*;
+import com.sise.familyEducation.websocket.WebsocketConnectListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @program: FamilyEducation
@@ -27,9 +30,15 @@ public class ParentController {
     @Autowired
     private LoginService loginService;
     @Autowired
+    private StudentService studentService;
+    @Autowired
     private ParentService parentService;
     @Autowired
-    private DetailRepository detailRepository;
+    private DetailService detailService;
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
     @Autowired
     private HistoricalTaskService historicalTaskService;
     @Autowired
@@ -62,7 +71,7 @@ public class ParentController {
         Parent parent = parentService.findParentByPhone(authentication.getName());
         Detail detail = new Detail();
         detail.setParent(parent);
-        detailRepository.save(detail);
+        detailService.saveDetail(detail);
         return "parent/parent_home";
     }
 
@@ -88,7 +97,16 @@ public class ParentController {
     @RequestMapping("/enterTheInterview")
     public String enterYheInterview(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
-        task.setWhetherToPass("是");
+        task.setResult("接受");
+        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
+        }
+        Message message = new Message();
+        message.setDate(new Date().toString());
+        message.setMessage("接受");
+        message.setStudent(task.getStudent());
+        message.setParent(task.getDetail().getParent());
+        messageService.saveMessage(message);
         taskService.saveTask(task);
         return "redirect:/viewCandidates";
     }
@@ -101,24 +119,76 @@ public class ParentController {
     @RequestMapping("/refuseEntry")
     public String refuseEntry(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
-        if (task.getHistoricalDetail() == null){
-            HistoricalDetail historicalDetail = new HistoricalDetail();
-            historicalDetail.setDate(new Date().toString());
-            historicalDetail.setContext(task.getDetail().getContext());
-            historicalDetail.setParent(task.getDetail().getParent());
-            historicalDetailService.saveHistoricalDetail(historicalDetail);
-            for (Task task1 : task.getDetail().getTasks()){
-                task1.setHistoricalDetail(historicalDetail);
-            }
+        task.setResult("拒绝");
+        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
         }
-        HistoricalTask historicalTask = new HistoricalTask();
-        historicalTask.setDate(new Date().toString());
-        historicalTask.setResult("拒绝");
-        historicalTask.setHistoricalDetail(task.getHistoricalDetail());
-        historicalTask.setStudent(task.getStudent());
-        historicalTaskService.saveHistoricalTask(historicalTask);
-        taskService.deleteTaskById(id);
+        Message message = new Message();
+        message.setDate(new Date().toString());
+        message.setMessage("拒绝");
+        message.setStudent(task.getStudent());
+        message.setParent(task.getDetail().getParent());
+        messageService.saveMessage(message);
+        taskService.saveTask(task);
         return "redirect:/viewCandidates";
     }
+
+    /**
+     * @date: 2020/2/25
+     * @description: 查看所有学生
+     */
+
+    @RequestMapping(value = "/findAllStudents")
+    public String findAllStudents(HttpSession session){
+        int code = 5;
+        List<Student> students = studentService.findAllStudents();
+        session.setAttribute("code", code);
+        session.setAttribute("students", students);
+        return "student/student_home";
+    }
+
+    /**
+     * @date: 2020/2/25
+     * @description: 查看所有发布
+     */
+
+    @RequestMapping(value = "/findAllPublish")
+    public String findAllPublish(Authentication authentication, HttpSession session){
+        int number = 4;
+        Parent parent = parentService.findParentByPhone(authentication.getName());
+        session.setAttribute("number", number);
+        session.setAttribute("parent", parent);
+        return "student/student_home";
+    }
+
+    /**
+     * @date: 2020/2/25
+     * @description: 查看已申请应聘
+     */
+
+    @RequestMapping(value = "/findApplied")
+    public String findApplied(Authentication authentication, HttpSession session){
+        int number = 5;
+        Parent parent = parentService.findParentByPhone(authentication.getName());
+        session.setAttribute("number", number);
+        session.setAttribute("parent", parent);
+        return "student/student_home";
+    }
+
+    /**
+     * @date: 2020/2/25
+     * @description: 查看已接受应聘
+     */
+
+    @RequestMapping(value = "/findAcceptedApplication")
+    public String findAcceptedApplication(Authentication authentication, HttpSession session){
+        int number = 6;
+        Parent parent = parentService.findParentByPhone(authentication.getName());
+        session.setAttribute("number", number);
+        session.setAttribute("parent", parent);
+        return "student/student_home";
+    }
+
+
 
 }

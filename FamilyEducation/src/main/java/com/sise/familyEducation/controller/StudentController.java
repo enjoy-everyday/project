@@ -80,9 +80,11 @@ public class StudentController {
      */
 
     @RequestMapping(value = "/accepted")
-    public String accepted(HttpSession session){
+    public String accepted(Authentication authentication, HttpSession session){
         int number = 2;
-        List<Task> tasks = taskService.findTasksByWhetherToPassAndResult("是", "");
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
+        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "接受");
         session.setAttribute("number", number);
         session.setAttribute("tasks", tasks);
         return "student/student_home";
@@ -94,9 +96,11 @@ public class StudentController {
       */
 
     @RequestMapping(value = "/untreated")
-    public String untreated(HttpSession session){
+    public String untreated(Authentication authentication, HttpSession session){
         int number = 3;
-        List<Task> tasks = taskService.findTasksByWhetherToPassAndResult("否", "");
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
+        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "未处理");
         session.setAttribute("number", number);
         session.setAttribute("tasks", tasks);
         return "student/student_home";
