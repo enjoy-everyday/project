@@ -25,8 +25,8 @@ public class Task {
     @Column(name = "id")
     private int id;
     private String date;
-    private String whetherToPass = "否";       //是否通过
-    private String result;      //被学生取消，被家长拒绝
+//    private String whetherToPass = "否";       //是否通过
+    private String result = "未处理";      //被学生取消，被家长拒绝，被家长接受，未处理
     private boolean display = true;        //是否显示
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
