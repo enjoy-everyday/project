@@ -1,0 +1,53 @@
+<section id="course_all" class="padding-bottom">
+    <div class="container">
+        <div class="row padding-top">
+            <div class="col-md-6"></div>
+            <form class="total_form" method="post">
+                <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="" id="">
+                                <option value="null">所有学历</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="" id="">
+                                <option value="null">所有评分</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms" style="float: right">
+                    <button class="btn_common blue border_radius" id="">筛选</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="row top20">
+            <div th:each="student : ${session.students}" class="col-sm-4 col-md-3">
+                <div class="widget heading_space" style="padding-right: 20%">
+                    <h3 class="bottom20">介绍</h3>
+                    <p class="hours">学历<span>XXX</span></p>
+                    <p class="hours">擅长科目<span>XXX</span></p>
+                    <p class="hours">综合评分<span>XXX</span></p>
+                    <div style="float: left">
+                        <form th:action="@{/}" th:name="${student.id}" th:id="${student.id}" method="post">
+                            <input type="hidden" name="student_id" th:value="${student.id}">
+                        </form>
+                        <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">个人详情</button>
+                    </div>
+                    <div style="float: right">
+                        <form th:action="@{/}" th:name="${student.id}" th:id="${student.id}" method="post">
+                            <input type="hidden" name="student_id" th:value="${student.id}">
+                        </form>
+                        <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">请家教</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

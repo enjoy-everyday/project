@@ -1,0 +1,76 @@
+<input type="hidden" th:value="${_csrf.token}" id="token">
+<section id="shop">
+    <div class="container border-radius totals" style="width: 100%;">
+        <div class="row">
+            <div class="col-md-6 wow fadeInLeft" data-wow-delay="300ms">
+                <h3 class=" text-center bottom25">对家教要求</h3>
+                <form class="total_form" name="releaseOne" id="releaseOne">
+                    <h4 class=" bottom15">学历</h4>
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="qualification" id="qualification">
+                                <option>所有学历</option>
+                            </select>
+                        </label>
+                    </div>
+                    <h4 class=" bottom15">经验</h4>
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="experience" id="experience">
+                                <option>不足一年</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <h4 class=" bottom15">其它要求</h4>
+                    <div class="form-group">
+                        <input name="other" id="other" type="text" class="form-control" placeholder="其它要求">
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-md-6 wow fadeInLeft" data-wow-delay="300ms">
+
+                <h3 class=" text-center bottom25">招家教信息</h3>
+                <form class="total_form" name="releaseTwo" id="releaseTwo">
+                    <h4 class=" bottom15">所教年级</h4>
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="grade" id="grade">
+                                <option>所有年级</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <h4 class=" bottom15">所教科目</h4>
+                    <div class="form-group">
+                        <label class="select">
+                            <select name="subject" id="subject">
+                                <option>所有科目</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <h4 class=" bottom15">任教时间</h4>
+                    <div class="form-group">
+                        <input name="teachingTime" id="teachingTime" type="text" class="form-control" placeholder="时间">
+                    </div>
+
+                    <h4 class=" bottom15">面试地点</h4>
+                    <div class="form-group">
+                        <input name="place" id="place" type="text" class="form-control" placeholder="面试地点">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12 wow fadeInLeft text-center" data-wow-delay="300ms">
+                <button id="release" class="btn_common blue border_radius" style="width: 20%;">发布</button>
+            </div>
+
+        </div>
+    </div>
+</section>
