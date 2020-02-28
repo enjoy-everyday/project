@@ -61,7 +61,7 @@
                     <li>
                         <th:block th:switch="${session.role == '学生'}">
                             <a th:case="true" href="/findAllApplicants">应聘信息</a>
-                            <a th:case="false" href="/">学生信息</a>
+                            <a th:case="false" href="/findAllStudents">学生信息</a>
                         </th:block>
                     </li>
                     <li>

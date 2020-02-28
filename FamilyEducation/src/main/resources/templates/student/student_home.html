@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}">-->
     <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{css/font-awesome.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{css/edua-icons.css}">
@@ -29,7 +30,13 @@
                 <div class="col-md-3 padding" th:include="/catalog"></div>
                 <th:block th:switch="${session.number == 0}">
                     <div th:case="true" class="col-md-9" th:include="/personal_data"></div>
-                    <div th:case="false" class="col-md-9 padding" th:include="/table"></div>
+                        <th:block th:case="false">
+                            <th:block th:switch="${session.number == 7}">
+                                <div th:case="true" class="col-md-9 padding" th:include="/parent/release_detail"></div>
+                                <div th:case="false" class="col-md-9 padding " th:include="/table"></div>
+                            </th:block>
+                        </th:block>
+                    </th:block>
                 </th:block>
             </th:block>
             <th:block th:if="${session.code == 2}">
@@ -37,6 +44,12 @@
             </th:block>
             <th:block th:if="${session.code == 3}">
                 <div th:include="/information"></div>
+            </th:block>
+            <th:block th:if="${session.code == 4}">
+
+            </th:block>
+            <th:block th:if="${session.code == 5}">
+                <div th:include="/parent/all_students"></div>
             </th:block>
         </div>
     </div>
