@@ -39,6 +39,29 @@
                         </form>
                     </div>
                 </div>
+
+                <div th:case="false" class="media">
+                <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
+                <div class="media-body">
+                    <h5 class="bottom5">昵称</h5>
+                    <form class="star_rating">
+                        <div class="stars">
+                            <input type="radio" name="star" class="star-1" id="star-01" />
+                            <label class="star-1" for="star-01">1</label>
+                            <input type="radio" name="star" class="star-2" id="star-02" />
+                            <label class="star-2" for="star-02">2</label>
+                            <input type="radio" name="star" class="star-3" id="star-03" />
+                            <label class="star-3" for="star-03">3</label>
+                            <input type="radio" name="star" class="star-4" id="star-04"  />
+                            <label class="star-4" for="star-04">4</label>
+                            <input type="radio" name="star" class="star-5"  id="star-05" checked  />
+                            <label class="star-5" for="star-05">5</label>
+                            <span></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             </th:block>
         </div>
     </aside>

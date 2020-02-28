@@ -1,6 +1,7 @@
 <div class="table-responsive">
     <table class="table table-bordered border-radius">
         <th:block th:switch="${session.role == '学生'}">
+
             <th:block th:case="true">
                 <thead>
                     <tr>
@@ -131,19 +132,196 @@
                     </th:block>
                 </tbody>
             </th:block>
+
             <th:block th:case="false">
+
+                <th:block th:if="${session.number == 4}">
                 <thead>
                     <tr>
-                        <th>昵称</th>
-                        <th>介绍</th>
-                        <th>学历</th>
-                        <th>综合评分</th>
+                        <th>要求</th>
+                        <th>发布时间</th>
+                        <th>时间</th>
+                        <th>价格</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-
+                <th:block th:switch="${session.parent.getDetails().size() == 0}">
+                    <th:block  th:case="false">
+                        <tr th:each="detail : ${session.parent.getDetails()}">
+                            <td>
+                                <div class="product-name">
+                                    <h4 th:text="${detail.id}">标题</h4>
+                                    <p th:text="${detail.id}">介绍</p>
+                                </div>
+                            </td>
+                            <td>
+                                <p th:text="${detail.date}" class="text-center">
+                                    2020
+                                </p>
+                            </td>
+                            <td>
+                                <p class="quote text-center" th:text="${detail.id}">
+                                    100.00/时
+                                </p>
+                            </td>
+                            <td>
+                                <p class="text-center" th:text="${detail.id}">
+                                    地点
+                                </p>
+                            </td>
+                            <td class="text-center">
+                                <form th:action="@{/deleteThePublish}" th:name="${detail.id}" th:id="${detail.id}" method="post">
+                                    <input type="hidden" name="detail_id" th:value="${detail.id}">
+                                </form>
+                                <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                    <i class="icon-cross2" style="color: red;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </th:block>
+                    <tr th:case="true">
+                        <td colspan="5" class="text-center">暂无</td>
+                    </tr>
+                </th:block>
                 </tbody>
+                </th:block>
+
+                <th:block th:if="${session.number == 5}" th:each="detail : ${session.parent.getDetails()}">
+
+                    <div class="text-center" style="padding-top: 10%; width: 100%;" th:text="${detail.id}"></div>
+
+                    <th:block th:switch="${detail.getTasks().size() != 0}">
+
+                        <th:block th:case="true">
+
+                            <th:block th:with="number = ${#httpServletRequest.setAttribute('number1', detail.getTasks().size())}">
+
+                                <th:block th:each="task : ${detail.getTasks()}" th:switch="${task.result == '未处理'}">
+
+                                    <th:block th:case="true">
+
+                                        <td>
+                                            <p th:text="${task.getStudent().username}">
+                                                昵称
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p th:text="${task.getStudent().id}" class="text-center">
+                                                2020
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="quote text-center" th:text="${task.getStudent().id}">
+                                                100.00/时
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="text-center" th:text="${task.getStudent().id}">
+                                                地点
+                                            </p>
+                                        </td>
+                                        <td class="text-center">
+                                            <form th:action="@{/enterTheInterview}" th:name="${task.id}" th:id="'接受' + ${task.id}" method="post">
+                                                <input type="hidden" name="task_id" th:value="${task.id}">
+                                            </form>
+                                            <form th:action="@{/refuseEntry}" th:name="${task.id}" th:id="'拒绝' + ${task.id}"  method="post">
+                                                <input type="hidden" name="task_id" th:value="${task.id}">
+                                            </form>
+                                            <button id="enterTheInterview" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                                <strong style="color: rgba(0, 189, 0, 0.534);">✔</strong>
+                                            </button>
+                                            <button id="refuseEntry" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                                <i class="icon-cross2" style="color: red;"></i>
+                                            </button>
+                                        </td>
+
+                                    </th:block>
+
+                                    <th:block th:case="false">
+
+                                        <th:block th:with="number = ${#httpServletRequest.setAttribute('number1', #httpServletRequest.getAttribute('number1') - 1)}" th:switch="${number1 == 0}">
+
+                                            <div th:case="true">暂无学生应聘</div>
+
+                                        </th:block>
+
+                                    </th:block>
+
+                                </th:block>
+
+                            </th:block>
+
+                        </th:block>
+
+                        <div th:case="false">暂无学生应聘</div>
+
+                    </th:block>
+
+                </th:block>
+
+                <th:block th:if="${session.number == 6}" th:each="detail : ${session.parent.getDetails()}">
+
+                    <div class="text-center" style="padding-top: 10%; width: 100%;" th:text="${detail.id}"></div>
+
+                    <th:block th:switch="${detail.getTasks().size() != 0}">
+
+                        <th:block th:case="true">
+
+                            <th:block th:with="number = ${#httpServletRequest.setAttribute('number1', detail.getTasks().size())}">
+
+                                <th:block th:each="task : ${detail.getTasks()}" th:switch="${task.result == '接受'}">
+
+                                    <th:block th:case="true">
+
+                                        <td>
+                                            <p th:text="${task.getStudent().username}">
+                                                昵称
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p th:text="${task.getStudent().id}" class="text-center">
+                                                2020
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="quote text-center" th:text="${task.getStudent().id}">
+                                                100.00/时
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <p class="text-center" th:text="${task.getStudent().id}">
+                                                地点
+                                            </p>
+                                        </td>
+                                        <td class="text-center">
+
+                                        </td>
+
+                                    </th:block>
+
+                                    <th:block th:case="false">
+
+                                        <th:block th:with="number = ${#httpServletRequest.setAttribute('number1', #httpServletRequest.getAttribute('number1') - 1)}" th:switch="${number1 == 0}">
+
+                                            <div th:case="true">暂无学生应聘</div>
+
+                                        </th:block>
+
+                                    </th:block>
+
+                                </th:block>
+
+                            </th:block>
+
+                        </th:block>
+
+                        <div th:case="false">暂无学生应聘</div>
+
+                    </th:block>
+
+                </th:block>
+
             </th:block>
         </th:block>
     </table>

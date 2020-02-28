@@ -24,7 +24,10 @@
                         <tbody>
                         <th:block th:switch="${message.message == '取消'}">
                             <tr th:case="true">
-                                <td style="padding: 0; margin: 0;" th:text="'您取消了去' + ${message.getParent.username} + ‘的应聘’">XXX</td>
+                                <th:block th:switch="${session.role == '学生'}">
+                                    <td th:case="true" style="padding: 0; margin: 0;" th:text="'您取消了去' + ${message.getParent.username} + ‘的应聘’">XXX</td>
+                                    <td th:case="false" style="padding: 0; margin: 0;" th:text="${message.getStudent.username} + '取消了的应聘'">XXX</td>
+                                </th:block>
                                 <td class="text-right" style="padding: 0; margin: 0;">
                                     <form th:action="@{/deleteInformation}" th:name="${message.id}" th:id="'删除' + ${message.id}" method="post">
                                         <input type="hidden" name="message_id" th:value="${message.id}">
@@ -44,9 +47,12 @@
                                 </td>
                             </tr>
                             <tr th:case="false">
-                                <td style="padding: 0; margin: 0;" th:text="${message.getParent.username} + ${message.message} '了您的应聘'">XXX</td>
+                                <th:block th:switch="${session.role == '学生'}">
+                                    <td th:case="true" style="padding: 0; margin: 0;" th:text="${message.getParent.username} + ${message.message} '了您的应聘'">XXX</td>
+                                    <td th:case="false" style="padding: 0; margin: 0;" th:text="'您' + ${message.message} + ${message.getStudent.username} '的应聘'">XXX</td>
+                                </th:block>
                                 <td class="text-right" style="padding: 0; margin: 0;">
-                                    <form th:action="@{/cancelTheApplication}" th:name="${message.id}" th:id="${message.id}" method="post">
+                                    <form th:action="@{/deleteInformation}" th:name="${message.id}" th:id="${message.id}" method="post">
                                         <input type="hidden" name="message_id" th:value="${message.id}">
                                     </form>
                                     <strong th:text="${message.date}">2020</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
