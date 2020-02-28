@@ -47,6 +47,43 @@ $(document).ready(function () {
         $(id).submit;
     });
 
+    //发布家教信息
+    $("#release").click(function () {
+        var token = $("#token").val();
+        alert(token);
+        alert("5555");
+        var json = "qualification:" + $("#qualification option:selected").text() + "," +
+            "experience:" + $("#qualification option:selected").text() + "," +
+            // "other:" + $("#other").text() + "," +
+            "grade:" + $("#grade option:selected").text() + "," +
+            "subject:" + $("#subject option:selected").text()
+            // "place:" + $("#place").text()
+        ;
+        // "qualification": $("#qualification option:selected").text(),
+        // "experience": $("#experience option:selected").text(),
+        // "other": $("#other").text(),
+        // "grade": $("#grade option:selected").text(),
+        // "subject": $("#subject option:selected").text(),
+        // "teachingTime": $("#teachingTime").text(),
+        // "place": $("#place").text()
+        // ";
+
+        $.ajax({
+            url: "/releaseDetails",
+            type: "post",
+            data: {json: json, _csrf: token},
+            success: function(result){
+                alert(result);
+            },
+            error: function(XMLHttpRequest, textStatus) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+            }
+        });
+
+    });
+
     //搜素年级、科目
     // $("#screen").click(function () {
     //     var grade = $("#grade option:selected").text();
