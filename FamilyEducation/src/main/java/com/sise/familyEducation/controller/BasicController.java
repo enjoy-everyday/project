@@ -134,5 +134,19 @@ public class BasicController {
         return "redirect:/findInformation";
     }
 
+    /**
+     * @date: 2020/2/28
+     * @description: 修改个人资料
+     */
+
+    @RequestMapping(value = "/modifyingData")
+    public String modifyingData(Authentication authentication){
+        User user = loginService.findUserByPhone(authentication.getName());
+        String role = user.getRole().getRole();
+        if (role.equals("学生")){
+            Student student = studentService.findStudentByUser(user);
+        }
+        return "redirect:/personalCenter";
+    }
 
 }

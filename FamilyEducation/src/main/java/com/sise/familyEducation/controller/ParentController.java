@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: FamilyEducation
@@ -189,6 +190,43 @@ public class ParentController {
         return "student/student_home";
     }
 
+    /**
+     * @date: 2020/2/26
+     * @description: 发布
+     */
+
+    @RequestMapping(value = "/releaseDetails")
+    @ResponseBody
+    public String releaseDetails(@RequestParam(value = "json") String json, Authentication authentication){
+        System.out.println("------------------" + json);
+        Map<String,String> map = new HashMap<>();
+        String string =json.replace("\"", "");
+        String[] array = string.split(",");
+        for(String str : array ){
+            String[] newArray = str.split(":");
+            System.out.println(str);
+            map.put(newArray[0], newArray[1]);
+        }
+        Parent parent = parentService.findParentByPhone(authentication.getName());
+        Detail detail = new Detail();
+        detail.setDate(new Date().toString());
+        detail.setParent(parent);
+        detail.setGrade(map.get("grade"));
+        System.out.println("**************" + map);
+        return "ss";
+    }
+
+    /**
+     * @date: 2020/2/26
+     * @description: 发布页面
+     */
+
+    @RequestMapping(value = "/releasePage")
+    public String releasePage(HttpSession session){
+        int number = 7;
+        session.setAttribute("number", number);
+        return "student/student_home";
+    }
 
 
 }
