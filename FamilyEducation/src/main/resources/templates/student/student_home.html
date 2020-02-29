@@ -29,7 +29,7 @@
             <th:block th:if="${session.code == 1}">
                 <div class="col-md-3 padding" th:include="/catalog"></div>
                 <th:block th:switch="${session.number == 0}">
-                    <div th:case="true" class="col-md-9" th:include="/personal_data"></div>
+                    <div th:case="true" class="col-md-9" th:include="/personal_information"></div>
                         <th:block th:case="false">
                             <th:block th:switch="${session.number == 7}">
                                 <div th:case="true" class="col-md-9 padding" th:include="/parent/release_detail"></div>
