@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: FamilyEducation
@@ -136,17 +138,44 @@ public class BasicController {
 
     /**
      * @date: 2020/2/28
-     * @description: 修改个人资料
+     * @description: 个人资料页面
      */
 
     @RequestMapping(value = "/modifyingData")
-    public String modifyingData(Authentication authentication){
+    public String modifyingData(Authentication authentication, HttpSession session){
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
+        int number = 8;
         if (role.equals("学生")){
-            Student student = studentService.findStudentByUser(user);
+            Student user1 = studentService.findStudentByUser(user);
+            session.setAttribute("user", user1);
         }
-        return "redirect:/personalCenter";
+        else {
+            Parent user1 = parentService.findParentByPhone(authentication.getName());
+            session.setAttribute("user", user1);
+        }
+        session.setAttribute("number", number);
+        return "student/student_home";
     }
+
+    /**
+     * @date: 2020/2/29
+     * @description: 修改个人资料
+     */
+
+    @RequestMapping(value = "/changeInformation")
+    @ResponseBody
+    public String changeInformation(@RequestParam(value = "information") String information, Authentication authentication){
+        Map<String,String> map = new HashMap<>();
+        String string =information.replace("\"", "");
+        String[] array = string.split(",");
+        for(String str : array ){
+            String[] newArray = str.split(":");
+            System.out.println(str);
+            map.put(newArray[0], newArray[1]);
+        }
+        return "";
+    }
+
 
 }

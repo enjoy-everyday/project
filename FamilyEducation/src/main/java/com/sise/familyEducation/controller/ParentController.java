@@ -228,5 +228,4 @@ public class ParentController {
         return "student/student_home";
     }
 
-
 }
