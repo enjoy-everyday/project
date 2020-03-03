@@ -174,6 +174,20 @@ public class BasicController {
             System.out.println(str);
             map.put(newArray[0], newArray[1]);
         }
+        User user = loginService.findUserByPhone(authentication.getName());
+        String role = user.getRole().getRole();
+        if (role.equals("学生")){
+            Student student = new Student();
+            student.setUsername(map.get("username"));
+            student.setQualification(map.get("qualification"));
+            studentService.saveStudent(student);
+        }
+        else {
+            Parent parent = new Parent();
+            parent.setUsername(map.get("username"));
+            parent.setName(map.get("name"));
+            parentService.saveParent(parent);
+        }
         return "";
     }
 
