@@ -7,6 +7,7 @@ import com.sise.familyEducation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -28,6 +29,11 @@ public class StudentService {
 
     public Student findStudentByUser(User user){
         return studentRepository.findByUser(user);
+    }
+
+    @Transactional
+    public void saveStudent(Student student){
+        studentRepository.save(student);
     }
 
 }
