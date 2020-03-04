@@ -33,7 +33,12 @@
                         <th:block th:case="false">
                             <th:block th:switch="${session.number == 7}">
                                 <div th:case="true" class="col-md-9 padding" th:include="/parent/release_detail"></div>
-                                <div th:case="false" class="col-md-9 padding " th:include="/table"></div>
+                                <th:block th:case="false">
+                                    <th:block th:switch="${session.number == 8}">
+                                        <div th:case="true" class="col-md-9 padding" th:include="/change_information"></div>
+                                        <div th:case="false" class="col-md-9 padding " th:include="/table"></div>
+                                    </th:block>
+                                </th:block>
                             </th:block>
                         </th:block>
                     </th:block>
