@@ -1,0 +1,82 @@
+<input type="hidden" th:value="${session.role}">
+<section id="shop" class="padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 wow fadeInLeft" data-wow-delay="300ms">
+                <div class="border-radius totals margin_tophalf">
+                    <form class="total_form">
+                    <th:block th:swicth="${session.role == '学生'}">
+
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <div class="text-center" style="float: left;">
+                                        <p style="margin-top: 10px;">昵称：</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <div class="text-center" style="float: left;">
+                                        <p style="margin-top: 10px;">姓名：</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-right">
+                                    <div class="text-center" style="float: left;">
+                                        <p style="margin-top: 10px;">XXX：</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p style="margin-top: 10px;">省市区</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="select">
+                                            <select name="province" id="province">
+                                                <option value="0">--请选择--</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="select">
+                                            <select name="city" id="city">
+                                                <option value="0">--请选择--</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="select">
+                                            <select name="area" id="area">
+                                                <option value="0">--请选择--</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button class="btn_common blue border_radius">修改</button>
+                                </div>
+                            </div>
+
+                    </th:block>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

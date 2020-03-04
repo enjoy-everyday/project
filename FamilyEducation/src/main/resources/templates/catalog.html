@@ -5,14 +5,14 @@
         <th:block th:switch="${session.role == '学生'}">
             <th:block th:case="true">
                 <a href="/personalCenter" class="hours">资料</a><br>
-                <a href="/" class="hours">修改资料</a><br>
+                <a href="/modifyingData" class="hours">修改资料</a><br>
                 <a href="/viewAll" class="hours">全部应聘</a><br>
                 <a href="/accepted" class="hours">被接受应聘</a><br>
                 <a href="/untreated" class="hours">未处理应聘</a><br>
             </th:block>
             <th:block th:case="false">
                 <a href="/personalCenter" class="hours">资料</a><br>
-                <a href="/" class="hours">修改资料</a><br>
+                <a href="/modifyingData" class="hours">修改资料</a><br>
                 <a href="/findAllPublish" class="hours">全部发布应聘</a><br>
                 <a href="/findApplied" class="hours">选择学生</a><br>
                 <a href="/findAcceptedApplication" class="hours">已接受应聘</a><br>
