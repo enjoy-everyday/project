@@ -84,6 +84,27 @@ $(document).ready(function () {
 
     });
 
+    //修改资料
+    $("#").click(function () {
+        var information;
+        var role = $("#role").val();
+        if (role == "学生"){
+            information = "username:" + + ",";
+        }
+        else {
+            information = "";
+        }
+
+        $.ajax({
+            url: "/changeInformation",
+            type: "post",
+            data: {information: information, _csrf: token},
+            success: function () {
+
+            }
+        })
+    });
+
     //搜素年级、科目
     // $("#screen").click(function () {
     //     var grade = $("#grade option:selected").text();
