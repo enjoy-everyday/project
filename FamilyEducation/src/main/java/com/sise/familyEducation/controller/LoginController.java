@@ -1,13 +1,11 @@
 package com.sise.familyEducation.controller;
 
-import com.sise.familyEducation.entity.Detail;
-import com.sise.familyEducation.entity.Parent;
-import com.sise.familyEducation.entity.Student;
-import com.sise.familyEducation.entity.User;
+import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.location.GetPlaceByIp;
 import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +25,8 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private LoginService loginService;
     @Autowired
@@ -117,5 +117,23 @@ public class LoginController {
 
         return "student/student_home";
     }
+
+    /**
+     * @date: 2020/3/5
+     * @description: 注册
+     */
+
+    @RequestMapping(value = "/register")
+    public String register(@RequestParam(value = "phone") String phone, @RequestParam(value = "password") String pw, @RequestParam(value = "role") String r){
+        String password = new BCryptPasswordEncoder().encode(pw);
+        Role role = roleService.findRoleByRole(r);
+        User user = new User();
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setRole(role);
+
+        return "/login";
+    }
+
 
 }
