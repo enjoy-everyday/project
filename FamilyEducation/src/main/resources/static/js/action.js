@@ -1,30 +1,33 @@
 
+//获取csrf变量的token值放在_csrf变量中,此变量要作为所有请求的参数
+var token = $("#token").val();
+
 $(document).ready(function () {
 
     //head
     $("#submit").click(function () {
-        $("#logout").submit;
+        $("#logout").submit();
     });
 
     //取消应聘
     $("#cancelTheApplication").click(function () {
         var node = this.parentNode;
         var id = node.children[0].getAttribute("id");
-        $(id).submit;
+        $(id).submit();
     });
 
     //删除消息
     $("#deleteInformation").click(function () {
         var node = this.parentNode;
         var id = node.children[0].getAttribute("id");
-        $(id).submit;
+        $(id).submit();
     });
 
     //已读消息
     $("#readInformation").click(function () {
         var node = this.parentNode;
         var id = node.children[3].getAttribute("id");
-        $(id).submit;
+        $(id).submit();
     });
 
     //websocket
@@ -37,14 +40,14 @@ $(document).ready(function () {
     $("#enterTheInterview").click(function () {
         var node = this.parentNode;
         var id = node.children[0].getAttribute("id");
-        $(id).submit;
+        $(id).submit();
     });
 
     //家长拒绝
     $("#refuseEntry").click(function () {
         var node = this.parentNode;
         var id = node.children[1].getAttribute("id");
-        $(id).submit;
+        $(id).submit();
     });
 
     //发布家教信息
@@ -105,6 +108,32 @@ $(document).ready(function () {
         })
     });
 
+    //注册
+    $("#register").click(function () {
+       $("#registerForm").submit();
+    });
+
+    //应聘
+    // $("#applyForTutor").on("click",function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[0].getAttribute("id");
+    //     alert($(id).val());
+    //     $.ajax({
+    //         url: "/applyForTutor",
+    //         type: "post",
+    //         data: {detail_id: $(id).val(),  _csrf: token},
+    //         success: function (result) {
+    //             if (result.eq("success")){
+    //                 alert("成功发送，等待家长处理");
+    //             }
+    //             else {
+    //                 alert("请先完善个人资料");
+    //             }
+    //             window.location.replace("/findAllApplicants");
+    //         }
+    //     });
+    // });
+
     //搜素年级、科目
     // $("#screen").click(function () {
     //     var grade = $("#grade option:selected").text();
@@ -126,9 +155,29 @@ $(document).ready(function () {
 
 });
 
+//应聘
+function applyForTutor(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    alert(value);
+    $.ajax({
+        url: "/applyForTutor",
+        type: "post",
+        data: {detail_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("成功发送，等待家长处理");
+                window.location.replace("/findAllApplicants");
+            }
+            else {
+                alert("请先完善个人资料");
+            }
+        }
+    });
+
+}
+
 //省市区
-//获取csrf变量的token值放在_csrf变量中,此变量要作为所有请求的参数
-var token = $("#token").val();
 $(document).ready(function () {
     $.ajax({
         type: "post",
