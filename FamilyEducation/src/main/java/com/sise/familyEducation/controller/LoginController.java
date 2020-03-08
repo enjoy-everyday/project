@@ -28,6 +28,8 @@ public class LoginController {
     @Autowired
     private RoleService roleService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private LoginService loginService;
     @Autowired
     private ParentService parentService;
@@ -79,6 +81,11 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping("/register")
+    public String register(){
+        return "register";
+    }
+
     /**
      * @date: 2020/2/3
      * @description: 登录跳转
@@ -114,7 +121,6 @@ public class LoginController {
             session.setAttribute("messageNumber", messageNumber);
             session.setAttribute("person", person);
         }
-
         return "student/student_home";
     }
 
@@ -123,16 +129,28 @@ public class LoginController {
      * @description: 注册
      */
 
-    @RequestMapping(value = "/register")
-    public String register(@RequestParam(value = "phone") String phone, @RequestParam(value = "password") String pw, @RequestParam(value = "role") String r){
+    @RequestMapping(value = "/newRegister")
+    public String newRegister(@RequestParam(value = "phone") String phone, @RequestParam(value = "password") String pw, @RequestParam(value = "role") String r){
         String password = new BCryptPasswordEncoder().encode(pw);
         Role role = roleService.findRoleByRole(r);
         User user = new User();
         user.setPhone(phone);
         user.setPassword(password);
         user.setRole(role);
-
-        return "/login";
+        userService.saveUser(user);
+        if (r.equals("学生")){
+            Student student = new Student();
+            student.setUser(user);
+            student.setPhone(phone);
+            studentService.saveStudent(student);
+        }
+        else {
+            Parent parent = new Parent();
+            parent.setUser(user);
+            parent.setPhone(phone);
+            parentService.saveParent(parent);
+        }
+        return "login";
     }
 
 

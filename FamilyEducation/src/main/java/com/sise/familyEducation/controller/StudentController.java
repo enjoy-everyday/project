@@ -179,18 +179,23 @@ public class StudentController {
      */
 
     @RequestMapping("/applyForTutor")
-    public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication, HttpSession session){
-        int code = 11;
-        Detail detail = detailService.findDetailsById(id);
+    @ResponseBody
+    public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication){
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
-        Task task = new Task();
-        task.setDate(new Date().toString());
-        task.setDetail(detail);
-        task.setStudent(student);
-        taskService.saveTask(task);
-        session.setAttribute("code", code);
-        return "redirect:/allApplicants";
+        System.out.println("****************" + student.getName());
+        if (student.getName() == null){
+            return "error";
+        }
+        else {
+            Detail detail = detailService.findDetailsById(id);
+            Task task = new Task();
+            task.setDate(new Date().toString());
+            task.setDetail(detail);
+            task.setStudent(student);
+            taskService.saveTask(task);
+            return "success";
+        }
     }
 
     /**
