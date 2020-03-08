@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-                .antMatchers("/springboot", "/publishContent").permitAll()
+                .antMatchers("/springboot", "/publishContent", "/register", "/newRegister").permitAll()
                 .antMatchers("/sysadmin").hasRole("ADMIN")
                 .antMatchers("/hello", "/endpointOyzc/**", "/endpointOne/**").permitAll()
                 .anyRequest().authenticated()
