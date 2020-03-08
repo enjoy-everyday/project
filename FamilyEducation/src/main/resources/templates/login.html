@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/materialize.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/tooplate.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/loader.css}">
 </head>
-<body>
+<body id="login" style="background-image: url(images/input-bg-04.jpg)">
 <div class="container">
-    <form method="post" th:action="@{/login}">
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Username" required="" autofocus="">
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Password" required="">
-        </p>
-        <button type="submit">Sign in</button>
-    </form>
+    <div class="row tm-mb-35">
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 tm-login-l">
+            <form th:action="@{/login}" method="post" class="p-5 h-100">
+                <div class="input-field">
+                    <input placeholder="Username" id="username" name="username" type="text">
+                </div>
+                <div class="input-field mb-5">
+                    <input placeholder="Password" id="password" name="password" type="password">
+                </div>
+                <div class="tm-flex-lr">
+                    <a href="" class="white-text small">忘记密码?</a>
+                    <div>
+                        <button type="submit" class="btn black-text rounded">登录</button>
+                        <button class="btn black-text rounded">注册</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script th:src="@{js/jquery-3.2.1.slim.min.js}"></script>
+<script th:src="@{js/materialize.min.js}"></script>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+<script th:src="@{js/wow.min.js}"></script>
+<script th:src="@{js/functions.js}"></script>
 </body>
 </html>
