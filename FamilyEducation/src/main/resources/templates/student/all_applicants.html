@@ -58,16 +58,12 @@
                     <p class="hours">地点<span>XXX</span></p>
                     <p class="hours">价格<span>XXX</span></p>
                     <div style="float: left">
-                        <form th:action="@{/}" th:name="${detail.id}" th:id="${detail.id}" method="post">
-                            <input type="hidden" name="detail_id" th:value="${detail.id}">
-                        </form>
+                        <input type="hidden" name="detail_id" th:value="${detail.id}">
                         <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">详情</button>
                     </div>
                     <div style="float: right">
-                            <form th:action="@{/applyForTutor}" th:name="${detail.id}" th:id="${detail.id}" method="post">
-                                <input type="hidden" name="detail_id" th:value="${detail.id}">
-                            </form>
-                            <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">应聘</button>
+                        <input type="hidden" th:id="'应聘' + ${detail.id}" th:value="${detail.id}">
+                        <button onclick="applyForTutor(this)" class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">应聘</button>
                     </div>
                 </div>
             </div>

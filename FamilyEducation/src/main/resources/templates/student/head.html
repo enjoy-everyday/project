@@ -14,7 +14,9 @@
                     <span class="info"><i class="icon-mail"></i>123@qq.com</span>
                 </div>
                 <ul class="social_top pull-right">
-                    <li><a href="" style="width: 100%;" th:text="${session.person.username}"></a></li>
+                    <th:block th:if="${session.person.username != null}">
+                        <li><a href="" style="width: 100%;" th:text="${session.person.username}"></a></li>
+                    </th:block>
                     <li><a style="width: 100%;" th:text="${session.province}"></a></li>
                     <li><a style="width: 100%;" th:text="${session.city}"></a></li>
                     <li>
