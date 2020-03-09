@@ -13,7 +13,7 @@
                                         <p style="margin-top: 10px;">昵称：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="昵称" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-right">
@@ -21,18 +21,84 @@
                                         <p style="margin-top: 10px;">姓名：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="真实姓名" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-right">
                                     <div class="text-center" style="float: left;">
-                                        <p style="margin-top: 10px;">XXX：</p>
+                                        <p style="margin-top: 10px;">年龄：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="Postal Code / Zip" required>
+                                        <input type="text" class="form-control" style="width: 80%;" placeholder="年龄" required>
                                     </div>
                                 </div>
                             </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-cenrter" style="float: left;">
+                                    <p style="margin-top: 10px;">性别：</p>
+                                </div>
+                                <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                    <div style="float: left;">
+                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" id="male" value="男">
+                                    </div>
+                                    <div style="float: left;">
+                                        <p style="margin-top: 10px; padding-left: 10px;">男</p>
+                                    </div>
+                                </div>
+                                <div class="form-check form-check-inline" style="float: right; margin-right: 10%;">
+                                    <div style="float: left;">
+                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" id="female" value="女">
+                                    </div>
+                                    <div style="float: left;">
+                                        <p style="margin-top: 10px; padding-left: 10px;">女</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:case="true" class="row">
+                            <div class="col-md-4">
+                                <div class="text-cenrter" style="float: left;">
+                                    <p style="margin-top: 10px;">学历：</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="select">
+                                        <select name="country" id="country">
+                                            <option>XXX</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div th:case="true" class="row">
+                            <div class="col-md-2" style="padding-right: 0;" >
+                                <p>擅长科目：</p>
+                            </div>
+                            <div class="col-md-4" style="padding: 0;">
+                                <div class="form-group">
+                                    <p style="line-height: 25px; text-align: left;" >
+                                        初一：语文、数学、英语、政治、历史、化学、物理<br>
+                                        小学二年级：语文、数学<br><br>
+                                        <button class="btn btn-warning">点击选择</button>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="padding-right: 0; border-left: 1px dashed rgb(134, 131, 131);" >
+                                <p>空闲时间：</p>
+                            </div>
+                            <div class="col-md-4" style="padding: 0;">
+                                <div class="form-group">
+                                    <p style="line-height: 25px; text-align: left;" >
+                                        周一<br><br>
+                                        <button class="btn btn-warning">点击选择</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <p style="margin-top: 10px;">省市区</p>
@@ -67,6 +133,11 @@
                                     </div>
                                 </div>
                             </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <textarea style="width: 100%;  min-height: 100px;" placeholder="详细地址"  name="message" id="message"></textarea>
+                            </div>
+                        </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
                                     <button class="btn_common blue border_radius">修改</button>
