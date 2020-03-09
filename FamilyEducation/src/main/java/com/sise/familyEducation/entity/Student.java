@@ -24,11 +24,16 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    private char gender;
     private String name;
     private String username;
+    private String age;
     private String phone;
-    private String area;
-    private  String qualification;
+    private String provinceAndCity;
+    private String address;
+    private String qualification;
+    private String goodAtSubjects;
+    private String freeTime;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

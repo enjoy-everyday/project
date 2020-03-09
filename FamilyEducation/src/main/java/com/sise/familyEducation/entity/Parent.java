@@ -24,10 +24,13 @@ public class Parent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    private String age;
+    private char gender;
     private String name;
-    private String username;
     private String phone;
     private String address;
+    private String username;
+    private String provinceAndCity;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
