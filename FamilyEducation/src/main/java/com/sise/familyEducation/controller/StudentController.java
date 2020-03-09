@@ -183,7 +183,6 @@ public class StudentController {
     public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication){
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
-        System.out.println("****************" + student.getName());
         if (student.getName() == null){
             return "error";
         }
