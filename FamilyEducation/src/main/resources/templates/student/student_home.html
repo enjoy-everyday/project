@@ -20,6 +20,7 @@
 </head>
 <body>
     <input type="hidden" th:value="${_csrf.token}" id="token">
+    <input type="hidden" th:value="${session.role}" id="role">
     <div th:include="/student/head"></div>
     <div class="container">
         <div class="row">
@@ -44,7 +45,6 @@
                         </th:block>
                     </th:block>
                 </th:block>
-            </th:block>
             <th:block th:if="${session.code == 2}">
                 <div th:include="/student/all_applicants"></div>
             </th:block>
