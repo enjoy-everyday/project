@@ -1,5 +1,5 @@
-<input type="hidden" th:value="${session.role}">
-<section id="shop" class="padding">
+
+<section id="shop">
     <div class="container">
         <div class="row">
             <div class="col-md-9 wow fadeInLeft" data-wow-delay="300ms">
@@ -13,7 +13,7 @@
                                         <p style="margin-top: 10px;">昵称：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="昵称" required>
+                                        <input type="text" id="username" class="form-control" style="width: 80%;" placeholder="昵称" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-right">
@@ -21,7 +21,7 @@
                                         <p style="margin-top: 10px;">姓名：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="真实姓名" required>
+                                        <input type="text" id="name" class="form-control" style="width: 80%;" placeholder="真实姓名" required>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-right">
@@ -29,7 +29,7 @@
                                         <p style="margin-top: 10px;">年龄：</p>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" class="form-control" style="width: 80%;" placeholder="年龄" required>
+                                        <input type="text" id="age" class="form-control" style="width: 80%;" placeholder="年龄" required>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                 </div>
                                 <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
                                     <div style="float: left;">
-                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" id="male" value="男">
+                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" value="男">
                                     </div>
                                     <div style="float: left;">
                                         <p style="margin-top: 10px; padding-left: 10px;">男</p>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="form-check form-check-inline" style="float: right; margin-right: 10%;">
                                     <div style="float: left;">
-                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" id="female" value="女">
+                                        <input class="form-check-input" style="margin: 0;" type="radio" name="gender" value="女">
                                     </div>
                                     <div style="float: left;">
                                         <p style="margin-top: 10px; padding-left: 10px;">女</p>
@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="select">
-                                        <select name="country" id="country">
+                                        <select name="qualification" id="qualification">
                                             <option>XXX</option>
                                         </select>
                                     </label>
@@ -135,12 +135,12 @@
                             </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <textarea style="width: 100%;  min-height: 100px;" placeholder="详细地址"  name="message" id="message"></textarea>
+                                <textarea style="width: 100%;  min-height: 100px;" placeholder="详细地址" id="detailedAddress"></textarea>
                             </div>
                         </div>
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <button class="btn_common blue border_radius">修改</button>
+                                    <button class="btn_common blue border_radius" id="change">修改</button>
                                 </div>
                             </div>
 
