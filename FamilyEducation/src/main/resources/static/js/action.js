@@ -88,11 +88,11 @@ $(document).ready(function () {
     });
 
     //修改资料
-    $("#").click(function () {
+    $("#change").click(function () {
         var information;
         var role = $("#role").val();
         if (role == "学生"){
-            information = "username:" + + ",";
+            information = "username:" + $("input[name='gender']:checked").val() + ",";
         }
         else {
             information = "";
