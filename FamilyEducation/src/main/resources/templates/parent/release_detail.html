@@ -1,31 +1,98 @@
-<input type="hidden" th:value="${_csrf.token}" id="token">
-<section id="shop">
-    <div class="container border-radius totals" style="width: 100%;">
+<section id="shop" class="padding">
+    <div class="border-radius totals margin_tophalf container">
         <div class="row">
-            <div class="col-md-6 wow fadeInLeft" data-wow-delay="300ms">
+            <div class="col-md-6 wow fadeInLeft" data-wow-delay="300ms" style="border-right: 1px dashed rgb(184, 184, 184);">
                 <h3 class=" text-center bottom25">对家教要求</h3>
-                <form class="total_form" name="releaseOne" id="releaseOne">
-                    <h4 class=" bottom15">学历</h4>
-                    <div class="form-group">
-                        <label class="select">
-                            <select name="qualification" id="qualification">
-                                <option>所有学历</option>
-                            </select>
-                        </label>
-                    </div>
-                    <h4 class=" bottom15">经验</h4>
-                    <div class="form-group">
-                        <label class="select">
-                            <select name="experience" id="experience">
-                                <option>不足一年</option>
-                            </select>
-                        </label>
+                <form class="total_form">
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="text-cenrter" style="float: left;">
+                                <p style="margin-top: 10px;">性别：</p>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="inlineRadioOptions" id="male" value="男">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">男</p>
+                                </div>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="inlineRadioOptions" id="female" value="女">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">女</p>
+                                </div>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="inlineRadioOptions" id="" value="都可">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">都可</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <h4 class=" bottom15">其它要求</h4>
-                    <div class="form-group">
-                        <input name="other" id="other" type="text" class="form-control" placeholder="其它要求">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-cenrter">
+                                <p style="margin-top: 10px;">学历：</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="select">
+                                    <select name="country" id="country">
+                                        <option>所有学历</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-cenrter">
+                                <p style="margin-top: 10px;">经验：</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="select">
+                                    <select name="country" id="country">
+                                        <option>XXX</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2" style="padding-right: 0;" >
+                            <p>擅长科目：</p>
+                        </div>
+                        <div class="col-md-4" style="padding: 0;">
+                            <div class="form-group">
+                                <p style="line-height: 25px; text-align: left;" >
+                                    初一：语文、数学、英语、政治、历史、化学、物理<br>
+                                    小学二年级：语文、数学<br><br>
+                                    <button class="btn btn-warning">点击选择</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div class="text-cenrter" style="float: left;">
+                                <p style="margin-top: 10px;">其它要求</p>
+                            </div>
+                            <div class="form-group">
+                                <textarea style="width: 100%;" placeholder="其它要求"  name="message" id="message"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 
@@ -33,42 +100,108 @@
             <div class="col-md-6 wow fadeInLeft" data-wow-delay="300ms">
 
                 <h3 class=" text-center bottom25">招家教信息</h3>
-                <form class="total_form" name="releaseTwo" id="releaseTwo">
-                    <h4 class=" bottom15">所教年级</h4>
-                    <div class="form-group">
-                        <label class="select">
-                            <select name="grade" id="grade">
-                                <option>所有年级</option>
-                            </select>
-                        </label>
+                <form class="total_form">
+
+                    <div class="row">
+                        <div class="col-md-2" >
+                            <p>所教年级及科目：</p>
+                        </div>
+                        <div class="col-md-10" style="padding: 0;">
+                            <div class="form-group">
+                                <p style="margin-top: 10px;" >
+                                    小学二年级：语文、数学<br><br>
+                                    <button class="btn btn-warning">点击选择</button>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <h4 class=" bottom15">所教科目</h4>
-                    <div class="form-group">
-                        <label class="select">
-                            <select name="subject" id="subject">
-                                <option>所有科目</option>
-                            </select>
-                        </label>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>任教时间:</p>
+                        </div>
+                        <div class="col-md-10" style="padding: 0;">
+                            <div class="form-group">
+                                <p>
+                                    小学二年级：语文、数学<br><br>
+                                    <button class="btn btn-warning">点击选择</button>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <h4 class=" bottom15">任教时间</h4>
-                    <div class="form-group">
-                        <input name="teachingTime" id="teachingTime" type="text" class="form-control" placeholder="时间">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="text-cenrter" style="float: left;">
+                                <p style="margin-top: 10px;">面试地点：</p>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="place" id="address" value="address">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">居住地</p>
+                                </div>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: right; margin-right: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="place" id="others" value="others">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">其它</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <h4 class=" bottom15">面试地点</h4>
-                    <div class="form-group">
-                        <input name="place" id="place" type="text" class="form-control" placeholder="面试地点">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea style="width: 100%;  min-height: 50px;" placeholder="详细地址"  name="message" id="message"></textarea>
+                        </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="text-cenrter" style="float: left;">
+                                <p style="margin-top: 10px;">价格：</p>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: left; margin-left: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="price" id="hours" value="hours">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">以时数计算</p>
+                                </div>
+                            </div>
+                            <div class="form-check form-check-inline" style="float: right; margin-right: 10%;">
+                                <div style="float: left;">
+                                    <input class="form-check-input" style="margin: 0;" type="radio" name="price" id="frequency" value="frequency">
+                                </div>
+                                <div style="float: left;">
+                                    <p style="margin-top: 10px; padding-left: 10px;">以次数计算</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="多少元" required>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>
 
+        <br>
+
         <div class="row">
 
             <div class="col-md-12 wow fadeInLeft text-center" data-wow-delay="300ms">
-                <button id="release" class="btn_common blue border_radius" style="width: 20%;">发布</button>
+                <button class="btn_common blue border_radius" style="width: 20%;">发布</button>
             </div>
 
         </div>
