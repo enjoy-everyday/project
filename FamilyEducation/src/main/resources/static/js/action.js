@@ -52,15 +52,16 @@ $(document).ready(function () {
 
     //发布家教信息
     $("#release").click(function () {
-        var token = $("#token").val();
-        alert(token);
-        alert("5555");
-        var json = "qualification:" + $("#qualification option:selected").text() + "," +
-            "experience:" + $("#qualification option:selected").text() + "," +
-            // "other:" + $("#other").text() + "," +
-            "grade:" + $("#grade option:selected").text() + "," +
-            "subject:" + $("#subject option:selected").text()
-            // "place:" + $("#place").text()
+        var json =
+            "gender:" + $("input[name='gender']:checked").val() + "," +
+            "qualification:" + $("#qualification option:selected").text() + "," +
+            "experience:" + $("#experience option:selected").text() + "," +
+            "otherRequirement:" + $("#otherRequirement").val() + "," +
+            // "grade:" + $("#grade option:selected").text() + "," +
+            // "subject:" + $("#subject option:selected").text() + "," +
+            "place:" + $("input[name='place']:checked").val() + "," +
+            "price:" + $("input[name='price']:checked").val() + "," +
+            "otherPlace:" + $("#otherPlace").val()
         ;
         // "qualification": $("#qualification option:selected").text(),
         // "experience": $("#experience option:selected").text(),
@@ -76,12 +77,16 @@ $(document).ready(function () {
             type: "post",
             data: {json: json, _csrf: token},
             success: function(result){
-                alert(result);
-            },
-            error: function(XMLHttpRequest, textStatus) {
-                alert(XMLHttpRequest.status);
-                alert(XMLHttpRequest.readyState);
-                alert(textStatus);
+                if (result === "success"){
+                    alert("发布成功");
+                    window.location.replace("/findAllPublish");
+                }
+                else if (result === "error"){
+                    alert("请先完善个人资料");
+                }
+                else {
+                    alert("请重新提交");
+                }
             }
         });
 
@@ -92,18 +97,41 @@ $(document).ready(function () {
         var information;
         var role = $("#role").val();
         if (role == "学生"){
-            information = "username:" + $("input[name='gender']:checked").val() + ",";
+            information = "username:" + $("#username").val() + "," +
+                "name:" + $("#name").val() + "," +
+                "age:" + $("#age").val() + "," +
+                "gender:" + $("input[name='gender']:checked").val() + "," +
+                "qualification:" + $("#qualification option:selected").text() + "," +
+                "province:" + $("#province option:selected").text() + "," +
+                "city:" + $("#city option:selected").text() + "," +
+                "area:" + $("#area option:selected").text() + "," +
+                "detailedAddress:" + $("#detailedAddress").val()
+            ;
         }
         else {
-            information = "";
+            information = "username:" + $("#username").val() + "," +
+                "name:" + $("#name").val() + "," +
+                "age:" + $("#age").val() + "," +
+                "gender:" + $("input[name='gender']:checked").val() + "," +
+                "province:" + $("#province option:selected").text() + "," +
+                "city:" + $("#city option:selected").text() + "," +
+                "area:" + $("#area option:selected").text() + "," +
+                "detailedAddress:" + $("#detailedAddress").val()
+            ;
         }
 
         $.ajax({
             url: "/changeInformation",
             type: "post",
             data: {information: information, _csrf: token},
-            success: function () {
-
+            success: function (result) {
+                if (result === "success"){
+                    alert("修改成功");
+                    window.location.replace("/personalCenter");
+                }
+                else {
+                    alert("请重新提交");
+                }
             }
         })
     });
