@@ -198,22 +198,28 @@ public class ParentController {
     @RequestMapping(value = "/releaseDetails")
     @ResponseBody
     public String releaseDetails(@RequestParam(value = "json") String json, Authentication authentication){
-        System.out.println("------------------" + json);
-        Map<String,String> map = new HashMap<>();
-        String string =json.replace("\"", "");
-        String[] array = string.split(",");
-        for(String str : array ){
-            String[] newArray = str.split(":");
-            System.out.println(str);
-            map.put(newArray[0], newArray[1]);
-        }
         Parent parent = parentService.findParentByPhone(authentication.getName());
-        Detail detail = new Detail();
-        detail.setDate(new Date().toString());
-        detail.setParent(parent);
-        detail.setGrade(map.get("grade"));
-        System.out.println("**************" + map);
-        return "ss";
+        if (parent.getName() == null){
+            return "error";
+        }
+        else {
+            System.out.println("------------------" + json);
+            Map<String,String> map = new HashMap<>();
+            String string =json.replace("\"", "");
+            String[] array = string.split(",");
+            for(String str : array ){
+                String[] newArray = str.split(":");
+                System.out.println(str);
+                map.put(newArray[0], newArray[1]);
+            }
+            Detail detail = new Detail();
+            detail.setDate(new Date().toString());
+            detail.setParent(parent);
+            detail.setGrade(map.get("grade"));
+            detailService.saveDetail(detail);
+            System.out.println("**************" + map);
+            return "success";
+        }
     }
 
     /**

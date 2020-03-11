@@ -138,7 +138,7 @@ public class BasicController {
 
     /**
      * @date: 2020/2/28
-     * @description: 个人资料页面
+     * @description: 修改个人资料页面
      */
 
     @RequestMapping(value = "/modifyingData")
@@ -165,7 +165,7 @@ public class BasicController {
 
     @RequestMapping(value = "/changeInformation")
     @ResponseBody
-    public String changeInformation(@RequestParam(value = "information") String information, Authentication authentication){
+    public String changeInformation(@RequestParam(value = "information") String information, Authentication authentication, HttpSession session){
         Map<String,String> map = new HashMap<>();
         String string =information.replace("\"", "");
         String[] array = string.split(",");
@@ -177,18 +177,19 @@ public class BasicController {
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         if (role.equals("学生")){
-            Student student = new Student();
+            Student student = studentService.findStudentByUser(user);
             student.setUsername(map.get("username"));
+            student.setName(map.get("name"));
             student.setQualification(map.get("qualification"));
             studentService.saveStudent(student);
         }
         else {
-            Parent parent = new Parent();
+            Parent parent = parentService.findParentByPhone(authentication.getName());
             parent.setUsername(map.get("username"));
             parent.setName(map.get("name"));
             parentService.saveParent(parent);
         }
-        return "";
+        return "success";
     }
 
 
