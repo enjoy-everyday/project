@@ -222,10 +222,11 @@ public class StudentController {
 
     /**
      * @date: 2020/2/21
-     * @description: 学生取消
+     * @description: 学生取消应聘
      */
 
     @RequestMapping("/cancelTheApplication")
+    @ResponseBody
     public String cancelTheApplication(@RequestParam(value = "task_id") int id, HttpSession session){
         Task task = taskService.findTaskById(id);
         task.setResult("取消");
@@ -240,9 +241,9 @@ public class StudentController {
         messageService.saveMessage(message);
         taskService.saveTask(task);
         if ((int)session.getAttribute("number") == 2){
-            return "redirect:/accepted";
+            return "accepted";
         }
-        return "redirect:/untreated";
+        return "untreated";
     }
 
 }

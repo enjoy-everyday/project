@@ -67,14 +67,14 @@ public class ParentController {
      * @description: 发布请家教内容
      */
 
-    @RequestMapping("/publishContent")
-    public String publishContent(Authentication authentication){
-        Parent parent = parentService.findParentByPhone(authentication.getName());
-        Detail detail = new Detail();
-        detail.setParent(parent);
-        detailService.saveDetail(detail);
-        return "parent/parent_home";
-    }
+//    @RequestMapping("/publishContent")
+//    public String publishContent(Authentication authentication){
+//        Parent parent = parentService.findParentByPhone(authentication.getName());
+//        Detail detail = new Detail();
+//        detail.setParent(parent);
+//        detailService.saveDetail(detail);
+//        return "parent/parent_home";
+//    }
 
     /**
      * @date: 2020/2/5
@@ -92,10 +92,11 @@ public class ParentController {
 
     /**
      * @date: 2020/2/5
-     * @description: 通过，进入面试
+     * @description: 家长接受，进入面试
      */
 
     @RequestMapping("/enterTheInterview")
+    @ResponseBody
     public String enterYheInterview(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
         task.setResult("接受");
@@ -109,15 +110,16 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
-        return "redirect:/viewCandidates";
+        return "success";
     }
 
     /**
      * @date: 2020/2/7
-     * @description: 没有通过，拒绝进入面试
+     * @description: 家长拒绝学生拒绝进入面试
      */
 
     @RequestMapping("/refuseEntry")
+    @ResponseBody
     public String refuseEntry(@RequestParam(value = "task_id") int id){
         Task task = taskService.findTaskById(id);
         task.setResult("拒绝");
@@ -131,7 +133,7 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
-        return "redirect:/viewCandidates";
+        return "success";
     }
 
     /**

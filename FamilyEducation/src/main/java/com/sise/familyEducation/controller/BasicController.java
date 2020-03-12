@@ -116,11 +116,12 @@ public class BasicController {
      */
 
     @RequestMapping(value = "/deleteInformation")
+    @ResponseBody
     public String deleteInformation(@RequestParam(value = "message_id") int id){
         Message message = messageService.findMessageById(id);
         message.setDisplay(false);
         messageService.saveMessage(message);
-        return "redirect:/findInformation";
+        return "success";
     }
 
     /**
