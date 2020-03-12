@@ -116,10 +116,8 @@
                                         </p>
                                     </td>
                                     <td class="text-center">
-                                        <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
-                                            <input type="hidden" name="task_id" th:value="${task.id}">
-                                        </form>
-                                        <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                        <input type="hidden" name="task_id" th:value="${task.id}">
+                                        <button onclick="cancelTheApplication(this)" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
                                             <i class="icon-cross2" style="color: red;"></i>
                                         </button>
                                     </td>
@@ -222,16 +220,11 @@
                                             </p>
                                         </td>
                                         <td class="text-center">
-                                            <form th:action="@{/enterTheInterview}" th:name="${task.id}" th:id="'接受' + ${task.id}" method="post">
-                                                <input type="hidden" name="task_id" th:value="${task.id}">
-                                            </form>
-                                            <form th:action="@{/refuseEntry}" th:name="${task.id}" th:id="'拒绝' + ${task.id}"  method="post">
-                                                <input type="hidden" name="task_id" th:value="${task.id}">
-                                            </form>
-                                            <button id="enterTheInterview" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                            <input type="hidden" name="task_id" th:value="${task.id}">
+                                            <button onclick="enterTheInterview(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
                                                 <strong style="color: rgba(0, 189, 0, 0.534);">✔</strong>
                                             </button>
-                                            <button id="refuseEntry" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                            <button onclick="refuseEntry(this)" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
                                                 <i class="icon-cross2" style="color: red;"></i>
                                             </button>
                                         </td>

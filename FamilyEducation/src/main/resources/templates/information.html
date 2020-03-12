@@ -29,18 +29,13 @@
                                     <td th:case="false" style="padding: 0; margin: 0;" th:text="${message.getStudent.username} + '取消了的应聘'">XXX</td>
                                 </th:block>
                                 <td class="text-right" style="padding: 0; margin: 0;">
-                                    <form th:action="@{/deleteInformation}" th:name="${message.id}" th:id="'删除' + ${message.id}" method="post">
-                                        <input type="hidden" name="message_id" th:value="${message.id}">
-                                    </form>
+                                    <input type="hidden" name="message_id" th:value="${message.id}">
                                     <strong th:text="${message.date}">2020</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button id="deleteInformation" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                    <button onclick="deleteInformation(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
                                         <strong style="color: red;">×</strong>
                                     </button>
                                     <th:block th:if="${message.state == 'false'}">
-                                        <form th:action="@{/readInformation}" th:name="${message.id}" th:id="'已读'' + ${message.id}" method="post">
-                                            <input type="hidden" name="message_id" th:value="${message.id}">
-                                        </form>
-                                        <button id="readInformation" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                        <button onclick="readInformation(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
                                             <strong style="color: rgba(0, 189, 0, 0.534);">✔</strong>
                                         </button>
                                     </th:block>
@@ -52,18 +47,14 @@
                                     <td th:case="false" style="padding: 0; margin: 0;" th:text="'您' + ${message.message} + ${message.getStudent.username} '的应聘'">XXX</td>
                                 </th:block>
                                 <td class="text-right" style="padding: 0; margin: 0;">
-                                    <form th:action="@{/deleteInformation}" th:name="${message.id}" th:id="${message.id}" method="post">
-                                        <input type="hidden" name="message_id" th:value="${message.id}">
-                                    </form>
+                                    <input type="hidden" name="message_id" th:value="${message.id}">
                                     <strong th:text="${message.date}">2020</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <button id="deleteInformation" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                    <button onclick="deleteInformation(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
                                         <strong style="color: red;">×</strong>
                                     </button>
                                     <th:block th:if="${message.state == 'false'}">
-                                        <form th:action="@{/readInformation}" th:name="${message.id}" th:id="'已读'' + ${message.id}" method="post">
-                                            <input type="hidden" name="message_id" th:value="${message.id}">
-                                        </form>
-                                        <button id="readInformation" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                        <input type="hidden" name="message_id" th:value="${message.id}">
+                                        <button onclick="readInformation(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
                                             <strong style="color: rgba(0, 189, 0, 0.534);">✔</strong>
                                         </button>
                                     </th:block>
