@@ -9,26 +9,26 @@ $(document).ready(function () {
         $("#logout").submit();
     });
 
-    //取消应聘
-    $("#cancelTheApplication").click(function () {
-        var node = this.parentNode;
-        var id = node.children[0].getAttribute("id");
-        $(id).submit();
-    });
+    // //取消应聘
+    // $("#cancelTheApplication").click(function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[0].getAttribute("id");
+    //     $(id).submit();
+    // });
 
-    //删除消息
-    $("#deleteInformation").click(function () {
-        var node = this.parentNode;
-        var id = node.children[0].getAttribute("id");
-        $(id).submit();
-    });
+    // //删除消息
+    // $("#deleteInformation").click(function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[0].getAttribute("id");
+    //     $(id).submit();
+    // });
 
-    //已读消息
-    $("#readInformation").click(function () {
-        var node = this.parentNode;
-        var id = node.children[3].getAttribute("id");
-        $(id).submit();
-    });
+    // //已读消息
+    // $("#readInformation").click(function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[3].getAttribute("id");
+    //     $(id).submit();
+    // });
 
     //websocket
     $("#response").on("click", ".toast", function () {
@@ -36,19 +36,19 @@ $(document).ready(function () {
         $(this).attr("class", "toast fade hide");
     });
 
-    //家长接受
-    $("#enterTheInterview").click(function () {
-        var node = this.parentNode;
-        var id = node.children[0].getAttribute("id");
-        $(id).submit();
-    });
+    // //家长接受
+    // $("#enterTheInterview").click(function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[0].getAttribute("id");
+    //     $(id).submit();
+    // });
 
-    //家长拒绝
-    $("#refuseEntry").click(function () {
-        var node = this.parentNode;
-        var id = node.children[1].getAttribute("id");
-        $(id).submit();
-    });
+    // //家长拒绝
+    // $("#refuseEntry").click(function () {
+    //     var node = this.parentNode;
+    //     var id = node.children[1].getAttribute("id");
+    //     $(id).submit();
+    // });
 
     //发布家教信息
     $("#release").click(function () {
@@ -187,7 +187,6 @@ $(document).ready(function () {
 function applyForTutor(element) {
     var node = element.parentNode;
     var value = node.children[0].getAttribute("value");
-    alert(value);
     $.ajax({
         url: "/applyForTutor",
         type: "post",
@@ -202,8 +201,112 @@ function applyForTutor(element) {
             }
         }
     });
-
 }
+
+//学生取消应聘
+function cancelTheApplication(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/cancelTheApplication",
+        type: "post",
+        data: {task_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "accepted"){
+                alert("取消成功");
+                window.location.replace("/accepted");
+            }
+            else if (result === "untreated"){
+                alert("取消成功");
+                window.location.replace("/untreated");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
+//家长接受应聘，学生进入面试
+function enterTheInterview(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/enterTheInterview",
+        type: "post",
+        data: {task_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("接受成功");
+                window.location.replace("/viewCandidates");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
+//家长拒绝应聘，学生失败
+function refuseEntry(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/refuseEntry",
+        type: "post",
+        data: {task_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("拒绝成功");
+                window.location.replace("/viewCandidates");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
+//删除消息
+function deleteInformation(element){
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/deleteInformation",
+        type: "post",
+        data: {message_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("删除成功");
+                window.location.replace("/findInformation");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
+//已读消息
+function readInformation(element){
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/readInformation",
+        type: "post",
+        data: {message_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("操作成功");
+                window.location.replace("/findInformation");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
 
 //省市区
 $(document).ready(function () {
