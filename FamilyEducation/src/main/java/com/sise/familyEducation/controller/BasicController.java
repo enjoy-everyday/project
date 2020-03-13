@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: FamilyEducation
@@ -191,6 +189,35 @@ public class BasicController {
             parentService.saveParent(parent);
         }
         return "success";
+    }
+
+    @RequestMapping(value = "/chooseFreeTime")
+    @ResponseBody
+    public String chooseFreeTime(@RequestParam(value = "array") String array[][]){
+        String[] week = {"周一","周二","周三","周四","周五","周六","周日"};
+        Map<Integer, List<String>> map = new HashMap<>();
+        for (int i = 0; i < 7; i++){
+            List<String> list = new ArrayList<>();
+            if (array[i].length != 0){
+                for (int j = 0; j < array[i].length; j++){
+                    if (map.get(i) == null && !array[i][j].equals("")){
+                        list.add(array[i][j]);
+                        map.put(i, list);
+                    }
+                    else if(!array[i][j].equals("")) {
+                        map.get(i).add(array[i][j]);
+                    }
+                }
+            }
+        }
+        String result = "";
+        System.out.println(map);
+        for (int i = 0; i < 7; i++){
+            if (map.get(i) != null){
+                result = result + week[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") + "<br>";
+            }
+        }
+        return result;
     }
 
 
