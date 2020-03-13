@@ -307,6 +307,91 @@ function readInformation(element){
     });
 }
 
+//选择空闲时间
+$(document).ready(function(){
+
+    var clock = 10;
+    var length = 0;
+    var choice = [[], [], [], [], [], [], []];
+    var weekChoice = 0;
+    var time = ["08:00-08:30", "08:31-09:00", "09:00-09:30", "09:30-10:00"];
+    var week = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+
+    for(var i = 1; i < week.length; i++){
+        $("#week").append('<div class="week"><p style="margin: 8px;">' + week[i] + '</p></div>');
+    }
+
+    for(var i = 0; i < 28; i++){
+        if(i < 4){
+            $("#weekTime").append('<div class="weeklyTime" name="weeklyTime"><p style="margin: 8px;">' + time[i] + '</p></div>');
+        }
+        else{
+            if(i % 2 != 0){
+                time[i] = clock + ":31-" + (clock + 1) + ":00";
+                $("#weekTime").append('<div class="weeklyTime" name="weeklyTime"><p style="margin: 8px;">' + time[i] + '</p></div>');
+                clock++;
+            }
+            else{
+                time[i] = clock + ":00-" + clock + ":30";
+                $("#weekTime").append('<div class="weeklyTime" name="weeklyTime"><p style="margin: 8px;">' + time[i] + '</p></div>');
+            }
+        }
+    }
+
+    $(".week").on("click", function(){
+        if(choice[$(this).index()].length == 0){
+            $("div[name='weeklyTime']").attr("class", "weeklyTime");
+        }
+        else{
+            for(var i = 0; i < length; i++){
+                if(choice[$(this).index()][i] != null){
+                    $("div[name='weeklyTime']").eq(i).attr("class", "weeklyTime choiceTime");
+                }
+                else{
+                    $("div[name='weeklyTime']").eq(i).attr("class", "weeklyTime");
+                }
+            }
+        }
+        $(".choice").attr("class", "week");
+        $(this).attr("class", "week choice");
+        weekChoice = $(this).index();
+    });
+
+    $(".weeklyTime").on("click", function(){
+        if($(this).index() >= length){
+            length = $(this).index() + 1;
+        }
+        if($(this).attr("class") == "weeklyTime"){
+            $(this).attr("class", "weeklyTime choiceTime");
+            choice[weekChoice][$(this).index()] = time[$(this).index()];
+        }
+        else {
+            $(this).attr("class", "weeklyTime");
+            choice[weekChoice][$(this).index()] = null;
+        }
+    });
+
+    $("#chooseFreeTime").click(function () {
+        $.ajax({
+            url: "/chooseFreeTime",
+            type: "post",
+            data: {array: choice,  _csrf: token},
+            traditional: true,
+            success: function (result) {
+                if ($("#timeSelected").children("p").length != 0){
+                    $("#timeSelected").empty();
+                }
+                $("#timeSelected").append("<p>" + result + "</p>");
+                alert("成功");
+            },
+            error: function () {
+              alert("操作错误，请重新选择");
+            }
+        });
+    })
+
+});
+
 
 //省市区
 $(document).ready(function () {
