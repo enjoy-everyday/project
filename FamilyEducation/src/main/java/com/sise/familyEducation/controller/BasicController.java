@@ -220,5 +220,34 @@ public class BasicController {
         return result;
     }
 
+    @RequestMapping(value = "/chooseGradeAndSubject")
+    @ResponseBody
+    public String chooseGradeAndSubject(@RequestParam(value = "array") String array[][]){
+        String[] grade = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "初一", "初二", "初三", "高一", "高二", "高三"};
+        Map<Integer, List<String>> map = new HashMap<>();
+        for (int i = 0; i < array.length; i++){
+            List<String> list = new ArrayList<>();
+            if (array[i].length != 0){
+                for (int j = 0; j < array[i].length; j++){
+                    if (map.get(i) == null && !array[i][j].equals("")){
+                        list.add(array[i][j]);
+                        map.put(i, list);
+                    }
+                    else if(!array[i][j].equals("")) {
+                        map.get(i).add(array[i][j]);
+                    }
+                }
+            }
+        }
+        String result = "";
+        System.out.println(map);
+        for (int i = 0; i < array.length; i++){
+            if (map.get(i) != null){
+                result = result + grade[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") + "<br>";
+            }
+        }
+        return result;
+    }
+
 
 }
