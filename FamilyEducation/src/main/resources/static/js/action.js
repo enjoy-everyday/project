@@ -95,7 +95,14 @@ $(document).ready(function () {
     //修改资料
     $("#change").click(function () {
         var information;
+        var detailedAddress;
         var role = $("#role").val();
+        if ($("#detailedAddress").val() == ""){
+            detailedAddress = "null";
+        }
+        else {
+            detailedAddress = $("#detailedAddress").val();
+        }
         if (role == "学生"){
             information = "username:" + $("#username").val() + "," +
                 "name:" + $("#name").val() + "," +
@@ -105,7 +112,9 @@ $(document).ready(function () {
                 "province:" + $("#province option:selected").text() + "," +
                 "city:" + $("#city option:selected").text() + "," +
                 "area:" + $("#area option:selected").text() + "," +
-                "detailedAddress:" + $("#detailedAddress").val()
+                "goodAtSubjects:" + $("#gradeAndSubjectSelected").val() + "," +
+                "freeTime:" + $("#timeSelected").val() + "," +
+                "detailedAddress:" + detailedAddress
             ;
         }
         else {
@@ -116,7 +125,7 @@ $(document).ready(function () {
                 "province:" + $("#province option:selected").text() + "," +
                 "city:" + $("#city option:selected").text() + "," +
                 "area:" + $("#area option:selected").text() + "," +
-                "detailedAddress:" + $("#detailedAddress").val()
+                "detailedAddress:" + detailedAddress
             ;
         }
 
@@ -307,12 +316,12 @@ function readInformation(element){
     });
 }
 
-//选择空闲时间
 $(document).ready(function(){
 
+    //选择空闲时间
     var clock = 10;
-    var length = 0;
-    var choice = [[], [], [], [], [], [], []];
+    var weeklyTimeLength = 0;
+    var choiceWeekAndTime = [[], [], [], [], [], [], []];
     var weekChoice = 0;
     var time = ["08:00-08:30", "08:31-09:00", "09:00-09:30", "09:30-10:00"];
     var week = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
@@ -339,12 +348,12 @@ $(document).ready(function(){
     }
 
     $(".week").on("click", function(){
-        if(choice[$(this).index()].length == 0){
+        if(choiceWeekAndTime[$(this).index()].length == 0){
             $("div[name='weeklyTime']").attr("class", "weeklyTime");
         }
         else{
-            for(var i = 0; i < length; i++){
-                if(choice[$(this).index()][i] != null){
+            for(var i = 0; i < weeklyTimeLength; i++){
+                if(choiceWeekAndTime[$(this).index()][i] != null){
                     $("div[name='weeklyTime']").eq(i).attr("class", "weeklyTime choiceTime");
                 }
                 else{
@@ -352,22 +361,22 @@ $(document).ready(function(){
                 }
             }
         }
-        $(".choice").attr("class", "week");
-        $(this).attr("class", "week choice");
+        $(".choiceWeek").attr("class", "week");
+        $(this).attr("class", "week choiceWeek");
         weekChoice = $(this).index();
     });
 
     $(".weeklyTime").on("click", function(){
-        if($(this).index() >= length){
-            length = $(this).index() + 1;
+        if($(this).index() >= weeklyTimeLength){
+            weeklyTimeLength = $(this).index() + 1;
         }
         if($(this).attr("class") == "weeklyTime"){
             $(this).attr("class", "weeklyTime choiceTime");
-            choice[weekChoice][$(this).index()] = time[$(this).index()];
+            choiceWeekAndTime[weekChoice][$(this).index()] = time[$(this).index()];
         }
         else {
             $(this).attr("class", "weeklyTime");
-            choice[weekChoice][$(this).index()] = null;
+            choiceWeekAndTime[weekChoice][$(this).index()] = null;
         }
     });
 
@@ -375,7 +384,7 @@ $(document).ready(function(){
         $.ajax({
             url: "/chooseFreeTime",
             type: "post",
-            data: {array: choice,  _csrf: token},
+            data: {array: choiceWeekAndTime,  _csrf: token},
             traditional: true,
             success: function (result) {
                 if ($("#timeSelected").children("p").length != 0){
@@ -388,7 +397,95 @@ $(document).ready(function(){
               alert("操作错误，请重新选择");
             }
         });
-    })
+    });
+
+    //选择擅长年级及科目
+    var subjectLength = 0;
+    var choiceGradeAndSubject = [];
+    var subjectChoice = 0;
+    var subject = ["语文", "数学", "英语", "政治", "历史", "地理", "物理", "化学", "生物"];
+    var grade = ["小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "初一", "初二", "初三", "高一", "高二", "高三"];
+
+    for(var i = 0; i < 13; i++){
+        choiceGradeAndSubject[i] = [];
+    }
+
+    for(var i = 1; i < grade.length; i++){
+        if(grade[i] == "小学六年级"){
+            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
+        }
+        else{
+            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
+        }
+    }
+
+    for(var i = 0; i < 3; i++){
+        $("#subject").append('<div class="subject" name="subject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+    }
+
+    $(".grade").on("click", function(){
+        subjectChoice = $(this).index();
+        if(subjectChoice < 6){
+            $("#subject").empty();
+            for(var i = 0; i < 3; i++){
+                $("#subject").append('<div class="subject" name="subject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+            }
+        }
+        else{
+            $("#subject").empty();
+            for(var i = 0; i < subject.length; i++){
+                $("#subject").append('<div class="subject" name="subject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+            }
+        }
+        if(choiceGradeAndSubject[$(this).index()].length == 0){
+            $("div[name='subject']").attr("class", "subject");
+        }
+        else{
+            for(var i = 0; i < subjectLength; i++){
+                if(choiceGradeAndSubject[$(this).index()][i] != null){
+                    $("div[name='subject']").eq(i).attr("class", "subject choiceSubject");
+                }
+                else{
+                    $("div[name='subject']").eq(i).attr("class", "subject");
+                }
+            }
+        }
+        $(".choiceGrade").attr("class", "grade");
+        $(this).attr("class", "grade choiceGrade");
+    });
+
+    $(document).on("click", ".subject", function(){
+        if($(this).index() >= subjectLength){
+            subjectLength = $(this).index() + 1;
+        }
+        if($(this).attr("class") == "subject"){
+            $(this).attr("class", "subject choiceSubject");
+            choiceGradeAndSubject[subjectChoice][$(this).index()] = subject[$(this).index()];
+        }
+        else {
+            $(this).attr("class", "subject");
+            choiceGradeAndSubject[subjectChoice][$(this).index()] = null;
+        }
+    });
+
+    $("#chooseGradeAndSubject").click(function () {
+        $.ajax({
+            url: "/chooseGradeAndSubject",
+            type: "post",
+            data: {array: choiceGradeAndSubject,  _csrf: token},
+            traditional: true,
+            success: function (result) {
+                if ($("#gradeAndSubjectSelected").children("p").length != 0){
+                    $("#gradeAndSubjectSelected").empty();
+                }
+                $("#gradeAndSubjectSelected").append("<p>" + result + "</p>");
+                alert("成功");
+            },
+            error: function () {
+                alert("操作错误，请重新选择");
+            }
+        });
+    });
 
 });
 
