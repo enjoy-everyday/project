@@ -32,6 +32,7 @@ public class Detail {
     private String goodAtSubjects;
     private String experience;
     private String requirement;
+    private String teachingTime;
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
     @JoinColumn(name="parent_id")
