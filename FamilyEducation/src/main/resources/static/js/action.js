@@ -52,16 +52,30 @@ $(document).ready(function () {
 
     //发布家教信息
     $("#release").click(function () {
+        var otherRequirement = "";
+        var otherPlace = "";
+        if ($("#otherRequirement").val() == ""){
+            otherRequirement = "null";
+        }
+        else {
+            otherRequirement = $("#otherRequirement").val();
+        }
+        if ($("input[name='place']:checked").val() == "居住地"){
+            otherPlace = "null";
+        }
+        else {
+            otherPlace = $("#otherDetailedAddress").val();
+        }
         var json =
             "gender:" + $("input[name='gender']:checked").val() + "," +
             "qualification:" + $("#qualification option:selected").text() + "," +
             "experience:" + $("#experience option:selected").text() + "," +
-            "otherRequirement:" + $("#otherRequirement").val() + "," +
-            // "grade:" + $("#grade option:selected").text() + "," +
-            // "subject:" + $("#subject option:selected").text() + "," +
-            "place:" + $("input[name='place']:checked").val() + "," +
-            "price:" + $("input[name='price']:checked").val() + "," +
-            "otherPlace:" + $("#otherPlace").val()
+            "otherRequirement:" + otherRequirement + "," +
+            "teachingGradeAndSubject:" + $("#teachingGradeAndSubjectSelected").val() + "," +
+            "teachingTime:" + $("#teachingTimeSelected").val() + "," +
+            "calculation:" + $("input[name='price']:checked").val() + "," +
+            "price:" + $("#price").val() + "," +
+            "otherPlace:" + otherPlace
         ;
         // "qualification": $("#qualification option:selected").text(),
         // "experience": $("#experience option:selected").text(),
@@ -189,6 +203,16 @@ $(document).ready(function () {
     //     }
     //     $("#searchGradesAndSubjects").submit;
     // })
+
+    //发布，点击显示详细地址文本域
+    $("#others").click(function(){
+        $("#otherDetailedAddress").append('<textarea style="width: 100%;  min-height: 50px;" placeholder="详细地址"  name="otherPlace" id="otherPlace"></textarea>')
+    });
+
+    //发布，点击隐藏详细地址文本域
+    $("#address").click(function(){
+        $("#otherDetailedAddress").empty();
+    });
 
 });
 
@@ -387,9 +411,7 @@ $(document).ready(function(){
             data: {array: choiceWeekAndTime,  _csrf: token},
             traditional: true,
             success: function (result) {
-                if ($("#timeSelected").children("p").length != 0){
-                    $("#timeSelected").empty();
-                }
+                $("#timeSelected").empty();
                 $("#timeSelected").append("<p>" + result + "</p>");
                 alert("成功");
             },
@@ -410,14 +432,14 @@ $(document).ready(function(){
         choiceGradeAndSubject[i] = [];
     }
 
-    for(var i = 1; i < grade.length; i++){
-        if(grade[i] == "小学六年级"){
-            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
-        }
-        else{
-            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
-        }
-    }
+    // for(var i = 1; i < grade.length; i++){
+    //     if(grade[i] == "小学六年级"){
+    //         $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
+    //     }
+    //     else{
+    //         $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
+    //     }
+    // }
 
     for(var i = 0; i < 3; i++){
         $("#subject").append('<div class="subject" name="subject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
@@ -475,9 +497,7 @@ $(document).ready(function(){
             data: {array: choiceGradeAndSubject,  _csrf: token},
             traditional: true,
             success: function (result) {
-                if ($("#gradeAndSubjectSelected").children("p").length != 0){
-                    $("#gradeAndSubjectSelected").empty();
-                }
+                $("#gradeAndSubjectSelected").empty();
                 $("#gradeAndSubjectSelected").append("<p>" + result + "</p>");
                 alert("成功");
             },
@@ -486,6 +506,94 @@ $(document).ready(function(){
             }
         });
     });
+
+    //家长选择任教年级和科目
+    var choiceTeachingSubjects = [];
+    var teachingGradeChoice = 0;
+    for(var i = 1; i < grade.length; i++){
+        if(grade[i] == "小学六年级"){
+            $("#teachingGrade").append('<div class="teachingGrade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
+        }
+        else{
+            $("#teachingGrade").append('<div class="teachingGrade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
+        }
+    }
+
+    for(var i = 0; i < 3; i++){
+        $("#teachingSubject").append('<div class="teachingSubject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+    }
+
+    $(".teachingGrade").on("click", function(){
+        choiceTeachingSubjects = [];
+        teachingGradeChoice = $(this).index();
+        if(teachingGradeChoice < 6){
+            $("#teachingSubject").empty();
+            for(var i = 0; i < 3; i++){
+                $("#teachingSubject").append('<div class="teachingSubject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+            }
+        }
+        else{
+            $("#teachingSubject").empty();
+            for(var i = 0; i < subject.length; i++){
+                $("#teachingSubject").append('<div class="teachingSubject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
+            }
+        }
+
+        $(".choiceTeachingGrade").attr("class", "teachingGrade");
+        $(this).attr("class", "teachingGrade choiceTeachingGrade");
+    });
+
+    $(document).on("click", ".teachingSubject", function(){
+        if($(this).attr("class") == "teachingSubject"){
+            $(this).attr("class", "teachingSubject choiceTeachingSubject");
+            choiceTeachingSubjects[$(this).index()] = subject[$(this).index()];
+        }
+        else {
+            $(this).attr("class", "teachingSubject");
+            choiceTeachingSubjects[$(this).index()] = null;
+        }
+    });
+
+    $("#confirmTeachingGradeAndSubject").click(function () {
+        $.ajax({
+            url: "/choiceTeachingGradeAndSubject",
+            type: "post",
+            data: {array: choiceTeachingSubjects, gradeNumber: teachingGradeChoice,  _csrf: token},
+            traditional: true,
+            success: function (result) {
+                if (result == "null"){
+                    alert("没有选择科目，请重新选择");
+                }
+                else {
+                    $("#teachingGradeAndSubjectSelected").empty();
+                    $("#teachingGradeAndSubjectSelected").append("<p>" + result + "</p>");
+                }
+                alert("成功");
+            },
+            error: function () {
+                alert("操作错误，请重新选择");
+            }
+        });
+    });
+
+    //选择任教时间
+    $("#chooseTeachingTime").click(function () {
+        $.ajax({
+            url: "/chooseFreeTime",
+            type: "post",
+            data: {array: choiceWeekAndTime,  _csrf: token},
+            traditional: true,
+            success: function (result) {
+                $("#teachingTimeSelected").empty();
+                $("#teachingTimeSelected").append("<p>" + result + "</p>");
+                alert("成功");
+            },
+            error: function () {
+                alert("操作错误，请重新选择");
+            }
+        });
+    })
+
 
 });
 
