@@ -11,10 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: FamilyEducation
@@ -214,10 +211,35 @@ public class ParentController {
                 System.out.println(str);
                 map.put(newArray[0], newArray[1]);
             }
+            String[] gradeAndSubject = map.get("teachingGradeAndSubject").split("：");
+            String grade = gradeAndSubject[0];
+            String subject = gradeAndSubject[1];
+            String price = "";
+            String address = "";
+            if (map.get("calculation").equals("hours")){
+                price = map.get("price") + "/小时";
+            }
+            else {
+                price = map.get("price") + "/次";
+            }
+            if (!"null".equals(map.get("otherPlace"))){
+                address = parent.getAddress();
+            }
+            else {
+                address = map.get("otherPlace");
+            }
             Detail detail = new Detail();
             detail.setDate(new Date().toString());
             detail.setParent(parent);
             detail.setGrade(map.get("grade"));
+            detail.setQualification(map.get("qualification"));
+            detail.setExperience(map.get("experience"));
+            detail.setRequirement(map.get("otherRequirement"));
+            detail.setGrade(grade);
+            detail.setSubject(subject);
+            detail.setTeachingTime(map.get("teachingTime"));
+            detail.setPrice(price);
+            detail.setAddress(address);
             detailService.saveDetail(detail);
             System.out.println("**************" + map);
             return "success";
@@ -235,5 +257,46 @@ public class ParentController {
         session.setAttribute("number", number);
         return "student/student_home";
     }
+
+    /**
+     * @date: 2020/3/14
+     * @description: 发布时选择任教科目
+     */
+
+    @RequestMapping(value = "/choiceTeachingGradeAndSubject")
+    @ResponseBody
+    public String choiceTeachingGradeAndSubject(@RequestParam(value = "array") String[] array, @RequestParam(value = "gradeNumber")int gradeNumber){
+        String[] grades = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "初一", "初二", "初三", "高一", "高二", "高三"};
+        String result = "";
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < array.length; i++){
+            if (!array[i].equals("")){
+                list.add(array[i]);
+            }
+        }
+        if (list.size() == 0){
+            return "null";
+        }
+        else {
+            if (gradeNumber < 6){
+                if (list.size() == 3){
+                    result = grades[gradeNumber] + "：全部科目<br>";
+                }
+                else {
+                    result = grades[gradeNumber] + "：" + list.toString().replace("[", "").replace("]", "") + "<br>";
+                }
+            }
+            else {
+                if (list.size() == 9){
+                    result = grades[gradeNumber - 1] + "：全部科目<br>";
+                }
+                else {
+                    result = grades[gradeNumber - 1] + "：" + list.toString().replace("[", "").replace("]", "") + "<br>";
+                }
+            }
+            return result;
+        }
+    }
+
 
 }

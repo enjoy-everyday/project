@@ -179,17 +179,36 @@ public class BasicController {
             Student student = studentService.findStudentByUser(user);
             student.setUsername(map.get("username"));
             student.setName(map.get("name"));
+            student.setAge(map.get("age"));
+            student.setGender(map.get("grade").charAt(0));
             student.setQualification(map.get("qualification"));
+            student.setProvinceAndCity(map.get("province") + map.get("city") + map.get("area"));
+            student.setGoodAtSubjects(map.get("goodAtSubjects"));
+            student.setFreeTime(map.get("freeTime"));
+            if (!"null".equals(map.get("detailedAddress"))){
+                student.setAddress(map.get("detailedAddress"));
+            }
             studentService.saveStudent(student);
         }
         else {
             Parent parent = parentService.findParentByPhone(authentication.getName());
             parent.setUsername(map.get("username"));
             parent.setName(map.get("name"));
+            parent.setAge(map.get("age"));
+            parent.setGender(map.get("gender").charAt(0));
+            parent.setProvinceAndCity(map.get("province") + map.get("city") + map.get("area"));
+            if (!"null".equals(map.get("detailedAddress"))){
+                parent.setAddress(map.get("detailedAddress"));
+            }
             parentService.saveParent(parent);
         }
         return "success";
     }
+
+    /**
+     * @date: 2020/3/14
+     * @description: 修改资料中的选择空闲时间
+     */
 
     @RequestMapping(value = "/chooseFreeTime")
     @ResponseBody
@@ -219,6 +238,11 @@ public class BasicController {
         }
         return result;
     }
+
+    /**
+     * @date: 2020/3/14
+     * @description: 修改资料中的选择年级和科目
+     */
 
     @RequestMapping(value = "/chooseGradeAndSubject")
     @ResponseBody
