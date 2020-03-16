@@ -60,22 +60,22 @@ $(document).ready(function () {
         else {
             otherRequirement = $("#otherRequirement").val();
         }
-        if ($("input[name='place']:checked").val() == "居住地"){
+        if ($("input[name='place']:checked").val() == "address"){
             otherPlace = "null";
         }
         else {
             otherPlace = $("#otherDetailedAddress").val();
         }
         var json =
-            "gender:" + $("input[name='gender']:checked").val() + "," +
-            "qualification:" + $("#qualification option:selected").text() + "," +
-            "experience:" + $("#experience option:selected").text() + "," +
-            "otherRequirement:" + otherRequirement + "," +
-            "teachingGradeAndSubject:" + $("#teachingGradeAndSubjectSelected").val() + "," +
-            "teachingTime:" + $("#teachingTimeSelected").val() + "," +
-            "calculation:" + $("input[name='price']:checked").val() + "," +
-            "price:" + $("#price").val() + "," +
-            "otherPlace:" + otherPlace
+            "gender," + $("input[name='gender']:checked").val() + ";" +
+            "qualification," + $("#qualification option:selected").text() + ";" +
+            "experience," + $("#experience option:selected").text() + ";" +
+            "otherRequirement," + otherRequirement + "," +
+            "teachingGradeAndSubject," + $("#teachingGradeAndSubjectSelected p:eq(0)").text() + ";" +
+            "teachingTime," + $("#teachingTimeSelected p:eq(0)").text() + ";" +
+            "calculation," + $("input[name='price']:checked").val() + ";" +
+            "price," + $("#price").val() + "," +
+            "otherPlace," + otherPlace
         ;
         // "qualification": $("#qualification option:selected").text(),
         // "experience": $("#experience option:selected").text(),
