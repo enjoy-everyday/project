@@ -205,9 +205,9 @@ public class ParentController {
             System.out.println("------------------" + json);
             Map<String,String> map = new HashMap<>();
             String string =json.replace("\"", "");
-            String[] array = string.split(",");
+            String[] array = string.split(";");
             for(String str : array ){
-                String[] newArray = str.split(":");
+                String[] newArray = str.split(",");
                 System.out.println(str);
                 map.put(newArray[0], newArray[1]);
             }
