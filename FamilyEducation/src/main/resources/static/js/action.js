@@ -118,28 +118,28 @@ $(document).ready(function () {
             detailedAddress = $("#detailedAddress").val();
         }
         if (role == "学生"){
-            information = "username:" + $("#username").val() + "," +
-                "name:" + $("#name").val() + "," +
-                "age:" + $("#age").val() + "," +
-                "gender:" + $("input[name='gender']:checked").val() + "," +
-                "qualification:" + $("#qualification option:selected").text() + "," +
-                "province:" + $("#province option:selected").text() + "," +
-                "city:" + $("#city option:selected").text() + "," +
-                "area:" + $("#area option:selected").text() + "," +
-                "goodAtSubjects:" + $("#gradeAndSubjectSelected").val() + "," +
-                "freeTime:" + $("#timeSelected").val() + "," +
-                "detailedAddress:" + detailedAddress
+            information = "username," + $("#username").val() + ";" +
+                "name," + $("#name").val() + ";" +
+                "age," + $("#age").val() + ";" +
+                "gender," + $("input[name='gender']:checked").val() + ";" +
+                "qualification," + $("#qualification option:selected").text() + ";" +
+                "province," + $("#province option:selected").text() + ";" +
+                "city," + $("#city option:selected").text() + ";" +
+                "area," + $("#area option:selected").text() + ";" +
+                "goodAtSubjects," + $("#gradeAndSubjectSelected").val() + ";" +
+                "freeTime," + $("#timeSelected").val() + ";" +
+                "detailedAddress," + detailedAddress
             ;
         }
         else {
-            information = "username:" + $("#username").val() + "," +
-                "name:" + $("#name").val() + "," +
-                "age:" + $("#age").val() + "," +
-                "gender:" + $("input[name='gender']:checked").val() + "," +
-                "province:" + $("#province option:selected").text() + "," +
-                "city:" + $("#city option:selected").text() + "," +
-                "area:" + $("#area option:selected").text() + "," +
-                "detailedAddress:" + detailedAddress
+            information = "username," + $("#username").val() + ";" +
+                "name," + $("#name").val() + ";" +
+                "age," + $("#age").val() + ";" +
+                "gender," + $("input[name='gender']:checked").val() + ";" +
+                "province," + $("#province option:selected").text() + ";" +
+                "city," + $("#city option:selected").text() + ";" +
+                "area," + $("#area option:selected").text() + ";" +
+                "detailedAddress," + detailedAddress
             ;
         }
 
