@@ -4,54 +4,66 @@
             <div class="col-sm-8 course_detail wow fadeIn" data-wow-delay="400ms">
                 <div class="profile_bg heading_space">
                     <h3 class="bottom20">个人资料</h3>
-                    <div style="float: left;padding-right: 5%;"><img src="images/profile1.png" alt="Course"></div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="widget heading_space">
-                                <p class="hours">昵称：<span>XXX</span></p>
-                                <p class="hours">姓名：<span>XXX</span></p>
-                                <p class="hours">学历：<span>XXX</span></p>
+                    <div style="float: left; padding-right: 5%;"><img src="images/profile1.png" alt="Course"></div>
+                    <th:block th:switch="${session.role == '学生'}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="widget heading_space">
+                                    <p class="hours">昵称：<span th:text="${user.username}">XXX</span></p>
+                                    <p class="hours">年龄：<span>XXX</span></p>
+                                    <p th:case="true" class="hours">学历：<span th:text="${user.qualification}">XXX</span></p>
+                                    <p th:case="true" class="hours">擅长科目：<span th:text="${user.goodAtSubjects}">XXX</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4">
+                                <div class="widget heading_space">
+                                    <p class="hours">姓名：<span th:text="${user.name}">XXX</span></p>
+                                    <p class="hours">性别：<span>XXX</span></p>
+                                    <p th:case="true" class="hours">空闲时间：<span>XXX</span></p>
+                                    <p class="hours">评分：<span th:text="${user.username}">XXX</span></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-4">
-                            <div class="widget heading_space">
-                                <p class="hours">居住地：<span>XXX</span></p>
-                                <p class="hours">擅长科目：<span>XXX</span></p>
-                                <p class="hours">评分：<span>XXX</span></p>
+                        <div style="float: left; width: 18%;height: 1px;"></div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="widget">
+                                    <p class="hours">居住地：<span th:text="${user.provinceAndCity} + ${user.address}">XXX</span></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="profile_text" style="padding-left: 2%;">
-                            <h5><strong>介绍</strong></h5>
-                            <p>XXX</p>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-right: 2%;">
-                        <div class="col-md-5">
-                            <p class="hours">应聘次数：<span>XXX</span></p>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-right: 2%;">
-                        <div class="col-md-5">
-                            <div class="widget heading_space">
-                                <p class="hours">拒绝次数：<span>XXX</span></p>
-                                <p class="hours">取消次数：<span>XXX</span></p>
-                                <p class="hours">成功次数：<span>XXX</span></p>
-                                <p class="hours">接受次数：<span>XXX</span></p>
+                        <div class="row">
+                            <div class="profile_text" style="padding-left: 2%;">
+                                <h5><strong>介绍</strong></h5>
+                                <p>XXX</p>
                             </div>
                         </div>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-5">
-                            <div class="widget heading_space">
-                                <p class="hours">拒绝率：<span>XXX</span></p>
-                                <p class="hours">取消率：<span>XXX</span></p>
-                                <p class="hours">成功率：<span>XXX</span></p>
-                                <p class="hours">接受率：<span>XXX</span></p>
+                        <div class="row" style="padding-right: 2%;">
+                            <div class="col-md-5">
+                                <p class="hours">应聘次数：<span>XXX</span></p>
                             </div>
                         </div>
-                    </div>
+                        <div class="row" style="padding-right: 2%;">
+                            <div class="col-md-5">
+                                <div class="widget heading_space">
+                                    <p class="hours">拒绝次数：<span>XXX</span></p>
+                                    <p class="hours">取消次数：<span>XXX</span></p>
+                                    <p class="hours">成功次数：<span>XXX</span></p>
+                                    <p class="hours">接受次数：<span>XXX</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5">
+                                <div class="widget heading_space">
+                                    <p class="hours">拒绝率：<span>XXX</span></p>
+                                    <p class="hours">取消率：<span>XXX</span></p>
+                                    <p class="hours">成功率：<span>XXX</span></p>
+                                    <p class="hours">接受率：<span>XXX</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
                 </div>
             </div>
         </div>
