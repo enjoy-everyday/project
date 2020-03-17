@@ -28,6 +28,8 @@ public class BasicController {
     @Autowired
     private LoginService loginService;
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private ParentService parentService;
     @Autowired
     private StudentService studentService;
@@ -167,9 +169,9 @@ public class BasicController {
     public String changeInformation(@RequestParam(value = "information") String information, Authentication authentication, HttpSession session){
         Map<String,String> map = new HashMap<>();
         String string =information.replace("\"", "");
-        String[] array = string.split(",");
+        String[] array = string.split(";");
         for(String str : array ){
-            String[] newArray = str.split(":");
+            String[] newArray = str.split(",");
             System.out.println(str);
             map.put(newArray[0], newArray[1]);
         }
