@@ -139,6 +139,7 @@ $(document).ready(function () {
                 "province," + $("#province option:selected").text() + ";" +
                 "city," + $("#city option:selected").text() + ";" +
                 "area," + $("#area option:selected").text() + ";" +
+                "achievements," + $("#achievements option:selected").text() + ";" +
                 "detailedAddress," + detailedAddress
             ;
         }
