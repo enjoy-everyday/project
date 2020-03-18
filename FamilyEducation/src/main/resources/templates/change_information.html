@@ -68,7 +68,10 @@
                                     <div class="form-group">
                                         <label class="select">
                                             <select name="qualification" id="qualification">
-                                                <option>XXX</option>
+                                                <option>专科在读</option>
+                                                <option>本科在读</option>
+                                                <option>研究生在读</option>
+                                                <option>博士生在读</option>
                                             </select>
                                         </label>
                                     </div>
@@ -96,6 +99,27 @@
                                         <p style="line-height: 25px; text-align: left;" >
                                             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#freeTime">点击选择</button>
                                         </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </th:block>
+
+                        <th:block th:case="true">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-cenrter" style="float: left;">
+                                        <p style="margin-top: 10px;">孩子成绩情况：</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="select">
+                                            <select name="achievements" id="achievements">
+                                                <option>高</option>
+                                                <option>中</option>
+                                                <option>低</option>
+                                            </select>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
