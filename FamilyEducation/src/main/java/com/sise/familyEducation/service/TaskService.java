@@ -40,6 +40,10 @@ public class TaskService {
         return taskRepository.findTasksByDetailAndResult(detail, result);
     }
 
+    public int countTaskByStudent(Student student){
+        return taskRepository.countTaskByStudent(student);
+    }
+
     @Transactional
     public void saveTask(Task task){
         taskRepository.save(task);
