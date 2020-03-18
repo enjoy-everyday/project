@@ -58,9 +58,22 @@ public class BasicController {
     }
 
     @RequestMapping(value = "/personalCenter")
-    public String personalCenter(HttpSession session){
+    public String personalCenter(Authentication authentication, HttpSession session){
+        User user = loginService.findUserByPhone(authentication.getName());
+        String role = user.getRole().getRole();
         int code = 1;
         int number = 0;
+        int taskNumber = 0;
+        if (role.equals("学生")){
+            Student user1 = studentService.findStudentByUser(user);
+            taskNumber = taskService.countTaskByStudent(user1);
+            session.setAttribute("user", user1);
+        }
+        else {
+            Parent user1 = parentService.findParentByPhone(authentication.getName());
+            session.setAttribute("user", user1);
+        }
+        session.setAttribute("taskNumber", taskNumber);
         session.setAttribute("code", code);
         session.setAttribute("number", number);
         return "student/student_home";
@@ -199,6 +212,7 @@ public class BasicController {
             parent.setAge(map.get("age"));
             parent.setGender(map.get("gender").charAt(0));
             parent.setProvinceAndCity(map.get("province") + map.get("city") + map.get("area"));
+            parent.setAchievements(map.get("achievements"));
             if (!"null".equals(map.get("detailedAddress"))){
                 parent.setAddress(map.get("detailedAddress"));
             }
