@@ -29,4 +29,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
     List<Task> findTasksByDetailAndResult(Detail detail, String result);
 
+    int countTaskByStudent(Student student);
+
 }
