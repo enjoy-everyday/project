@@ -30,7 +30,7 @@
                                 <th:block th:switch="${session.role == '学生'}">
                                     <p th:case="true" class="hours">空闲时间：<span>XXX</span></p>
                                 </th:block>
-                                <p class="hours">评分：<span th:text="${session.user.username}">XXX</span></p>
+                                <p class="hours">评分：<span th:text="${session.score}">XXX</span></p>
                             </div>
                         </div>
                     </div>
@@ -50,33 +50,45 @@
                     </div>
                     <div class="row" style="padding-right: 2%;">
                         <div class="col-md-5">
-                            <p class="hours">应聘次数：<span th:text="${session.taskNumber}">XXX</span></p>
-<!--                            <th:block th:switch="${session.role == '家长'}">-->
-<!--                                <div class="col-md-2"></div>-->
-<!--                                <div class="col-md-5">-->
-<!--                                    <div class="widget">-->
-<!--                                        <p th:case="true" class="hours">发布请家教次数：<span>XXX</span></p>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </th:block>-->
+                            <div class="widget heading_space">
+                                <p class="hours">应聘次数：<span th:text="${session.taskNumber}">XXX</span></p>
+                            </div>
                         </div>
+                        <th:block th:switch="${session.role == '家长'}">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5">
+                                <div class="widget heading_space">
+                                    <p th:case="true" class="hours">发布请家教次数：<span>XXX</span></p>
+                                </div>
+                            </div>
+                        </th:block>
                     </div>
                     <div class="row" style="padding-right: 2%;">
                         <div class="col-md-5">
                             <div class="widget heading_space">
-                                <p class="hours">拒绝次数：<span>XXX</span></p>
-                                <p class="hours">取消次数：<span>XXX</span></p>
-                                <p class="hours">成功次数：<span>XXX</span></p>
-                                <p class="hours">接受次数：<span>XXX</span></p>
+                                <p class="hours">拒绝次数：<span th:text="${session.refuseTime}">XXX</span></p>
+                                <p class="hours">取消次数：<span th:text="${session.cancelTime}">XXX</span></p>
+                                <p class="hours">成功次数：<span th:text="${session.successTime}">XXX</span></p>
+                                <p class="hours">接受次数：<span th:text="${session.acceptTime}">XXX</span></p>
                             </div>
                         </div>
                         <div class="col-md-2"></div>
                         <div class="col-md-5">
                             <div class="widget heading_space">
-                                <p class="hours">拒绝率：<span>XXX</span></p>
-                                <p class="hours">取消率：<span>XXX</span></p>
-                                <p class="hours">成功率：<span>XXX</span></p>
-                                <p class="hours">接受率：<span>XXX</span></p>
+                                <th:block th:switch="${session.taskNumber == 0}">
+                                    <th:block th:case="true">
+                                        <p class="hours">拒绝率：<span>0</span></p>
+                                        <p class="hours">取消率：<span>0</span></p>
+                                        <p class="hours">成功率：<span>0</span></p>
+                                        <p class="hours">接受率：<span>0</span></p>
+                                    </th:block>
+                                    <th:block th:case="false">
+                                        <p class="hours">拒绝率：<span th:text="${session.refuseTime / session.taskNumber * 100} + '%'">XXX</span></p>
+                                        <p class="hours">取消率：<span th:text="${session.cancelTime / session.taskNumber * 100} + '%'">XXX</span></p>
+                                        <p class="hours">成功率：<span th:text="${session.successTime / session.taskNumber * 100} + '%'">XXX</span></p>
+                                        <p class="hours">接受率：<span th:text="${session.acceptTime / session.taskNumber * 100} + '%'">XXX</span></p>
+                                    </th:block>
+                                </th:block>
                             </div>
                         </div>
                     </div>
