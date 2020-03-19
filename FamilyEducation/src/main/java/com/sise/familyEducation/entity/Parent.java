@@ -30,6 +30,7 @@ public class Parent {
     private String phone;
     private String address;
     private String username;
+    private String Achievements;
     private String provinceAndCity;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
