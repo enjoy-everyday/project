@@ -57,6 +57,11 @@ public class BasicController {
         return areas;
     }
 
+    /**
+     * @date: 2020/3/18
+     * @description: 个人资料页面
+     */
+
     @RequestMapping(value = "/personalCenter")
     public String personalCenter(Authentication authentication, HttpSession session){
         User user = loginService.findUserByPhone(authentication.getName());
@@ -64,20 +69,52 @@ public class BasicController {
         int code = 1;
         int number = 0;
         int taskNumber = 0;
+        int refuseTime = 0;
+        int cancelTime = 0;
+        int successTime = 0;
+        int acceptTime = 0;
+        int score = 0;
         if (role.equals("学生")){
             Student user1 = studentService.findStudentByUser(user);
             taskNumber = taskService.countTaskByStudent(user1);
+            refuseTime = taskService.countTaskStudentAndResult(user1, "拒绝");
+            cancelTime = taskService.countTaskStudentAndResult(user1, "取消");
+            successTime = taskService.countTaskStudentAndResult(user1, "成功");
+            acceptTime = taskService.countTaskStudentAndResult(user1, "接受");
+            if (taskNumber != 0){
+                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+            }
             session.setAttribute("user", user1);
         }
         else {
             Parent user1 = parentService.findParentByPhone(authentication.getName());
+            for (Detail detail : user1.getDetails()){
+                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+                refuseTime = taskService.countTaskDetailAndResult(detail, "拒绝");
+                cancelTime = taskService.countTaskDetailAndResult(detail, "取消");
+                successTime = taskService.countTaskDetailAndResult(detail, "成功");
+                acceptTime = taskService.countTaskDetailAndResult(detail, "接受");
+                if (taskNumber != 0){
+                    score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+                }
+            }
             session.setAttribute("user", user1);
         }
         session.setAttribute("taskNumber", taskNumber);
+        session.setAttribute("refuseTime", refuseTime);
+        session.setAttribute("cancelTime", cancelTime);
+        session.setAttribute("successTime", successTime);
+        session.setAttribute("acceptTime", acceptTime);
+        session.setAttribute("score", score);
         session.setAttribute("code", code);
         session.setAttribute("number", number);
         return "student/student_home";
     }
+
+    /**
+     * @date: 2020/3/18
+     * @description: 修改位置
+     */
 
     @RequestMapping(value = "/changePosition")
     public String changePosition(Authentication authentication, @RequestParam(value = "province_name") String province_name, @RequestParam(value = "city_name") String city_name, @RequestParam(value = "area_name") String area_name, HttpSession session){
@@ -287,6 +324,16 @@ public class BasicController {
             }
         }
         return result;
+    }
+
+    /**
+     * @date: 2020/3/18
+     * @description: 查看其它人的个人资料及介绍
+     */
+
+    @RequestMapping(value = "/")
+    public String viewIntroduction(){
+        return "";
     }
 
 
