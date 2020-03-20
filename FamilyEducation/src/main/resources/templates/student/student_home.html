@@ -52,7 +52,8 @@
                 <div th:include="/information"></div>
             </th:block>
             <th:block th:if="${session.code == 4}">
-
+                <div class="col-md-9 padding" th:include="/personal_introduction"></div>
+                <div class="col-md-3" th:include="/right"></div>
             </th:block>
             <th:block th:if="${session.code == 5}">
                 <div th:include="/parent/all_students"></div>
