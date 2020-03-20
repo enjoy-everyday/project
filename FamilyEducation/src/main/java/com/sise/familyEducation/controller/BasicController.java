@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -24,9 +23,13 @@ import java.util.*;
 public class BasicController {
 
     @Autowired
+    private UserService userService;
+    @Autowired
     private BasicService basicService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private DetailService detailService;
     @Autowired
     private TaskService taskService;
     @Autowired
@@ -36,6 +39,63 @@ public class BasicController {
     @Autowired
     private MessageService messageService;
 
+    /**
+     * @date: 2020/3/19
+     * @description: 查看其它人的个人资料及介绍、重定向
+     */
+
+    @RequestMapping(value = "/introductionPage", method = RequestMethod.GET)
+    public String introductionPage(@RequestParam(value = "id") int id, HttpSession session){
+        int taskNumber = 0;
+        int refuseTime = 0;
+        int cancelTime = 0;
+        int successTime = 0;
+        int acceptTime = 0;
+        int score = 0;
+        long allDetailNumber = detailService.countAllDetail();
+        User otherUser = userService.findUserById(id);
+        String role = otherUser.getRole().getRole();
+        if (role.equals("学生")){
+            Student otherStudent = studentService.findStudentByUser(otherUser);
+            taskNumber = taskService.countTaskByStudent(otherStudent);
+            refuseTime = taskService.countTaskStudentAndResult(otherStudent, "拒绝");
+            cancelTime = taskService.countTaskStudentAndResult(otherStudent, "取消");
+            successTime = taskService.countTaskStudentAndResult(otherStudent, "成功");
+            acceptTime = taskService.countTaskStudentAndResult(otherStudent, "接受");
+            if (taskNumber != 0){
+                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+            }
+            session.setAttribute("otherUser", otherStudent);
+        }
+        else {
+            Parent otherParent = parentService.findParentByUser(otherUser);
+            for (Detail detail : otherParent.getDetails()) {
+                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+                refuseTime = taskService.countTaskDetailAndResult(detail, "拒绝");
+                cancelTime = taskService.countTaskDetailAndResult(detail, "取消");
+                successTime = taskService.countTaskDetailAndResult(detail, "成功");
+                acceptTime = taskService.countTaskDetailAndResult(detail, "接受");
+                if (taskNumber != 0) {
+                    score = ((-(refuseTime / taskNumber) + 1) + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+                }
+                session.setAttribute("otherUser", otherParent);
+            }
+        }
+        session.setAttribute("taskNumber", taskNumber);
+        session.setAttribute("refuseTime", refuseTime);
+        session.setAttribute("cancelTime", cancelTime);
+        session.setAttribute("successTime", successTime);
+        session.setAttribute("acceptTime", acceptTime);
+        session.setAttribute("score", score);
+        session.setAttribute("allDetailNumber", allDetailNumber);
+        return "redirect:/viewIntroduction";
+    }
+
+    /**
+     * @date: 2020/3/19
+     * @description: 获取省份
+     */
+
     @RequestMapping(value = "/getProvince")
     @ResponseBody
     public List<Province> getAllProvinces(){
@@ -43,12 +103,22 @@ public class BasicController {
         return provinces;
     }
 
+    /**
+     * @date: 2020/3/19
+     * @description: 获取城市
+     */
+
     @RequestMapping(value = "/getCities")
     @ResponseBody
     public List<City> getCities(@RequestParam(value = "province_code") int province_code){
         List<City> cities = basicService.findProvinceById(province_code).getCities();
         return cities;
     }
+
+    /**
+     * @date: 2020/3/19
+     * @description: 获取区
+     */
 
     @RequestMapping(value = "/getAreas")
     @ResponseBody
@@ -328,12 +398,14 @@ public class BasicController {
 
     /**
      * @date: 2020/3/18
-     * @description: 查看其它人的个人资料及介绍
+     * @description: 其它人的个人资料及介绍页面
      */
 
-    @RequestMapping(value = "/")
-    public String viewIntroduction(){
-        return "";
+    @RequestMapping(value = "/viewIntroduction")
+    public String viewIntroduction(HttpSession session){
+        int code = 4;
+        session.setAttribute("code", code);
+        return "student/student_home";
     }
 
 
