@@ -215,6 +215,17 @@ $(document).ready(function () {
         $("#otherDetailedAddress").empty();
     });
 
+    //显示星星数
+    var starNumber = parseInt($("#score").text()) - 1;
+    $("input[name='star']").eq(starNumber).attr("checked", "");
+
+    //显示进度条
+    $("#taskNumberBar").css("width", ($("#taskNumberText").text() / $("#allDetailNumber").val() * 100) + '%');
+    $("#cancelTimeBar").css("width", $("#cancelTimeText").text());
+    $("#refuseTimeBar").css("width", $("#refuseTimeText").text());
+    $("#acceptTimeBar").css("width", $("#acceptTimeText").text());
+    $("#successTimeBar").css("width", $("#successTimeText").text());
+
 });
 
 //应聘
