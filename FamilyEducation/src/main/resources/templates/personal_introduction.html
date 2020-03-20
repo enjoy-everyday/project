@@ -1,4 +1,4 @@
-<section id="course_all" class="padding-bottom-half padding-top">
+<section id="course_all" class="padding-bottom-half">
     <div class="container">
         <div class="row">
             <div class="col-sm-8 course_detail wow fadeIn" data-wow-delay="400ms">
@@ -7,7 +7,7 @@
                     <div class="profile">
                         <div class="p_pic"><img src="images/default.jpg" alt="Course"></div>
                         <div class="profile_text">
-                            <h5><strong>昵称</strong>  -  <span>排行榜第一</span></h5>
+                            <h5><strong th:text="${session.otherUser.username}">昵称</strong>  -  <span>排行榜第一</span></h5>
                             <p>介绍</p>
                             <ul class="social_icon black top20">
                                 <li><a href="" class="facebook">XXX</a></li>
@@ -18,59 +18,52 @@
                 <div class="reviews">
                     <h3 class="bottom20">统计</h3>
                     <div class="row">
-                        <div class="col-sm-4 heading_space">
-                            <p>平均</p>
+                        <div class="col-md-4 heading_space">
                             <div class="review_left text-center">
-                                <strong class="bottom5">4.2</strong>
+                                <strong class="bottom5" th:text="${session.score}" id="score">4.2</strong>
                                 <form class="star_rating bottom5">
                                     <div class="stars">
-                                        <input type="radio" name="star" class="star-1" id="star-11" />
-                                        <label class="star-1" for="star-11">1</label>
-                                        <input type="radio" name="star" class="star-2" id="star-12" />
-                                        <label class="star-2" for="star-12">2</label>
-                                        <input type="radio" name="star" class="star-3" id="star-13" />
-                                        <label class="star-3" for="star-13">3</label>
-                                        <input type="radio" name="star" class="star-4" id="star-14" checked />
-                                        <label class="star-4" for="star-14">4</label>
-                                        <input type="radio" name="star" class="star-5"  id="star-15"  />
-                                        <label class="star-5" for="star-15">5</label>
-                                        <span></span>
+                                        <input type="radio" name="star" class="star-1" />
+                                        <input type="radio" name="star" class="star-2" />
+                                        <input type="radio" name="star" class="star-3" />
+                                        <input type="radio" name="star" class="star-4" />
+                                        <input type="radio" name="star" class="star-5" />
                                     </div>
                                 </form>
-                                <p class="no_bottom">4 XXX</p>
                             </div>
                         </div>
-                        <div class="col-sm-8 heading_space">
+                        <div class="col-md-8 heading_space">
                             <div class="rating_progress">
                                 <span>应聘数</span>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%;"></div>
+                                    <div class="progress-bar" role="progressbar" id="taskNumberBar"></div>
                                 </div>
-                                <span>8</span>
-                                <div class="clearfix"></div>
-                                <span>取消率</span>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%;"></div>
-                                </div>
-                                <span>60%</span>
+                                <span id="taskNumberText" th:text="${session.taskNumber}">XXX</span>
+                                <input type="hidden" th:value="${session.allDetailNumber}" id="allDetailNumber">
                                 <div class="clearfix"></div>
                                 <span>拒绝率</span>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%;"></div>
+                                    <div class="progress-bar" role="progressbar" id="refuseTimeBar"></div>
                                 </div>
-                                <span>30%</span>
+                                <span id="refuseTimeText" th:text="${session.refuseTime / 1 * 100} + '%'">XXX%</span>
                                 <div class="clearfix"></div>
-                                <span>接受率</span>
+                                <span>取消率</span>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%;"></div>
+                                    <div class="progress-bar" role="progressbar" id="cancelTimeBar"></div>
                                 </div>
-                                <span>20%</span>
+                                <span id="cancelTimeText" th:text="${session.cancelTime / 1 * 100} + '%'">XXX%</span>
                                 <div class="clearfix"></div>
                                 <span>成功率</span>
                                 <div class="progress">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
+                                    <div class="progress-bar" role="progressbar" id="successTimeBar"></div>
                                 </div>
-                                <span>1%</span>
+                                <span id="successTimeText" th:text="${session.successTime / 1 * 100} + '%'">XXX%</span>
+                                <div class="clearfix"></div>
+                                <span>接受率</span>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" id="acceptTimeBar"></div>
+                                </div>
+                                <span id="acceptTimeText" th:text="${session.acceptTime / 1 * 100} + '%'">XXX%</span>
                             </div>
                         </div>
                     </div>
@@ -80,21 +73,6 @@
                         <div class="p_pic"><img src="images/default.jpg" alt="Course"></div>
                         <div class="profile_text">
                             <h5><strong>昵称</strong>  -  <span>XXX</span></h5>
-                            <form class="star_rating bottom5">
-                                <div class="stars">
-                                    <input type="radio" name="star" class="star-1" id="star-21" />
-                                    <label class="star-1" for="star-21">1</label>
-                                    <input type="radio" name="star" class="star-2" id="star-22" />
-                                    <label class="star-2" for="star-22">2</label>
-                                    <input type="radio" name="star" class="star-3" id="star-23" />
-                                    <label class="star-3" for="star-23">3</label>
-                                    <input type="radio" name="star" class="star-4" id="star-24"  />
-                                    <label class="star-4" for="star-24">4</label>
-                                    <input type="radio" name="star" class="star-5"  id="star-25" checked  />
-                                    <label class="star-5" for="star-25">5</label>
-                                    <span></span>
-                                </div>
-                            </form>
                             <p class="margin10">评价</p>
                         </div>
                     </div>
