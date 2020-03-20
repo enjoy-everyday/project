@@ -2,6 +2,7 @@ package com.sise.familyEducation.repository;
 
 import com.sise.familyEducation.entity.Detail;
 import com.sise.familyEducation.entity.Parent;
+import com.sise.familyEducation.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,5 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ParentRepository extends JpaRepository<Parent, Integer> {
 
     Parent findByPhone(String phone);
+
+    Parent findParentByUser(User user);
 
 }
