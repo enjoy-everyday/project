@@ -55,6 +55,10 @@ public class DetailService {
         return detailRepository.findDetailsByAddressLike(address);
     }
 
+    public long countAllDetail(){
+        return detailRepository.count();
+    }
+
     @Transactional
     public Detail saveDetail(Detail detail){
         return detailRepository.save(detail);

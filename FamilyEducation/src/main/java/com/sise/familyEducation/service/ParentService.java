@@ -2,6 +2,7 @@ package com.sise.familyEducation.service;
 
 import com.sise.familyEducation.entity.Detail;
 import com.sise.familyEducation.entity.Parent;
+import com.sise.familyEducation.entity.User;
 import com.sise.familyEducation.repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class ParentService {
 
     public Parent findParentByPhone(String phone){
         return parentRepository.findByPhone(phone);
+    }
+
+    public Parent findParentByUser(User user){
+        return parentRepository.findParentByUser(user);
     }
 
     @Transactional
