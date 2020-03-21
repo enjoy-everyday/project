@@ -34,6 +34,7 @@ public class Student {
     private String qualification;
     private String goodAtSubjects;
     private String freeTime;
+    private float score = 0;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

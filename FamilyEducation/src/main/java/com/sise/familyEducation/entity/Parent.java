@@ -32,6 +32,7 @@ public class Parent {
     private String username;
     private String Achievements;
     private String provinceAndCity;
+    private float score = 0;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
