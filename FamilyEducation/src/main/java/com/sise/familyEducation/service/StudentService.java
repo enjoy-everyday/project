@@ -5,6 +5,7 @@ import com.sise.familyEducation.entity.Student;
 import com.sise.familyEducation.entity.User;
 import com.sise.familyEducation.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,10 @@ public class StudentService {
 
     public Student findStudentByUser(User user){
         return studentRepository.findByUser(user);
+    }
+
+    public Iterable<Student> findAllStudentSort(Sort sort){
+        return studentRepository.findAll(sort);
     }
 
     @Transactional

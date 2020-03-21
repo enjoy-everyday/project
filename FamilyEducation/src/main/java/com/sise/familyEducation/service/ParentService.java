@@ -5,6 +5,7 @@ import com.sise.familyEducation.entity.Parent;
 import com.sise.familyEducation.entity.User;
 import com.sise.familyEducation.repository.ParentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,10 @@ public class ParentService {
 
     public Parent findParentByUser(User user){
         return parentRepository.findParentByUser(user);
+    }
+
+    public Iterable<Parent> findAllParentSort(Sort sort){
+        return parentRepository.findAll(sort);
     }
 
     @Transactional
