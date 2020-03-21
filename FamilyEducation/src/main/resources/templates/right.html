@@ -19,25 +19,24 @@
             <h3 class="bottom20">评分排行榜</h3>
             <th:block th:switch="${session.role == '学生'}">
                 <div th:case="true" class="media">
-                    <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
-                    <div class="media-body">
-                        <h5 class="bottom5">昵称</h5>
-                        <form class="star_rating">
-                            <div class="stars">
-                                <input type="radio" name="star" class="star-1" id="star-01" />
-                                <label class="star-1" for="star-01">1</label>
-                                <input type="radio" name="star" class="star-2" id="star-02" />
-                                <label class="star-2" for="star-02">2</label>
-                                <input type="radio" name="star" class="star-3" id="star-03" />
-                                <label class="star-3" for="star-03">3</label>
-                                <input type="radio" name="star" class="star-4" id="star-04"  />
-                                <label class="star-4" for="star-04">4</label>
-                                <input type="radio" name="star" class="star-5"  id="star-05" checked  />
-                                <label class="star-5" for="star-05">5</label>
-                                <span></span>
-                            </div>
-                        </form>
-                    </div>
+                    <th:block th:each="parent : ${session.parents}">
+                        <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
+
+                        <div class="media-body">
+                            <h5 class="bottom5" th:text="${parent.username}">昵称</h5>
+                            <input type="hidden" th:value="${parent.score}" th:id="'score' + ${parentStat.count}">
+                            <form class="star_rating" name="rankingList">
+                                <div class="stars" th:id="'rankingList' + ${parentStat.count}">
+                                    <input type="radio" class="star-1" />
+                                    <input type="radio" class="star-2" />
+                                    <input type="radio" class="star-3" />
+                                    <input type="radio" class="star-4" />
+                                    <input type="radio" class="star-5" />
+                                    <span></span>
+                                </div>
+                            </form>
+                        </div>
+                    </th:block>
                 </div>
 
                 <div th:case="false" class="media">

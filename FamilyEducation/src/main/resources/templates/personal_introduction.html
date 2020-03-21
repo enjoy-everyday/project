@@ -18,9 +18,9 @@
                 <div class="reviews">
                     <h3 class="bottom20">统计</h3>
                     <div class="row">
-                        <div class="col-md-4 heading_space">
+                        <div class="col-sm-4 heading_space">
                             <div class="review_left text-center">
-                                <strong class="bottom5" th:text="${session.score}" id="score">4.2</strong>
+                                <strong class="bottom5" th:text="${session.score}" id="score">XXX</strong>
                                 <form class="star_rating bottom5">
                                     <div class="stars">
                                         <input type="radio" name="star" class="star-1" />
@@ -28,6 +28,7 @@
                                         <input type="radio" name="star" class="star-3" />
                                         <input type="radio" name="star" class="star-4" />
                                         <input type="radio" name="star" class="star-5" />
+                                        <span></span>
                                     </div>
                                 </form>
                             </div>
@@ -45,25 +46,25 @@
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" id="refuseTimeBar"></div>
                                 </div>
-                                <span id="refuseTimeText" th:text="${session.refuseTime / 1 * 100} + '%'">XXX%</span>
+                                <span id="refuseTimeText" th:text="${session.refuseRate * 100} + '%'">XXX%</span>
                                 <div class="clearfix"></div>
                                 <span>取消率</span>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" id="cancelTimeBar"></div>
                                 </div>
-                                <span id="cancelTimeText" th:text="${session.cancelTime / 1 * 100} + '%'">XXX%</span>
+                                <span id="cancelTimeText" th:text="${session.cancelRate * 100} + '%'">XXX%</span>
                                 <div class="clearfix"></div>
                                 <span>成功率</span>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" id="successTimeBar"></div>
                                 </div>
-                                <span id="successTimeText" th:text="${session.successTime / 1 * 100} + '%'">XXX%</span>
+                                <span id="successTimeText" th:text="${session.successRate * 100} + '%'">XXX%</span>
                                 <div class="clearfix"></div>
                                 <span>接受率</span>
                                 <div class="progress">
                                     <div class="progress-bar" role="progressbar" id="acceptTimeBar"></div>
                                 </div>
-                                <span id="acceptTimeText" th:text="${session.acceptTime / 1 * 100} + '%'">XXX%</span>
+                                <span id="acceptTimeText" th:text="${session.acceptRate * 100} + '%'">XXX%</span>
                             </div>
                         </div>
                     </div>
