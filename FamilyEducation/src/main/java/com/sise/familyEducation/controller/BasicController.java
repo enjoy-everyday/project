@@ -46,46 +46,50 @@ public class BasicController {
 
     @RequestMapping(value = "/introductionPage", method = RequestMethod.GET)
     public String introductionPage(@RequestParam(value = "id") int id, HttpSession session){
-        int taskNumber = 0;
-        int refuseTime = 0;
-        int cancelTime = 0;
-        int successTime = 0;
-        int acceptTime = 0;
-        int score = 0;
+        float taskNumber = 0;
+        float refuseRate = 0;
+        float cancelRate = 0;
+        float successRate = 0;
+        float acceptRate = 0;
+        float score = 0;
         long allDetailNumber = detailService.countAllDetail();
         User otherUser = userService.findUserById(id);
         String role = otherUser.getRole().getRole();
         if (role.equals("学生")){
             Student otherStudent = studentService.findStudentByUser(otherUser);
             taskNumber = taskService.countTaskByStudent(otherStudent);
-            refuseTime = taskService.countTaskStudentAndResult(otherStudent, "拒绝");
-            cancelTime = taskService.countTaskStudentAndResult(otherStudent, "取消");
-            successTime = taskService.countTaskStudentAndResult(otherStudent, "成功");
-            acceptTime = taskService.countTaskStudentAndResult(otherStudent, "接受");
             if (taskNumber != 0){
-                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+                refuseRate = taskService.countTaskStudentAndResult(otherStudent, "拒绝") / taskNumber;
+                cancelRate = taskService.countTaskStudentAndResult(otherStudent, "取消") / taskNumber;
+                successRate = taskService.countTaskStudentAndResult(otherStudent, "成功") / taskNumber;
+                acceptRate = taskService.countTaskStudentAndResult(otherStudent, "接受") / taskNumber;
             }
+            score = otherStudent.getScore();
             session.setAttribute("otherUser", otherStudent);
         }
         else {
             Parent otherParent = parentService.findParentByUser(otherUser);
             for (Detail detail : otherParent.getDetails()) {
                 taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-                refuseTime = taskService.countTaskDetailAndResult(detail, "拒绝");
-                cancelTime = taskService.countTaskDetailAndResult(detail, "取消");
-                successTime = taskService.countTaskDetailAndResult(detail, "成功");
-                acceptTime = taskService.countTaskDetailAndResult(detail, "接受");
-                if (taskNumber != 0) {
-                    score = ((-(refuseTime / taskNumber) + 1) + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
-                }
-                session.setAttribute("otherUser", otherParent);
+                refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+                cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+                successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+                acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
             }
+            if (taskNumber != 0) {
+                refuseRate = refuseRate / taskNumber;
+                cancelRate = cancelRate / taskNumber;
+                successRate = successRate / taskNumber;
+                acceptRate = acceptRate / taskNumber;
+            }
+            score = otherParent.getScore();
+            session.setAttribute("otherUser", otherParent);
         }
         session.setAttribute("taskNumber", taskNumber);
-        session.setAttribute("refuseTime", refuseTime);
-        session.setAttribute("cancelTime", cancelTime);
-        session.setAttribute("successTime", successTime);
-        session.setAttribute("acceptTime", acceptTime);
+        session.setAttribute("refuseRate", refuseRate);
+        session.setAttribute("cancelRate", cancelRate);
+        session.setAttribute("successRate", successRate);
+        session.setAttribute("acceptRate", acceptRate);
         session.setAttribute("score", score);
         session.setAttribute("allDetailNumber", allDetailNumber);
         return "redirect:/viewIntroduction";

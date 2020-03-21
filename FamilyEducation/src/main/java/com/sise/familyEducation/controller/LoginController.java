@@ -4,6 +4,7 @@ import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.location.GetPlaceByIp;
 import com.sise.familyEducation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -108,18 +109,24 @@ public class LoginController {
         session.setAttribute("code", code);
         session.setAttribute("role", role);
         if (role.equals("学生")){
+            Sort sort = Sort.by(Sort.Direction.DESC, "score");
+            Iterable<Parent> parents = parentService.findAllParentSort(sort);
             Student person = studentService.findStudentByUser(user);
             List<Detail> details = detailService.findDetailsByAddressLike(province + city);
             int messageNumber = messageService.countByStudentAndState(person, false);
             session.setAttribute("messageNumber", messageNumber);
             session.setAttribute("person", person);
             session.setAttribute("details", details);
+            session.setAttribute("parents", parents);
         }
         else if (role.equals("家长")){
+            Sort sort = Sort.by(Sort.Direction.DESC, "score");
+            Iterable<Student> students = studentService.findAllStudentSort(sort);
             Parent person = parentService.findParentByPhone(authentication.getName());
             int messageNumber = messageService.countByParentAndState(person, false);
             session.setAttribute("messageNumber", messageNumber);
             session.setAttribute("person", person);
+            session.setAttribute("students", students);
         }
         return "student/student_home";
     }

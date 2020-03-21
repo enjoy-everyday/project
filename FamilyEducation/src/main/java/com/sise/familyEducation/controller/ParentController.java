@@ -94,7 +94,15 @@ public class ParentController {
 
     @RequestMapping("/enterTheInterview")
     @ResponseBody
-    public String enterYheInterview(@RequestParam(value = "task_id") int id){
+    public String enterYheInterview(@RequestParam(value = "task_id") int id, Authentication authentication){
+        float taskNumber = 0;
+        float refuseRate = 0;
+        float cancelRate = 0;
+        float successRate = 0;
+        float acceptRate = 0;
+        float score = 0;
+        User user = loginService.findUserByPhone(authentication.getName());
+        Parent parent = parentService.findParentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("接受");
         if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
@@ -107,6 +115,19 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
+        for (Detail detail : parent.getDetails()) {
+            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
+        }
+        refuseRate = refuseRate / taskNumber;
+        cancelRate = cancelRate / taskNumber;
+        successRate = successRate / taskNumber;
+        acceptRate = acceptRate / taskNumber;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        parent.setScore(score);
         return "success";
     }
 
@@ -117,12 +138,17 @@ public class ParentController {
 
     @RequestMapping("/refuseEntry")
     @ResponseBody
-    public String refuseEntry(@RequestParam(value = "task_id") int id){
+    public String refuseEntry(@RequestParam(value = "task_id") int id, Authentication authentication){
+        float taskNumber = 0;
+        float refuseRate = 0;
+        float cancelRate = 0;
+        float successRate = 0;
+        float acceptRate = 0;
+        float score = 0;
+        User user = loginService.findUserByPhone(authentication.getName());
+        Parent parent = parentService.findParentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("拒绝");
-        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
-        }
         Message message = new Message();
         message.setDate(new Date().toString());
         message.setMessage("拒绝");
@@ -130,6 +156,22 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
+        for (Detail detail : parent.getDetails()) {
+            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
+        }
+        refuseRate = refuseRate / taskNumber;
+        cancelRate = cancelRate / taskNumber;
+        successRate = successRate / taskNumber;
+        acceptRate = acceptRate / taskNumber;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        parent.setScore(score);
+        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
+        }
         return "success";
     }
 

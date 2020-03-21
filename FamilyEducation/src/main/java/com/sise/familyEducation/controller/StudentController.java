@@ -181,6 +181,12 @@ public class StudentController {
     @RequestMapping("/applyForTutor")
     @ResponseBody
     public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication){
+        float taskNumber = 0;
+        float refuseRate = 0;
+        float cancelRate = 0;
+        float successRate = 0;
+        float acceptRate = 0;
+        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         if (student.getName() == null){
@@ -193,6 +199,13 @@ public class StudentController {
             task.setDetail(detail);
             task.setStudent(student);
             taskService.saveTask(task);
+            taskNumber = taskService.countTaskByStudent(student);
+            refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
+            cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
+            successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
+            acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
+            score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+            student.setScore(score);
             return "success";
         }
     }
@@ -227,7 +240,15 @@ public class StudentController {
 
     @RequestMapping("/cancelTheApplication")
     @ResponseBody
-    public String cancelTheApplication(@RequestParam(value = "task_id") int id, HttpSession session){
+    public String cancelTheApplication(@RequestParam(value = "task_id") int id, Authentication authentication, HttpSession session){
+        float taskNumber = 0;
+        float refuseRate = 0;
+        float cancelRate = 0;
+        float successRate = 0;
+        float acceptRate = 0;
+        float score = 0;
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("取消");
         if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
@@ -240,6 +261,13 @@ public class StudentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
+        taskNumber = taskService.countTaskByStudent(student);
+        refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
+        cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
+        successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
+        acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        student.setScore(score);
         if ((int)session.getAttribute("number") == 2){
             return "accepted";
         }
