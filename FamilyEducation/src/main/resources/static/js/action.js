@@ -217,7 +217,9 @@ $(document).ready(function () {
 
     //显示星星数
     var starNumber = parseInt($("#score").text()) - 1;
-    $("input[name='star']").eq(starNumber).attr("checked", "");
+    if (starNumber !== -1){
+        $("input[name='star']").eq(starNumber).attr("checked", true);
+    }
 
     //显示进度条
     $("#taskNumberBar").css("width", ($("#taskNumberText").text() / $("#allDetailNumber").val() * 100) + '%');
@@ -225,6 +227,14 @@ $(document).ready(function () {
     $("#refuseTimeBar").css("width", $("#refuseTimeText").text());
     $("#acceptTimeBar").css("width", $("#acceptTimeText").text());
     $("#successTimeBar").css("width", $("#successTimeText").text());
+    
+    //排行榜星星
+    var rankingListNumber = $("form[name='rankingList']").length;
+    var j = 1;
+    alert($("#rankingList").children(0).attr("class"));
+    for (var i = 1; i <= rankingListNumber; i++){
+        $("#rankingList").children(parseInt($("#score" + i).val()) + 1).attr("checked", true);
+    }
 
 });
 
