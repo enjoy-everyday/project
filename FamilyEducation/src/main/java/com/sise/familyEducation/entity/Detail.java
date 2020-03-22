@@ -33,6 +33,7 @@ public class Detail {
     private String experience;
     private String requirement;
     private String teachingTime;
+    private boolean display = true;        //是否显示
 
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
     @JoinColumn(name="parent_id")
