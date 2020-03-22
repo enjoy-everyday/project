@@ -251,9 +251,6 @@ public class StudentController {
         Student student = studentService.findStudentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("取消");
-        if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
-        }
         Message message = new Message();
         message.setDate(new Date().toString());
         message.setMessage("取消");
@@ -268,6 +265,9 @@ public class StudentController {
         acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
         score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
         student.setScore(score);
+        if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
+        }
         if ((int)session.getAttribute("number") == 2){
             return "accepted";
         }

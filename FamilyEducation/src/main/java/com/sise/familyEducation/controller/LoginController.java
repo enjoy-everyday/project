@@ -109,8 +109,7 @@ public class LoginController {
         session.setAttribute("code", code);
         session.setAttribute("role", role);
         if (role.equals("学生")){
-            Sort sort = Sort.by(Sort.Direction.DESC, "score");
-            Iterable<Parent> parents = parentService.findAllParentSort(sort);
+            Iterable<Parent> parents = parentService.findParentOrderByScoreLimit();
             Student person = studentService.findStudentByUser(user);
             List<Detail> details = detailService.findDetailsByAddressLike(province + city);
             int messageNumber = messageService.countByStudentAndState(person, false);
@@ -120,8 +119,7 @@ public class LoginController {
             session.setAttribute("parents", parents);
         }
         else if (role.equals("家长")){
-            Sort sort = Sort.by(Sort.Direction.DESC, "score");
-            Iterable<Student> students = studentService.findAllStudentSort(sort);
+            List<Student> students = studentService.findStudentOrderByScoreLimit();
             Parent person = parentService.findParentByPhone(authentication.getName());
             int messageNumber = messageService.countByParentAndState(person, false);
             session.setAttribute("messageNumber", messageNumber);

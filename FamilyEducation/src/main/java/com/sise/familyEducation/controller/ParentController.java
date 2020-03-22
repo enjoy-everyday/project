@@ -198,8 +198,10 @@ public class ParentController {
     public String findAllPublish(Authentication authentication, HttpSession session){
         int number = 4;
         Parent parent = parentService.findParentByPhone(authentication.getName());
+        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
         session.setAttribute("number", number);
         session.setAttribute("parent", parent);
+        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -212,8 +214,10 @@ public class ParentController {
     public String findApplied(Authentication authentication, HttpSession session){
         int number = 5;
         Parent parent = parentService.findParentByPhone(authentication.getName());
+        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
         session.setAttribute("number", number);
         session.setAttribute("parent", parent);
+        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -226,8 +230,10 @@ public class ParentController {
     public String findAcceptedApplication(Authentication authentication, HttpSession session){
         int number = 6;
         Parent parent = parentService.findParentByPhone(authentication.getName());
+        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
         session.setAttribute("number", number);
         session.setAttribute("parent", parent);
+        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -338,6 +344,15 @@ public class ParentController {
             }
             return result;
         }
+    }
+
+    @RequestMapping(value = "/deleteDetail")
+    @ResponseBody
+    public String deleteDetail(@RequestParam(value = "detail_id") int id){
+        Detail detail = detailService.findDetailsById(id);
+        detail.setDisplay(false);
+        detailService.saveDetail(detail);
+        return "success";
     }
 
 

@@ -254,11 +254,12 @@ public class BasicController {
      */
 
     @RequestMapping(value = "/readInformation")
+    @ResponseBody
     public String readInformation(@RequestParam(value = "message_id") int id){
         Message message = messageService.findMessageById(id);
         message.setState(true);
         messageService.saveMessage(message);
-        return "redirect:/findInformation";
+        return "success";
     }
 
     /**
@@ -360,7 +361,7 @@ public class BasicController {
         System.out.println(map);
         for (int i = 0; i < 7; i++){
             if (map.get(i) != null){
-                result = result + week[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") + "<br>";
+                result = result + week[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") .replace(", ", "，")+ " <br>";
             }
         }
         return result;
