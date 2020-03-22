@@ -52,7 +52,7 @@
                     <th:block th:if="${session.number == 2}">
                         <th:block th:switch="${session.tasks.size() == 0}">
                             <th:block  th:case="false">
-                                <tr th:each="task : ${session.student.getTasks()}">
+                                <tr th:each="task : ${session.tasks}">
                                     <td>
                                         <div class="product-name">
                                             <h4 th:text="${task.getDetail().id}">标题</h4>
@@ -93,7 +93,7 @@
                     <th:block th:if="${session.number == 3}">
                         <th:block th:switch="${session.tasks.size() == 0}">
                             <th:block  th:case="false">
-                                <tr th:each="task : ${session.student.getTasks()}">
+                                <tr th:each="task : ${session.tasks}">
                                     <td>
                                         <div class="product-name">
                                             <h4 th:text="${task.getDetail().id}">标题</h4>
@@ -144,9 +144,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                <th:block th:switch="${session.parent.getDetails().size() == 0}">
-                    <th:block  th:case="false">
-                        <tr th:each="detail : ${session.parent.getDetails()}">
+                <th:block th:switch="${session.details.size() == 0}">
+                    <th:block th:case="false">
+                        <tr th:each="detail : ${session.details}">
                             <td>
                                 <div class="product-name">
                                     <h4 th:text="${detail.id}">标题</h4>
@@ -169,10 +169,8 @@
                                 </p>
                             </td>
                             <td class="text-center">
-                                <form th:action="@{/deleteThePublish}" th:name="${detail.id}" th:id="${detail.id}" method="post">
-                                    <input type="hidden" name="detail_id" th:value="${detail.id}">
-                                </form>
-                                <button class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                <input type="hidden" name="detail_id" th:value="${detail.id}">
+                                <button onclick="deleteDetail(this)" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
                                     <i class="icon-cross2" style="color: red;"></i>
                                 </button>
                             </td>
@@ -185,9 +183,9 @@
                 </tbody>
                 </th:block>
 
-                <th:block th:if="${session.number == 5}" th:each="detail : ${session.parent.getDetails()}">
+                <th:block th:if="${session.number == 5}" th:each="detail : ${session.details}">
 
-                    <div class="text-center" style="padding-top: 10%; width: 100%;" th:text="${detail.id}"></div>
+                    <div class="text-center" style="padding-top: 2%; width: 100%;" th:text="${detail.id}"></div>
 
                     <th:block th:switch="${detail.getTasks().size() != 0}">
 
@@ -197,7 +195,7 @@
 
                                 <th:block th:each="task : ${detail.getTasks()}" th:switch="${task.result == '未处理'}">
 
-                                    <th:block th:case="true">
+                                    <table class="table table-bordered border-radius text-center" th:case="true">
 
                                         <td>
                                             <p th:text="${task.getStudent().username}">
@@ -229,7 +227,7 @@
                                             </button>
                                         </td>
 
-                                    </th:block>
+                                    </table>
 
                                     <th:block th:case="false">
 
@@ -253,9 +251,9 @@
 
                 </th:block>
 
-                <th:block th:if="${session.number == 6}" th:each="detail : ${session.parent.getDetails()}">
+                <th:block th:if="${session.number == 6}" th:each="detail : ${session.details}">
 
-                    <div class="text-center" style="padding-top: 10%; width: 100%;" th:text="${detail.id}"></div>
+                    <div class="text-center" style="padding-top: 2%; width: 100%;" th:text="${detail.id}"></div>
 
                     <th:block th:switch="${detail.getTasks().size() != 0}">
 
@@ -265,7 +263,7 @@
 
                                 <th:block th:each="task : ${detail.getTasks()}" th:switch="${task.result == '接受'}">
 
-                                    <th:block th:case="true">
+                                    <table class="table table-bordered border-radius text-center" th:case="true">
 
                                         <td>
                                             <p th:text="${task.getStudent().username}">
@@ -288,10 +286,13 @@
                                             </p>
                                         </td>
                                         <td class="text-center">
-
+                                            <input type="hidden" name="task_id" th:value="${task.id}">
+                                            <button onclick="refuseEntry(this)" class="btn-close" style="background: rgba(255, 255, 255, 0); border-width: 0; outline: none;">
+                                                <i class="icon-cross2" style="color: red;"></i>
+                                            </button>
                                         </td>
 
-                                    </th:block>
+                                    </table>
 
                                     <th:block th:case="false">
 
@@ -315,7 +316,6 @@
 
                 </th:block>
 
-            </th:block>
         </th:block>
     </table>
 </div>

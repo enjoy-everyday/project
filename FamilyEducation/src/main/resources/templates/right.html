@@ -26,7 +26,7 @@
                             <h5 class="bottom5" th:text="${parent.username}">昵称</h5>
                             <input type="hidden" th:value="${parent.score}" th:id="'score' + ${parentStat.count}">
                             <form class="star_rating" name="rankingList">
-                                <div class="stars" th:id="'rankingList' + ${parentStat.count}">
+                                <div class="stars" name="rankingListStars">
                                     <input type="radio" class="star-1" />
                                     <input type="radio" class="star-2" />
                                     <input type="radio" class="star-3" />
@@ -40,26 +40,25 @@
                 </div>
 
                 <div th:case="false" class="media">
-                <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
-                <div class="media-body">
-                    <h5 class="bottom5">昵称</h5>
-                    <form class="star_rating">
-                        <div class="stars">
-                            <input type="radio" name="star" class="star-1" id="star-01" />
-                            <label class="star-1" for="star-01">1</label>
-                            <input type="radio" name="star" class="star-2" id="star-02" />
-                            <label class="star-2" for="star-02">2</label>
-                            <input type="radio" name="star" class="star-3" id="star-03" />
-                            <label class="star-3" for="star-03">3</label>
-                            <input type="radio" name="star" class="star-4" id="star-04"  />
-                            <label class="star-4" for="star-04">4</label>
-                            <input type="radio" name="star" class="star-5"  id="star-05" checked  />
-                            <label class="star-5" for="star-05">5</label>
-                            <span></span>
+                    <th:block th:each="student : ${session.students}">
+                        <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
+
+                        <div class="media-body">
+                            <h5 class="bottom5" th:text="${student.username}">昵称</h5>
+                            <input type="hidden" th:value="${student.score}" th:id="'score' + ${studentStat.count}">
+                            <form class="star_rating" name="rankingList">
+                                <div class="stars" name="rankingListStars">
+                                    <input type="radio" class="star-1" />
+                                    <input type="radio" class="star-2" />
+                                    <input type="radio" class="star-3" />
+                                    <input type="radio" class="star-4" />
+                                    <input type="radio" class="star-5" />
+                                    <span></span>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </th:block>
                 </div>
-            </div>
 
             </th:block>
         </div>
