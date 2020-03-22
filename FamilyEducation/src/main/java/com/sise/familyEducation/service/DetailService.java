@@ -59,6 +59,10 @@ public class DetailService {
         return detailRepository.count();
     }
 
+    public List<Detail> findDetailsByParentAndDisplay(Parent parent, boolean display){
+        return detailRepository.findDetailsByParentAndDisplay(parent, display);
+    }
+
     @Transactional
     public Detail saveDetail(Detail detail){
         return detailRepository.save(detail);

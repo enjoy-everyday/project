@@ -32,8 +32,8 @@ public class StudentService {
         return studentRepository.findByUser(user);
     }
 
-    public Iterable<Student> findAllStudentSort(Sort sort){
-        return studentRepository.findAll(sort);
+    public List<Student> findStudentOrderByScoreLimit(){
+        return studentRepository.findStudentOrderByScoreLimit();
     }
 
     @Transactional

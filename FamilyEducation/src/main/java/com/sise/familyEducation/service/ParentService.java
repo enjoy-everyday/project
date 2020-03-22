@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @program: FamilyEducation
@@ -31,8 +32,8 @@ public class ParentService {
         return parentRepository.findParentByUser(user);
     }
 
-    public Iterable<Parent> findAllParentSort(Sort sort){
-        return parentRepository.findAll(sort);
+    public List<Parent> findParentOrderByScoreLimit(){
+        return parentRepository.findParentOrderByScoreLimit();
     }
 
     @Transactional
