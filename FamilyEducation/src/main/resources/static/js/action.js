@@ -70,11 +70,11 @@ $(document).ready(function () {
             "gender," + $("input[name='gender']:checked").val() + ";" +
             "qualification," + $("#qualification option:selected").text() + ";" +
             "experience," + $("#experience option:selected").text() + ";" +
-            "otherRequirement," + otherRequirement + "," +
+            "otherRequirement," + otherRequirement + ";" +
             "teachingGradeAndSubject," + $("#teachingGradeAndSubjectSelected p:eq(0)").text() + ";" +
             "teachingTime," + $("#teachingTimeSelected p:eq(0)").text() + ";" +
             "calculation," + $("input[name='price']:checked").val() + ";" +
-            "price," + $("#price").val() + "," +
+            "price," + $("#price").val() + ";" +
             "otherPlace," + otherPlace
         ;
         // "qualification": $("#qualification option:selected").text(),
@@ -230,10 +230,11 @@ $(document).ready(function () {
     
     //排行榜星星
     var rankingListNumber = $("form[name='rankingList']").length;
-    var j = 1;
-    alert($("#rankingList").children(0).attr("class"));
-    for (var i = 1; i <= rankingListNumber; i++){
-        $("#rankingList").children(parseInt($("#score" + i).val()) + 1).attr("checked", true);
+    for (var i = 0; i < rankingListNumber; i++){
+        var rankingListStarNumber = parseInt($("#score" + (i + 1)).val()) - 1;
+        if (rankingListStarNumber !== -1){
+            $("div[name='rankingListStars']").eq(i).children().eq(rankingListStarNumber).attr("checked", true);
+        }
     }
 
 });
@@ -293,7 +294,7 @@ function enterTheInterview(element) {
         success: function (result) {
             if (result === "success"){
                 alert("接受成功");
-                window.location.replace("/viewCandidates");
+                window.location.replace("/findApplied");
             }
             else {
                 alert("请重新操作");
@@ -313,7 +314,27 @@ function refuseEntry(element) {
         success: function (result) {
             if (result === "success"){
                 alert("拒绝成功");
-                window.location.replace("/viewCandidates");
+                window.location.replace("/findApplied");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+}
+
+//删除发布
+function deleteDetail(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/deleteDetail",
+        type: "post",
+        data: {detail_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("删除成功");
+                window.location.replace("/findAllPublish");
             }
             else {
                 alert("请重新操作");
