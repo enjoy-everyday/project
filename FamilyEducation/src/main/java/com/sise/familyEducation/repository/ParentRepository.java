@@ -4,6 +4,9 @@ import com.sise.familyEducation.entity.Detail;
 import com.sise.familyEducation.entity.Parent;
 import com.sise.familyEducation.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * @program: FamilyEducation
@@ -13,6 +16,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  **/
 
 public interface ParentRepository extends JpaRepository<Parent, Integer> {
+
+    @Query(nativeQuery = true, value = "SELECT * FROM parent ORDER BY score DESC limit 10;")
+    List<Parent> findParentOrderByScoreLimit();
 
     Parent findByPhone(String phone);
 

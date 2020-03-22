@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface DetailRepository extends JpaRepository<Detail, Integer> {
 
-    @Query(nativeQuery = true, value = "SELECT detail.* FROM detail LEFT JOIN (SELECT * FROM task WHERE task.student_id = (SELECT id FROM student WHERE id = ?1)) t ON detail.id = t.detail_id WHERE t.detail_id IS NULL")
+    @Query(nativeQuery = true, value = "SELECT detail.* FROM detail LEFT JOIN (SELECT * FROM task WHERE task.student_id = (SELECT id FROM student WHERE id = ?1)) t ON detail.id = t.detail_id WHERE t.detail_id IS NULL AND detail.display = true")
     List<Detail> findNoApplicationDetailsByStudentId(int id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM (SELECT detail.* FROM detail LEFT JOIN (SELECT * FROM task WHERE task.student_id = (SELECT id FROM student WHERE id = ?1)) t ON detail.id = t.detail_id WHERE t.detail_id IS NULL) g WHERE g.grade = ?2")
@@ -31,5 +31,7 @@ public interface DetailRepository extends JpaRepository<Detail, Integer> {
     List<Detail> findDetailsByAddressLike(String address);
 
     List<Detail> findDetailsByParentOrderByDate(Parent parent);
+
+    List<Detail> findDetailsByParentAndDisplay(Parent parent, boolean display);
 
 }
