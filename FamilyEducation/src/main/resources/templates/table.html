@@ -14,44 +14,49 @@
                 </thead>
                 <tbody>
                     <th:block th:if="${session.number == 1}">
-                        <th:block th:each="task : ${session.student.getTasks()}">
-                            <tr>
-                                <td>
-                                    <div class="product-name">
-                                        <h4 th:text="${task.getDetail().id}">标题</h4>
-                                        <p th:text="${task.getDetail().id}">介绍</p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p th:text="${task.getDetail().id}" class="text-center">
-                                        小学一年级
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="quote text-center" th:text="${task.getDetail().date}">
-                                        2020
-                                    </p>
-                                </td>
-                                <td>
-                                    <p class="text-center" th:text="${task.getDetail().id}">
-                                        100.00/时
-                                    </p>
-                                </td>
-                                <td class="text-center">
-                                    <form th:action="@{/cancelTheApplication}" th:name="${task.id}" th:id="${task.id}" method="post">
+                        <th:block th:switch="${session.tasks.size() == 0}">
+                            <th:block th:case="false" th:each="task : ${session.tasks}">
+                                <tr>
+                                    <td>
+                                        <div class="product-name">
+                                            <h4 th:text="${task.getDetail().id}">标题</h4>
+                                            <p th:text="${task.getDetail().id}">介绍</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p th:text="${task.getDetail().id}" class="text-center">
+                                            小学一年级
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="quote text-center" th:text="${task.getDetail().date}">
+                                            2020
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-center" th:text="${task.getDetail().id}">
+                                            100.00/时
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
                                         <input type="hidden" name="task_id" th:value="${task.id}">
-                                    </form>
-                                    <button class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
-                                        <i class="icon-cross2" style="color: red;"></i>
-                                    </button>
-                                </td>
+                                        <button onclick="deleteTheApplication(this)" class="btn-close" style="background: rgba(255, 255, 255, 0);border-width: 0;outline:none;">
+                                            <i class="icon-cross2" style="color: red;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </th:block>
+
+                            <tr th:case="true">
+                                <td colspan="5" class="text-center">暂无</td>
                             </tr>
+
                         </th:block>
                     </th:block>
 
                     <th:block th:if="${session.number == 2}">
                         <th:block th:switch="${session.tasks.size() == 0}">
-                            <th:block  th:case="false">
+                            <th:block th:case="false">
                                 <tr th:each="task : ${session.tasks}">
                                     <td>
                                         <div class="product-name">
