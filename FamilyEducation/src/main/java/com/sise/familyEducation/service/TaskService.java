@@ -40,6 +40,9 @@ public class TaskService {
         return taskRepository.findTasksByDetailAndResult(detail, result);
     }
 
+    public List<Task> findTasksByStudentAndDisplay(Student student, boolean display){
+        return taskRepository.findTasksByStudentAndDisplay(student, display);
+    }
     public int countTaskByStudent(Student student){
         return taskRepository.countTaskByStudent(student);
     }
