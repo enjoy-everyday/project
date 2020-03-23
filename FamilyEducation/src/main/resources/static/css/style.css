@@ -1945,7 +1945,7 @@ body.pushmenu-push-toright .wrap-sticky nav.navbar.bootsnav.sticked{
 	border-bottom:1px solid #d5d5d5;
 	padding-bottom:20px; margin-bottom:20px;
 }
-.widget .media h5{ font-weight:bold; font-size:0.875em; text-transform:uppercase;}
+.widget .media h5{ font-weight:bold; font-size:0.875em;}
 .widget .media .btn-primary{
 	font-size:12px;
 	padding:5px 10px;
