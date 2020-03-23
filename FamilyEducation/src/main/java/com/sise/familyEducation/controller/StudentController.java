@@ -70,7 +70,9 @@ public class StudentController {
         int number = 1;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
+        List<Task> tasks = taskService.findTasksByStudentAndDisplay(student, true);
         session.setAttribute("number", number);
+        session.setAttribute("tasks", tasks);
         session.setAttribute("student", student);
         return "student/student_home";
     }
@@ -204,8 +206,9 @@ public class StudentController {
             cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
             successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
             acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-            score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+            score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
             student.setScore(score);
+            studentService.saveStudent(student);
             return "success";
         }
     }
@@ -263,8 +266,9 @@ public class StudentController {
         cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
         successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
         acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
         student.setScore(score);
+        studentService.saveStudent(student);
         if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
             simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
         }
@@ -273,5 +277,25 @@ public class StudentController {
         }
         return "untreated";
     }
+
+    /**
+     * @date: 2020/3/22
+     * @description: 删除应聘
+     */
+
+    @RequestMapping(value = "/deleteTheApplication")
+    @ResponseBody
+    public String deleteTheApplication(@RequestParam(value = "task_id") int id){
+        Task task = taskService.findTaskById(id);
+        if (task.getResult().equals("未处理") || task.getResult().equals("接受")){
+            return "error";
+        }
+        else {
+            task.setDisplay(false);
+            taskService.saveTask(task);
+            return "success";
+        }
+    }
+
 
 }

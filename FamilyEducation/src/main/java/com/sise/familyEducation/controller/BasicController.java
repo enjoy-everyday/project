@@ -142,12 +142,13 @@ public class BasicController {
         String role = user.getRole().getRole();
         int code = 1;
         int number = 0;
-        int taskNumber = 0;
+        float taskNumber = 0;
         int refuseTime = 0;
         int cancelTime = 0;
         int successTime = 0;
         int acceptTime = 0;
-        int score = 0;
+        float score = 0;
+        long allDetailNumber = detailService.countAllDetail();
         if (role.equals("学生")){
             Student user1 = studentService.findStudentByUser(user);
             taskNumber = taskService.countTaskByStudent(user1);
@@ -156,22 +157,26 @@ public class BasicController {
             successTime = taskService.countTaskStudentAndResult(user1, "成功");
             acceptTime = taskService.countTaskStudentAndResult(user1, "接受");
             if (taskNumber != 0){
-                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
+                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
             }
+            user1.setScore(score);
+            studentService.saveStudent(user1);
             session.setAttribute("user", user1);
         }
         else {
             Parent user1 = parentService.findParentByPhone(authentication.getName());
             for (Detail detail : user1.getDetails()){
                 taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-                refuseTime = taskService.countTaskDetailAndResult(detail, "拒绝");
-                cancelTime = taskService.countTaskDetailAndResult(detail, "取消");
-                successTime = taskService.countTaskDetailAndResult(detail, "成功");
-                acceptTime = taskService.countTaskDetailAndResult(detail, "接受");
-                if (taskNumber != 0){
-                    score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 5;
-                }
+                refuseTime = refuseTime + taskService.countTaskDetailAndResult(detail, "拒绝");
+                cancelTime = cancelTime + taskService.countTaskDetailAndResult(detail, "取消");
+                successTime = successTime + taskService.countTaskDetailAndResult(detail, "成功");
+                acceptTime = acceptTime + taskService.countTaskDetailAndResult(detail, "接受");
             }
+            if (taskNumber != 0){
+                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+            }
+            user1.setScore(score);
+            parentService.saveParent(user1);
             session.setAttribute("user", user1);
         }
         session.setAttribute("taskNumber", taskNumber);
@@ -182,6 +187,7 @@ public class BasicController {
         session.setAttribute("score", score);
         session.setAttribute("code", code);
         session.setAttribute("number", number);
+        session.setAttribute("allDetailNumber", allDetailNumber);
         return "student/student_home";
     }
 

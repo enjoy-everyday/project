@@ -126,8 +126,9 @@ public class ParentController {
         cancelRate = cancelRate / taskNumber;
         successRate = successRate / taskNumber;
         acceptRate = acceptRate / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
         parent.setScore(score);
+        parentService.saveParent(parent);
         return "success";
     }
 
@@ -167,8 +168,9 @@ public class ParentController {
         cancelRate = cancelRate / taskNumber;
         successRate = successRate / taskNumber;
         acceptRate = acceptRate / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 5;
+        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
         parent.setScore(score);
+        parentService.saveParent(parent);
         if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
             simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
         }
@@ -265,10 +267,10 @@ public class ParentController {
             String price = "";
             String address = "";
             if (map.get("calculation").equals("hours")){
-                price = map.get("price") + "/小时";
+                price = map.get("price") + "元/小时";
             }
             else {
-                price = map.get("price") + "/次";
+                price = map.get("price") + "元/次";
             }
             if (!"null".equals(map.get("otherPlace"))){
                 address = parent.getAddress();
@@ -345,6 +347,11 @@ public class ParentController {
             return result;
         }
     }
+
+    /**
+     * @date: 2020/3/22
+     * @description: 删除已发布
+     */
 
     @RequestMapping(value = "/deleteDetail")
     @ResponseBody
