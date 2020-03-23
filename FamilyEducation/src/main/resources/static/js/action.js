@@ -343,6 +343,30 @@ function deleteDetail(element) {
     });
 }
 
+//删除应聘
+function deleteTheApplication(element) {
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/deleteTheApplication",
+        type: "post",
+        data: {task_id: value,  _csrf: token},
+        success: function (result) {
+            if (result === "success"){
+                alert("删除成功");
+                window.location.replace("/viewAll");
+            }
+            else if (result === "error"){
+                alert("此单还未完成，不能删除");
+            }
+            else {
+                alert("请重新操作");
+            }
+        }
+    });
+
+}
+
 //删除消息
 function deleteInformation(element){
     var node = element.parentNode;
