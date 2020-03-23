@@ -51,12 +51,12 @@
         <div class="row top20">
             <div th:each="detail, detailStat : ${session.details}" class="col-sm-4 col-md-3">
                 <div class="widget heading_space" style="padding-right: 20%">
-                    <h3 class="bottom20">要求</h3>
-                    <p class="hours">年级<span>XXX</span></p>
-                    <p class="hours">科目<span>XXX</span></p>
-                    <p class="hours">时间<span>XXX</span></p>
-                    <p class="hours">地点<span>XXX</span></p>
-                    <p class="hours">价格<span>XXX</span></p>
+                    <h4 class="bottom20" th:text="'要求:' + ${detail.gender} + ' ' + ${detail.experience} + ' ' + ${detail.qualification}">要求</h4>
+                    <p class="hours">任教年级<span th:text="${detail.grade}">XXX</span></p>
+                    <p class="hours">任教科目<span th:text="${detail.subject}">XXX</span></p>
+                    <p class="hours">任教时间：<span th:text="${detail.teachingTime}" style="margin-bottom: 15px;">XXX</span></p>
+                    <p class="hours">任教地点：<span th:text="${detail.address}" style="margin-bottom: 15px;">XXX</span></p>
+                    <p class="hours">价格<span th:text="${detail.price}">XXX</span></p>
                     <div style="float: left">
                         <input type="hidden" name="detail_id" th:value="${detail.id}">
                         <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">详情</button>
