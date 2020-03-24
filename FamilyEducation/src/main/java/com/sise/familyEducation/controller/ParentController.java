@@ -362,5 +362,18 @@ public class ParentController {
         return "success";
     }
 
+    /**
+     * @date: 2020/3/23
+     * @description: 通过学历和评分筛选学生
+     */
+
+    @RequestMapping(value = "searchQualificationAndScore")
+    @ResponseBody
+    public String searchQualificationAndScore(@RequestParam(value = "qualification") String qualification, @RequestParam(value = "score") float score){
+
+        return "success";
+    }
+
+
 
 }
