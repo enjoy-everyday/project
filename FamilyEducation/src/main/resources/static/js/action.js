@@ -407,6 +407,20 @@ function readInformation(element){
     });
 }
 
+//查看学生个人详情
+function personalParticulars(element){
+    var node = element.parentNode;
+    var value = node.children[0].getAttribute("value");
+    $.ajax({
+        url: "/introductionPage",
+        type: "post",
+        data: {id: value,  _csrf: token},
+        error: function () {
+            alert("错误");
+        }
+    });
+}
+
 $(document).ready(function(){
 
     //选择空闲时间
