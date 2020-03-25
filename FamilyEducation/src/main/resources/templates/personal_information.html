@@ -28,7 +28,9 @@
                                 <p class="hours">性别：<span th:text="${session.user.gender}">XXX</span></p>
                                 <p class="hours">手机号码：<span th:text="${session.user.phone}">XXX</span></p>
                                 <th:block th:switch="${session.role == '学生'}">
-                                    <p th:case="true" class="hours">空闲时间：<span>XXX</span></p>
+                                    <p th:case="true" class="hours">空闲时间：
+                                        <span><button class="border_radius text-uppercase">点击查看</button></span>
+                                    </p>
                                 </th:block>
                                 <p class="hours">评分：<span th:text="${session.user.score}">XXX</span></p>
                             </div>
