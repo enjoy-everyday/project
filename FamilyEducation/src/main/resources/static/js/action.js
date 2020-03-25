@@ -122,7 +122,7 @@ $(document).ready(function () {
                 "name," + $("#name").val() + ";" +
                 "age," + $("#age").val() + ";" +
                 "gender," + $("input[name='gender']:checked").val() + ";" +
-                "qualification," + $("#qualification option:selected").text() + ";" +
+                "qualification," + $("#qualification option:selected").val() + ";" +
                 "province," + $("#province option:selected").text() + ";" +
                 "city," + $("#city option:selected").text() + ";" +
                 "area," + $("#area option:selected").text() + ";" +
@@ -236,6 +236,20 @@ $(document).ready(function () {
             $("div[name='rankingListStars']").eq(i).children().eq(rankingListStarNumber).attr("checked", true);
         }
     }
+
+    // //家长筛选学生
+    // $("#screenStudents").click(function () {
+    //     var qualification = $("#selectQualification option:selected").val();
+    //     var score = $("#selectScore option:selected").val();
+    //     $.ajax({
+    //         url: "/searchQualificationAndScore",
+    //         type: "post",
+    //         data: {qualification: qualification, score: score, _csrf: token},
+    //         error: function () {
+    //             alert("错误");
+    //         }
+    //     })
+    // })
 
 });
 
