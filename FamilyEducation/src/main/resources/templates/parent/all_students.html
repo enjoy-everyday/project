@@ -2,15 +2,15 @@
     <div class="container">
         <div class="row padding-top">
             <div class="col-md-6"></div>
-            <form class="total_form" method="post">
+            <form class="total_form" th:action="@{/searchQualificationAndScore}" th:name="searchQualificationAndScore" th:id="searchQualificationAndScore" method="post">
                 <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
                     <div class="form-group">
                         <label class="select">
-                            <select id="selectQualification">
+                            <select name="qualification" id="selectQualification">
                                 <option value="null">所有学历</option>
                                 <option value="本科">本科及以上</option>
-                                <option value="研究生">研究生及以上</option>
-                                <option value="博士生">博士生及以上</option>
+                                <option value="硕士">硕士及以上</option>
+                                <option value="博士">博士及以上</option>
                             </select>
                         </label>
                     </div>
@@ -18,8 +18,8 @@
                 <div class="col-md-2 wow fadeInLeft" data-wow-delay="300ms">
                     <div class="form-group">
                         <label class="select">
-                            <select id="selectScore">
-                                <option value="null">所有评分</option>
+                            <select name="score" id="selectScore">
+                                <option value="0">所有评分</option>
                                 <option value="1">1星及以上</option>
                                 <option value="2">2星及以上</option>
                                 <option value="3">3星及以上</option>
@@ -36,16 +36,16 @@
         </div>
 
         <div class="row top20">
-            <div th:each="student : ${session.students}" class="col-sm-4 col-md-3">
+            <div th:each="student : ${session.students}" class="col-sm-4 col-md-3" style="padding-bottom: 2%;">
                 <div class="widget heading_space" style="padding-right: 20%">
                     <h3 class="bottom20">介绍</h3>
                     <p class="hours">学历<span th:text="${student.qualification}">XXX</span></p>
                     <p class="hours">擅长科目<span th:text="${student.goodAtSubjects}">XXX</span></p>
                     <p class="hours">综合评分<span th:text="${student.score}">XXX</span></p>
                     <div style="float: left">
-                        <a th:herf="/introductionPage?id=${student.getUser().id}">
-                            <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">个人详情</button>
-                        </a>
+                        <button type="button" class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">
+                            <a th:herf="'/introductionPage?id=' + ${student.getUser().id}">个人详情</a>
+                        </button>
                     </div>
                     <div style="float: right">
                         <input type="hidden" name="student_id" th:value="${student.id}">
