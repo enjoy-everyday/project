@@ -36,6 +36,18 @@ public class StudentService {
         return studentRepository.findStudentOrderByScoreLimit();
     }
 
+    public List<Student> findStudentsByQualificationNotAndScore(String qualification, float score){
+        return studentRepository.findStudentsByQualificationNotAndScore(qualification, score);
+    }
+
+    public List<Student> findStudentsByQualificationLikeAndScore(float score){
+        return studentRepository.findStudentsByQualificationLikeAndScore(score);
+    }
+
+    public List<Student> findStudentsByQualificationAndScore(String qualification, float score){
+        return studentRepository.findStudentsByQualificationAndScore(qualification, score);
+    }
+
     @Transactional
     public void saveStudent(Student student){
         studentRepository.save(student);
