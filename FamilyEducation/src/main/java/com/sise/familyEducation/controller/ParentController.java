@@ -367,11 +367,31 @@ public class ParentController {
      * @description: 通过学历和评分筛选学生
      */
 
-    @RequestMapping(value = "searchQualificationAndScore")
-    @ResponseBody
-    public String searchQualificationAndScore(@RequestParam(value = "qualification") String qualification, @RequestParam(value = "score") float score){
-
-        return "success";
+    @RequestMapping(value = "/searchQualificationAndScore")
+    public String searchQualificationAndScore(@RequestParam(value = "qualification") String qualification, @RequestParam(value = "score") float score, HttpSession session){
+        int code = 5;
+        List<Student> students;
+        switch (qualification) {
+            case "博士": {
+                students = studentService.findStudentsByQualificationAndScore(qualification, score);
+                break;
+            }
+            case "硕士": {
+                students = studentService.findStudentsByQualificationLikeAndScore(score);
+                break;
+            }
+            case "本科": {
+                students = studentService.findStudentsByQualificationNotAndScore("大专", score);
+                break;
+            }
+            default: {
+                students = studentService.findStudentsByQualificationNotAndScore(qualification, score);
+                break;
+            }
+        }
+        session.setAttribute("code", code);
+        session.setAttribute("students", students);
+        return "student/student_home";
     }
 
 
