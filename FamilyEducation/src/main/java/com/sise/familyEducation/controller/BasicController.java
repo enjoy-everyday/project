@@ -365,11 +365,31 @@ public class BasicController {
         }
         String result = "";
         System.out.println(map);
-        for (int i = 0; i < 7; i++){
-            if (map.get(i) != null){
-                result = result + week[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") .replace(", ", "，")+ " <br>";
+        for (Integer i : map.keySet()){
+            Map<Integer, List<String>> temporaryMap = new HashMap<>();
+            for (int a = 0; a < map.get(i).size(); a++) {
+                String[] temporaryArray = map.get(i).get(a).split("-");
+                List<String> temporaryList = new ArrayList<>();
+                for (int b = 0; b < temporaryArray.length; b++) {
+                    temporaryList.add(temporaryArray[b]);
+                }
+                temporaryMap.put(a, temporaryList);
             }
+            for (int c = 0; c < temporaryMap.size() - 1; c++) {
+                if (temporaryMap.get(c).get(1).equals(temporaryMap.get(c + 1).get(0))) {
+                    temporaryMap.get(c + 1).remove(0);
+                    temporaryMap.get(c + 1).add(0, temporaryMap.get(c).get(0));
+                    temporaryMap.remove(c);
+                }
+            }
+            List<String> temporaryList1 = new ArrayList<>();
+            for (Integer integer : temporaryMap.keySet()) {
+                temporaryList1.add(temporaryMap.get(integer).get(0) + "-" + temporaryMap.get(integer).get(1));
+            }
+            map.put(i, temporaryList1);
+            result = result + week[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") .replace(", ", "，")+ " <br>";
         }
+        System.out.println(map);
         return result;
     }
 
@@ -399,10 +419,8 @@ public class BasicController {
         }
         String result = "";
         System.out.println(map);
-        for (int i = 0; i < array.length; i++){
-            if (map.get(i) != null){
-                result = result + grade[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") + "<br>";
-            }
+        for (Integer i : map.keySet()){
+            result = result + grade[i] + "：" + map.get(i).toString().replace("[", "").replace("]", "") + "<br>";
         }
         return result;
     }
