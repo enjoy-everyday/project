@@ -442,7 +442,7 @@ $(document).ready(function(){
     var weeklyTimeLength = 0;
     var choiceWeekAndTime = [[], [], [], [], [], [], []];
     var weekChoice = 0;
-    var time = ["08:00-08:30", "08:31-09:00", "09:00-09:30", "09:30-10:00"];
+    var time = ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00"];
     var week = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
 
     for(var i = 1; i < week.length; i++){
@@ -455,7 +455,7 @@ $(document).ready(function(){
         }
         else{
             if(i % 2 != 0){
-                time[i] = clock + ":31-" + (clock + 1) + ":00";
+                time[i] = clock + ":30-" + (clock + 1) + ":00";
                 $("#weekTime").append('<div class="weeklyTime" name="weeklyTime"><p style="margin: 8px;">' + time[i] + '</p></div>');
                 clock++;
             }
@@ -527,14 +527,14 @@ $(document).ready(function(){
         choiceGradeAndSubject[i] = [];
     }
 
-    // for(var i = 1; i < grade.length; i++){
-    //     if(grade[i] == "小学六年级"){
-    //         $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
-    //     }
-    //     else{
-    //         $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
-    //     }
-    // }
+    for(var i = 1; i < grade.length; i++){
+        if(grade[i] == "小学六年级"){
+            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div><br>');
+        }
+        else{
+            $("#grade").append('<div class="grade"><p style="margin: 8px;">' + grade[i] + '</p></div>');
+        }
+    }
 
     for(var i = 0; i < 3; i++){
         $("#subject").append('<div class="subject" name="subject"><p style="margin: 8px;">' + subject[i] + '</p></div>');
