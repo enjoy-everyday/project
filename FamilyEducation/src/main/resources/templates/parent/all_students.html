@@ -42,15 +42,12 @@
                     <p class="hours">学历<span th:text="${student.qualification}">XXX</span></p>
                     <p class="hours">擅长科目<span th:text="${student.goodAtSubjects}">XXX</span></p>
                     <p class="hours">综合评分<span th:text="${student.score}">XXX</span></p>
-                    <div style="float: left">
-                        <button type="button" class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">
-                            <a th:herf="'/introductionPage?id=' + ${student.getUser().id}">个人详情</a>
-                        </button>
-                    </div>
-                    <div style="float: right">
-                        <input type="hidden" name="student_id" th:value="${student.id}">
-                        <button class="btn border_radius text-uppercase" style="font-size: 10px; font-weight: bold; color: #fff; padding: 5px 10px; background: #f57246;">请家教</button>
-                    </div>
+                    <p class="hours">
+                        <a th:href="'/introductionPage?id=' + ${student.getUser().id}" class="border_radius text-uppercase">个人详情</a>
+                        <span>
+                            <a th:href="'/?id=' + ${student.getUser().id}" class="border_radius text-uppercase">请家教</a>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
