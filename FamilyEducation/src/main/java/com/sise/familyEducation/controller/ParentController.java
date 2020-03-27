@@ -28,6 +28,8 @@ public class ParentController {
     @Autowired
     private LoginService loginService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private StudentService studentService;
     @Autowired
     private ParentService parentService;
@@ -44,8 +46,19 @@ public class ParentController {
 
     /**
      * @date: 2020/2/3
-     * @description: 请求转发
+     * @description: 请家教、重定向
      */
+
+    @RequestMapping(value = "/please")
+    public String please(@RequestParam(value = "id") int id, Authentication authentication){
+        User user = loginService.findUserByPhone(authentication.getName());
+        Parent parent = parentService.findParentByUser(user);
+        User otherUser = userService.findUserById(id);
+        if (WebsocketConnectListener.bidiMap.get(otherUser.getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(otherUser.getPhone(), "/queue/getResponse", parent.getUsername() + "邀请您去做家教");
+        }
+        return "redirect:/pleaseTutor";
+    }
 
     /**
      * @date: 2020/2/3
@@ -394,6 +407,15 @@ public class ParentController {
         return "student/student_home";
     }
 
+    /**
+     * @date: 2020/3/26
+     * @description: 请家教
+     */
+
+    @RequestMapping(value = "/pleaseTutor")
+    public String pleaseTutor(){
+        return "/findAllStudents";
+    }
 
 
 }
