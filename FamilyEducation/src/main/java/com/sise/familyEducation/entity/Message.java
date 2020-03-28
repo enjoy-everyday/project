@@ -3,6 +3,7 @@ package com.sise.familyEducation.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @program: FamilyEducation
@@ -21,7 +22,7 @@ public class Message {
     @Column(name = "id")
     private int id;
     private boolean state = false;       //false为未读，true为已读
-    private String date;
+    private Date date;
     private String message;     //拒绝、取消、接受
     private boolean display = true;        //是否显示
 

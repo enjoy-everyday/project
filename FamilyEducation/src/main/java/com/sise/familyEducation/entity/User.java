@@ -3,6 +3,7 @@ package com.sise.familyEducation.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    private Date date;
     private String password;
     private String phone;
 

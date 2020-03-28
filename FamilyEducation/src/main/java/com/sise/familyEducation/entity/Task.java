@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    private String date;
+    private Date date;
 //    private String whetherToPass = "否";       //是否通过
     private String result = "未处理";      //被学生取消，被家长拒绝，被家长接受，未处理
     private boolean display = true;        //是否显示

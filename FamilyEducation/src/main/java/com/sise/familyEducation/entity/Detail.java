@@ -3,6 +3,7 @@ package com.sise.familyEducation.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class Detail {
     @Column(name = "id")
     private int id;
     private char gender;
-    private String date;
+    private Date date;
     private String price;
     private String address;
     private String grade;
