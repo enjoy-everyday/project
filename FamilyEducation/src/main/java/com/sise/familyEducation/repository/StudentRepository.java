@@ -31,4 +31,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     @Query(nativeQuery = true, value = "SELECT * FROM student WHERE qualification =?1 AND score >= ?2")
     List<Student> findStudentsByQualificationAndScore(String qualification, float score);
 
+    List<Student> findStudentsByAddressLike(String address);
+
 }
