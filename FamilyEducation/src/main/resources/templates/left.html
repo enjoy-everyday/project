@@ -1,4 +1,4 @@
-<div class="container">
+
         <div class="row">
             <div class="col-md-4">
                 <div class="wow fadeInUp" data-wow-delay="300ms">
@@ -107,50 +107,62 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8" style="border: black 1px solid">
                 图片
             </div>
         </div>
         <div class=" row">
             <div class="col-md-12">
                 <section id="events" class="padding-bottom">
-                    <div class="container">
                         <div class="row">
                             <th:block th:switch="${session.role == '学生'}">
-                                <div th:case="true" th:each="detail, detailStat : ${session.details}" class="col-sm-4 col-md-3">
-                                    <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
-                                        <h4 class="top30"><a href="">标题</a></h4>
-                                        <p class="bottom20 margin10">介绍</p>
-                                        <div class="clearfix">
-                                            <ul class="comment pull-left">
-                                                <li><a href="" class="facebook"><i class="icon-map-pin"></i>距离</a></li>
-                                            </ul>
-                                            <ul class="comment pull-right">
-                                                <li><a href="" class="facebook"><i class="icon-icons20"></i>发布时间</a></li>
-                                            </ul>
+                                <th:block th:case="true">
+                                    <div th:each="detail, detailStat : ${session.details}" class="col-sm-6 col-md-4">
+                                        <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
+                                            <h4 class="top30">
+                                                <a href="" th:text="${detail.grade} + ' ' + ${detail.subject} + '家教'"></a>
+                                            </h4>
+                                            <div class="widget" style="margin-top: 3%;">
+                                                <p class="hours" th:if="${detail.qualification != '所有学历'}">学历要求<span th:text="${detail.qualification}">XXX</span></p>
+                                                <p class="hours"  th:if="${detail.gender != '都'}">性别要求<span th:text="${detail.gender}">XXX</span></p>
+                                                <p class="hours" th:if="${detail.experience != '无'}">经验要求<span th:text="${detail.experience}">XXX</span></p>
+                                                <p class="hours">价格<span th:text="${detail.price}">XXX</span></p>
+                                            </div>
+                                            <div class="clearfix">
+                                                <ul class="comment pull-left">
+                                                    <li><a href="" class="facebook"><i class="icon-map-pin"></i>距离</a></li>
+                                                </ul>
+                                                <ul class="comment pull-right">
+                                                    <li><a href="" class="facebook"><i class="icon-icons20"></i>发布时间</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </th:block>
 
                                 <div th:case="false" class="col-sm-4 col-md-3">
                                     <div class="events margin_top wow fadeIn" data-wow-delay="300ms">
-                                        <h4 class="top30"><a href="">XXX</a></h4>
-                                        <p class="bottom20 margin10">XXX</p>
-                                        <div class="clearfix">
-                                            <ul class="comment pull-left">
-                                                <li><a href="" class="facebook"><i class="icon-map-pin"></i>XXX</a></li>
-                                            </ul>
-                                            <ul class="comment pull-right">
-                                                <li><a href="" class="facebook"><i class="icon-icons20"></i>XXX</a></li>
-                                            </ul>
-                                        </div>
+                                        <th:block th:each="student : ${session.students}">
+                                            <h4 class="top30"><a th:href="'/introductionPage?id=' + ${student.getUser().id}" th:text="${student.username}">XXX</a></h4>
+                                            <div class="widget" style="margin-top: 3%;">
+                                                <p class="hours">学历<span th:text="${student.qualification}">XXX</span></p>
+                                                <p class="hours">擅长科目<span th:text="${student.goodAtSubjects}">XXX</span></p>
+                                                <p class="hours">评分<span th:text="${student.score}">XXX</span></p>
+                                            </div>
+                                            <div class="clearfix">
+                                                <ul class="comment pull-left">
+                                                    <li><a href="" class="facebook"><i class="icon-map-pin"></i>XXX</a></li>
+                                                </ul>
+                                                <ul class="comment pull-right">
+                                                    <li><a href="" class="facebook"><i class="icon-icons20"></i>XXX</a></li>
+                                                </ul>
+                                            </div>
+                                        </th:block>
                                     </div>
                                 </div>
 
                             </th:block>
                         </div>
-                    </div>
                 </section>
             </div>
         </div>
-    </div>

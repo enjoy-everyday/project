@@ -40,7 +40,7 @@
                 </div>
 
                 <div th:case="false" class="media">
-                    <th:block th:each="student : ${session.students}">
+                    <th:block th:each="student : ${session.rankingBangStudents}">
                         <a class="media-left" href=""><img src="images/default.jpg" alt="post" style="width: 69px; height: 65px;"></a>
 
                         <div class="media-body">
