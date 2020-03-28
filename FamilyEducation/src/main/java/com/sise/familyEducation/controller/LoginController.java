@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -119,12 +120,14 @@ public class LoginController {
             session.setAttribute("parents", parents);
         }
         else if (role.equals("家长")){
-            List<Student> students = studentService.findStudentOrderByScoreLimit();
+            List<Student> rankingBangStudents = studentService.findStudentOrderByScoreLimit();
             Parent person = parentService.findParentByPhone(authentication.getName());
             int messageNumber = messageService.countByParentAndState(person, false);
+            List<Student> students = studentService.findStudentsByAddressLike(province + city);
             session.setAttribute("messageNumber", messageNumber);
             session.setAttribute("person", person);
             session.setAttribute("students", students);
+            session.setAttribute("rankingBangStudents", rankingBangStudents);
         }
         return "student/student_home";
     }
@@ -142,6 +145,7 @@ public class LoginController {
         user.setPhone(phone);
         user.setPassword(password);
         user.setRole(role);
+        user.setDate(new Date());
         userService.saveUser(user);
         if (r.equals("学生")){
             Student student = new Student();

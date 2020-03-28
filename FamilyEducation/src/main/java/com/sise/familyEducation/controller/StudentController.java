@@ -197,7 +197,7 @@ public class StudentController {
         else {
             Detail detail = detailService.findDetailsById(id);
             Task task = new Task();
-            task.setDate(new Date().toString());
+            task.setDate(new Date());
             task.setDetail(detail);
             task.setStudent(student);
             taskService.saveTask(task);
@@ -255,7 +255,7 @@ public class StudentController {
         Task task = taskService.findTaskById(id);
         task.setResult("取消");
         Message message = new Message();
-        message.setDate(new Date().toString());
+        message.setDate(new Date());
         message.setMessage("取消");
         message.setStudent(task.getStudent());
         message.setParent(task.getDetail().getParent());

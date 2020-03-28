@@ -54,6 +54,13 @@ public class ParentController {
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
         User otherUser = userService.findUserById(id);
+        Student student = studentService.findStudentByUser(user);
+        Message message = new Message();
+        message.setParent(parent);
+        message.setStudent(student);
+        message.setMessage("邀请");
+        message.setDate(new Date());
+        messageService.saveMessage(message);
         if (WebsocketConnectListener.bidiMap.get(otherUser.getPhone()) != null){
             simpMessagingTemplate.convertAndSendToUser(otherUser.getPhone(), "/queue/getResponse", parent.getUsername() + "邀请您去做家教");
         }
@@ -122,7 +129,7 @@ public class ParentController {
             simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
         }
         Message message = new Message();
-        message.setDate(new Date().toString());
+        message.setDate(new Date());
         message.setMessage("接受");
         message.setStudent(task.getStudent());
         message.setParent(task.getDetail().getParent());
@@ -164,7 +171,7 @@ public class ParentController {
         Task task = taskService.findTaskById(id);
         task.setResult("拒绝");
         Message message = new Message();
-        message.setDate(new Date().toString());
+        message.setDate(new Date());
         message.setMessage("拒绝");
         message.setStudent(task.getStudent());
         message.setParent(task.getDetail().getParent());
@@ -292,9 +299,9 @@ public class ParentController {
                 address = map.get("otherPlace");
             }
             Detail detail = new Detail();
-            detail.setDate(new Date().toString());
+            detail.setDate(new Date());
             detail.setParent(parent);
-            detail.setGrade(map.get("grade"));
+            detail.setGender(map.get("gender").charAt(0));
             detail.setQualification(map.get("qualification"));
             detail.setExperience(map.get("experience"));
             detail.setRequirement(map.get("otherRequirement"));
@@ -302,7 +309,7 @@ public class ParentController {
             detail.setSubject(subject);
             detail.setTeachingTime(map.get("teachingTime"));
             detail.setPrice(price);
-            detail.setAddress(address);
+            detail.setAddress(parent.getProvinceAndCity() + address);
             detailService.saveDetail(detail);
             System.out.println("**************" + map);
             return "success";
