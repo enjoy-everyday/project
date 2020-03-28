@@ -48,6 +48,10 @@ public class StudentService {
         return studentRepository.findStudentsByQualificationAndScore(qualification, score);
     }
 
+    public List<Student> findStudentsByAddressLike(String address){
+        return studentRepository.findStudentsByAddressLike(address);
+    }
+
     @Transactional
     public void saveStudent(Student student){
         studentRepository.save(student);
