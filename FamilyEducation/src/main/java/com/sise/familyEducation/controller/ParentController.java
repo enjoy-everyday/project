@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+import static com.sise.familyEducation.share.Share.*;
+
 /**
  * @program: FamilyEducation
  * @description: 家长部分
@@ -115,19 +117,16 @@ public class ParentController {
     @RequestMapping("/enterTheInterview")
     @ResponseBody
     public String enterYheInterview(@RequestParam(value = "task_id") int id, Authentication authentication){
-        float taskNumber = 0;
-        float refuseRate = 0;
-        float cancelRate = 0;
-        float successRate = 0;
-        float acceptRate = 0;
+//        float taskNumber = 0;
+//        float refuseRate = 0;
+//        float cancelRate = 0;
+//        float successRate = 0;
+//        float acceptRate = 0;
         float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("接受");
-        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
-        }
         Message message = new Message();
         message.setDate(new Date());
         message.setMessage("接受");
@@ -135,20 +134,24 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
-        for (Detail detail : parent.getDetails()) {
-            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
-            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
-            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
-            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
-        }
-        refuseRate = refuseRate / taskNumber;
-        cancelRate = cancelRate / taskNumber;
-        successRate = successRate / taskNumber;
-        acceptRate = acceptRate / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
+//        for (Detail detail : parent.getDetails()) {
+//            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+//            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+//            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+//            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+//            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
+//        }
+//        refuseRate = refuseRate / taskNumber;
+//        cancelRate = cancelRate / taskNumber;
+//        successRate = successRate / taskNumber;
+//        acceptRate = acceptRate / taskNumber;
+        calculateParentRating(parent);
+        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
         parent.setScore(score);
         parentService.saveParent(parent);
+        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
+        }
         return "success";
     }
 
@@ -160,11 +163,11 @@ public class ParentController {
     @RequestMapping("/refuseEntry")
     @ResponseBody
     public String refuseEntry(@RequestParam(value = "task_id") int id, Authentication authentication){
-        float taskNumber = 0;
-        float refuseRate = 0;
-        float cancelRate = 0;
-        float successRate = 0;
-        float acceptRate = 0;
+//        float taskNumber = 0;
+//        float refuseRate = 0;
+//        float cancelRate = 0;
+//        float successRate = 0;
+//        float acceptRate = 0;
         float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
@@ -177,18 +180,20 @@ public class ParentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
-        for (Detail detail : parent.getDetails()) {
-            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
-            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
-            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
-            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
-        }
-        refuseRate = refuseRate / taskNumber;
-        cancelRate = cancelRate / taskNumber;
-        successRate = successRate / taskNumber;
-        acceptRate = acceptRate / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
+        calculateParentRating(parent);
+        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//        for (Detail detail : parent.getDetails()) {
+//            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+//            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+//            cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+//            successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+//            acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
+//        }
+//        refuseRate = refuseRate / taskNumber;
+//        cancelRate = cancelRate / taskNumber;
+//        successRate = successRate / taskNumber;
+//        acceptRate = acceptRate / taskNumber;
+//        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
         parent.setScore(score);
         parentService.saveParent(parent);
         if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){

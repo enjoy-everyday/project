@@ -2,6 +2,7 @@ package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.service.*;
+import com.sise.familyEducation.share.Share;
 import com.sise.familyEducation.websocket.WebsocketConnectListener;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.sise.familyEducation.share.Share.*;
 
 /**
  * @program: FamilyEducation
@@ -183,11 +186,6 @@ public class StudentController {
     @RequestMapping("/applyForTutor")
     @ResponseBody
     public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication){
-        float taskNumber = 0;
-        float refuseRate = 0;
-        float cancelRate = 0;
-        float successRate = 0;
-        float acceptRate = 0;
         float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
@@ -201,12 +199,13 @@ public class StudentController {
             task.setDetail(detail);
             task.setStudent(student);
             taskService.saveTask(task);
-            taskNumber = taskService.countTaskByStudent(student);
-            refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
-            cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
-            successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
-            acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-            score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
+//            taskNumber = taskService.countTaskByStudent(student);
+//            refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
+//            cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
+//            successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
+//            acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
+            calculateStudentRating(student);
+            score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
             student.setScore(score);
             studentService.saveStudent(student);
             return "success";
@@ -244,11 +243,6 @@ public class StudentController {
     @RequestMapping("/cancelTheApplication")
     @ResponseBody
     public String cancelTheApplication(@RequestParam(value = "task_id") int id, Authentication authentication, HttpSession session){
-        float taskNumber = 0;
-        float refuseRate = 0;
-        float cancelRate = 0;
-        float successRate = 0;
-        float acceptRate = 0;
         float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
@@ -261,12 +255,13 @@ public class StudentController {
         message.setParent(task.getDetail().getParent());
         messageService.saveMessage(message);
         taskService.saveTask(task);
-        taskNumber = taskService.countTaskByStudent(student);
-        refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
-        cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
-        successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
-        acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
+//        taskNumber = taskService.countTaskByStudent(student);
+//        refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
+//        cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
+//        successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
+//        acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
+        calculateStudentRating(student);
+        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
         student.setScore(score);
         studentService.saveStudent(student);
         if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){

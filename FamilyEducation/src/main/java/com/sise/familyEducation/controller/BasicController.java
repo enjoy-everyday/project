@@ -2,6 +2,7 @@ package com.sise.familyEducation.controller;
 
 import com.sise.familyEducation.entity.*;
 import com.sise.familyEducation.service.*;
+import com.sise.familyEducation.share.Share;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
+
+import static com.sise.familyEducation.share.Share.*;
 
 /**
  * @program: FamilyEducation
@@ -46,51 +49,49 @@ public class BasicController {
 
     @RequestMapping(value = "/introductionPage", method = RequestMethod.GET)
     public String introductionPage(@RequestParam(value = "id") int id, HttpSession session){
-        float taskNumber = 0;
+//        float taskNumber = 0;
         float refuseRate = 0;
         float cancelRate = 0;
         float successRate = 0;
         float acceptRate = 0;
-        float score = 0;
         long allDetailNumber = detailService.countAllDetail();
         User otherUser = userService.findUserById(id);
         String role = otherUser.getRole().getRole();
         if (role.equals("学生")){
             Student otherStudent = studentService.findStudentByUser(otherUser);
-            taskNumber = taskService.countTaskByStudent(otherStudent);
-            if (taskNumber != 0){
-                refuseRate = taskService.countTaskStudentAndResult(otherStudent, "拒绝") / taskNumber;
-                cancelRate = taskService.countTaskStudentAndResult(otherStudent, "取消") / taskNumber;
-                successRate = taskService.countTaskStudentAndResult(otherStudent, "成功") / taskNumber;
-                acceptRate = taskService.countTaskStudentAndResult(otherStudent, "接受") / taskNumber;
-            }
-            score = otherStudent.getScore();
+            calculateStudentRating(otherStudent);
+//            taskNumber = taskService.countTaskByStudent(otherStudent);
+//            if (taskNumber != 0){
+//                refuseRate = taskService.countTaskStudentAndResult(otherStudent, "拒绝") / taskNumber;
+//                cancelRate = taskService.countTaskStudentAndResult(otherStudent, "取消") / taskNumber;
+//                successRate = taskService.countTaskStudentAndResult(otherStudent, "成功") / taskNumber;
+//                acceptRate = taskService.countTaskStudentAndResult(otherStudent, "接受") / taskNumber;
+//            }
             session.setAttribute("otherUser", otherStudent);
         }
         else {
             Parent otherParent = parentService.findParentByUser(otherUser);
-            for (Detail detail : otherParent.getDetails()) {
-                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-                refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
-                cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
-                successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
-                acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
-            }
-            if (taskNumber != 0) {
-                refuseRate = refuseRate / taskNumber;
-                cancelRate = cancelRate / taskNumber;
-                successRate = successRate / taskNumber;
-                acceptRate = acceptRate / taskNumber;
-            }
-            score = otherParent.getScore();
+//            for (Detail detail : otherParent.getDetails()) {
+//                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+//                refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
+//                cancelRate = cancelRate + taskService.countTaskDetailAndResult(detail, "取消");
+//                successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
+//                acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
+//            }
+            calculateParentRating(otherParent);
             session.setAttribute("otherUser", otherParent);
+        }
+        if (taskNumber != 0) {
+            refuseRate = refuseTime / taskNumber;
+            cancelRate = cancelTime / taskNumber;
+            successRate = successTime / taskNumber;
+            acceptRate = acceptTime / taskNumber;
         }
         session.setAttribute("taskNumber", taskNumber);
         session.setAttribute("refuseRate", refuseRate);
         session.setAttribute("cancelRate", cancelRate);
         session.setAttribute("successRate", successRate);
         session.setAttribute("acceptRate", acceptRate);
-        session.setAttribute("score", score);
         session.setAttribute("allDetailNumber", allDetailNumber);
         return "redirect:/viewIntroduction";
     }
@@ -140,51 +141,58 @@ public class BasicController {
     public String personalCenter(Authentication authentication, HttpSession session){
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
+//        Share share = new Share();
         int code = 1;
         int number = 0;
-        float taskNumber = 0;
-        int refuseTime = 0;
-        int cancelTime = 0;
-        int successTime = 0;
-        int acceptTime = 0;
+//        float taskNumber = 0;
+//        int refuseTime = 0;
+//        int cancelTime = 0;
+//        int successTime = 0;
+//        int acceptTime = 0;
         float score = 0;
         long allDetailNumber = detailService.countAllDetail();
         if (role.equals("学生")){
             Student user1 = studentService.findStudentByUser(user);
-            taskNumber = taskService.countTaskByStudent(user1);
-            refuseTime = taskService.countTaskStudentAndResult(user1, "拒绝");
-            cancelTime = taskService.countTaskStudentAndResult(user1, "取消");
-            successTime = taskService.countTaskStudentAndResult(user1, "成功");
-            acceptTime = taskService.countTaskStudentAndResult(user1, "接受");
-            if (taskNumber != 0){
-                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-            }
-            user1.setScore(score);
-            studentService.saveStudent(user1);
+//            taskNumber = taskService.countTaskByStudent(user1);
+//            refuseTime = taskService.countTaskStudentAndResult(user1, "拒绝");
+//            cancelTime = taskService.countTaskStudentAndResult(user1, "取消");
+//            successTime = taskService.countTaskStudentAndResult(user1, "成功");
+//            acceptTime = taskService.countTaskStudentAndResult(user1, "接受");
+//            System.out.println(user1);
+
+            calculateStudentRating(user1);
+            putAboutTaskInSession(session);
+//            if (Share.taskNumber != 0){
+//                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//            }
+//            user1.setScore(score);
+//            studentService.saveStudent(user1);
+            score = user1.getScore();
             session.setAttribute("user", user1);
         }
         else {
             Parent user1 = parentService.findParentByPhone(authentication.getName());
-            for (Detail detail : user1.getDetails()){
-                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
-                refuseTime = refuseTime + taskService.countTaskDetailAndResult(detail, "拒绝");
-                cancelTime = cancelTime + taskService.countTaskDetailAndResult(detail, "取消");
-                successTime = successTime + taskService.countTaskDetailAndResult(detail, "成功");
-                acceptTime = acceptTime + taskService.countTaskDetailAndResult(detail, "接受");
-            }
-            if (taskNumber != 0){
-                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-            }
-            user1.setScore(score);
-            parentService.saveParent(user1);
+//            for (Detail detail : user1.getDetails()){
+//                taskNumber = taskNumber + taskService.countTaskByDetail(detail);
+//                refuseTime = refuseTime + taskService.countTaskDetailAndResult(detail, "拒绝");
+//                cancelTime = cancelTime + taskService.countTaskDetailAndResult(detail, "取消");
+//                successTime = successTime + taskService.countTaskDetailAndResult(detail, "成功");
+//                acceptTime = acceptTime + taskService.countTaskDetailAndResult(detail, "接受");
+//            }
+//            if (taskNumber != 0){
+//                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//            }
+//            user1.setScore(score);
+//            parentService.saveParent(user1);
+            calculateParentRating(user1);
+            putAboutTaskInSession(session);
             session.setAttribute("user", user1);
         }
-        session.setAttribute("taskNumber", taskNumber);
-        session.setAttribute("refuseTime", refuseTime);
-        session.setAttribute("cancelTime", cancelTime);
-        session.setAttribute("successTime", successTime);
-        session.setAttribute("acceptTime", acceptTime);
-        session.setAttribute("score", score);
+//        session.setAttribute("taskNumber", taskNumber);
+//        session.setAttribute("refuseTime", refuseTime);
+//        session.setAttribute("cancelTime", cancelTime);
+//        session.setAttribute("successTime", successTime);
+//        session.setAttribute("acceptTime", acceptTime);
         session.setAttribute("code", code);
         session.setAttribute("number", number);
         session.setAttribute("allDetailNumber", allDetailNumber);
@@ -283,7 +291,7 @@ public class BasicController {
             session.setAttribute("user", user1);
         }
         else {
-            Parent user1 = parentService.findParentByPhone(authentication.getName());
+            Parent user1 = parentService.findParentByUser(user);
             session.setAttribute("user", user1);
         }
         session.setAttribute("number", number);
