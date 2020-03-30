@@ -59,7 +59,7 @@ public class BasicController {
         String role = otherUser.getRole().getRole();
         if (role.equals("学生")){
             Student otherStudent = studentService.findStudentByUser(otherUser);
-            calculateStudentRating(otherStudent);
+            calculateStudentTotal(otherStudent);
 //            taskNumber = taskService.countTaskByStudent(otherStudent);
 //            if (taskNumber != 0){
 //                refuseRate = taskService.countTaskStudentAndResult(otherStudent, "拒绝") / taskNumber;
@@ -78,7 +78,7 @@ public class BasicController {
 //                successRate = successRate + taskService.countTaskDetailAndResult(detail, "成功");
 //                acceptRate = acceptRate + taskService.countTaskDetailAndResult(detail, "接受");
 //            }
-            calculateParentRating(otherParent);
+            calculateParentTotal(otherParent);
             session.setAttribute("otherUser", otherParent);
         }
         if (taskNumber != 0) {
@@ -142,14 +142,14 @@ public class BasicController {
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
 //        Share share = new Share();
-        int code = 1;
-        int number = 0;
+//        int code = 1;
+//        int number = 0;
 //        float taskNumber = 0;
 //        int refuseTime = 0;
 //        int cancelTime = 0;
 //        int successTime = 0;
 //        int acceptTime = 0;
-        float score = 0;
+//        float score = 0;
         long allDetailNumber = detailService.countAllDetail();
         if (role.equals("学生")){
             Student user1 = studentService.findStudentByUser(user);
@@ -160,14 +160,15 @@ public class BasicController {
 //            acceptTime = taskService.countTaskStudentAndResult(user1, "接受");
 //            System.out.println(user1);
 
-            calculateStudentRating(user1);
-            putAboutTaskInSession(session);
+            getStudentScore(user1, session);
+//            calculateStudentTotal(user1);
+//            putAboutTaskInSession(session);
 //            if (Share.taskNumber != 0){
 //                score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
 //            }
 //            user1.setScore(score);
 //            studentService.saveStudent(user1);
-            score = user1.getScore();
+//            score = user1.getScore();
             session.setAttribute("user", user1);
         }
         else {
@@ -184,8 +185,9 @@ public class BasicController {
 //            }
 //            user1.setScore(score);
 //            parentService.saveParent(user1);
-            calculateParentRating(user1);
-            putAboutTaskInSession(session);
+//            calculateParentTotal(user1);
+//            putAboutTaskInSession(session);
+            getParentScore(user1, session);
             session.setAttribute("user", user1);
         }
 //        session.setAttribute("taskNumber", taskNumber);
@@ -193,8 +195,9 @@ public class BasicController {
 //        session.setAttribute("cancelTime", cancelTime);
 //        session.setAttribute("successTime", successTime);
 //        session.setAttribute("acceptTime", acceptTime);
-        session.setAttribute("code", code);
-        session.setAttribute("number", number);
+//        session.setAttribute("code", code);
+//        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 0, session);
         session.setAttribute("allDetailNumber", allDetailNumber);
         return "student/student_home";
     }
@@ -206,18 +209,18 @@ public class BasicController {
 
     @RequestMapping(value = "/changePosition")
     public String changePosition(Authentication authentication, @RequestParam(value = "province_name") String province_name, @RequestParam(value = "city_name") String city_name, @RequestParam(value = "area_name") String area_name, HttpSession session){
-        User user = loginService.findUserByPhone(authentication.getName());
-        String role = user.getRole().getRole();
+//        User user = loginService.findUserByPhone(authentication.getName());
+//        String role = user.getRole().getRole();
         session.setAttribute("province", province_name);
         session.setAttribute("city", city_name);
         session.setAttribute("area", area_name);
-        if (role.equals("学生")){
-            return "student/student_home";
-        }
-        else if (role.equals("家长")){
-            return "parent/parent_home";
-        }
-        return "";
+//        if (role.equals("学生")){
+//            return "student/student_home";
+//        }
+//        else if (role.equals("家长")){
+//            return "parent/parent_home";
+//        }
+        return "student/student_home";
     }
 
     /**
@@ -227,7 +230,7 @@ public class BasicController {
 
     @RequestMapping(value = "/findInformation")
     public String findInformation(Authentication authentication, HttpSession session){
-        int code = 3;
+//        int code = 3;
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         if (role.equals("学生")){
@@ -244,7 +247,8 @@ public class BasicController {
             session.setAttribute("messageNumber", messageNumber);
             session.setAttribute("messages", messages);
         }
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
+        putCodeAndNumberInSession(3, -1, session);
         return "student/student_home";
     }
 
@@ -285,7 +289,7 @@ public class BasicController {
     public String modifyingData(Authentication authentication, HttpSession session){
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
-        int number = 8;
+//        int number = 8;
         if (role.equals("学生")){
             Student user1 = studentService.findStudentByUser(user);
             session.setAttribute("user", user1);
@@ -294,7 +298,8 @@ public class BasicController {
             Parent user1 = parentService.findParentByUser(user);
             session.setAttribute("user", user1);
         }
-        session.setAttribute("number", number);
+//        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 8, session);
         return "student/student_home";
     }
 
@@ -306,14 +311,15 @@ public class BasicController {
     @RequestMapping(value = "/changeInformation")
     @ResponseBody
     public String changeInformation(@RequestParam(value = "information") String information, Authentication authentication, HttpSession session){
-        Map<String,String> map = new HashMap<>();
-        String string =information.replace("\"", "");
-        String[] array = string.split(";");
-        for(String str : array ){
-            String[] newArray = str.split(",");
-            System.out.println(str);
-            map.put(newArray[0], newArray[1]);
-        }
+//        Map<String,String> map = new HashMap<>();
+//        String string =information.replace("\"", "");
+//        String[] array = string.split(";");
+//        for(String str : array ){
+//            String[] newArray = str.split(",");
+//            System.out.println(str);
+//            map.put(newArray[0], newArray[1]);
+//        }
+        Map<String,String> map = stringConvertToMap(information);
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         if (role.equals("学生")){
@@ -356,21 +362,22 @@ public class BasicController {
     @ResponseBody
     public String chooseFreeTime(@RequestParam(value = "array") String array[][]){
         String[] week = {"周一","周二","周三","周四","周五","周六","周日"};
-        Map<Integer, List<String>> map = new HashMap<>();
-        for (int i = 0; i < 7; i++){
-            List<String> list = new ArrayList<>();
-            if (array[i].length != 0){
-                for (int j = 0; j < array[i].length; j++){
-                    if (map.get(i) == null && !array[i][j].equals("")){
-                        list.add(array[i][j]);
-                        map.put(i, list);
-                    }
-                    else if(!array[i][j].equals("")) {
-                        map.get(i).add(array[i][j]);
-                    }
-                }
-            }
-        }
+//        Map<Integer, List<String>> map = new HashMap<>();
+//        for (int i = 0; i < 7; i++){
+//            List<String> list = new ArrayList<>();
+//            if (array[i].length != 0){
+//                for (int j = 0; j < array[i].length; j++){
+//                    if (map.get(i) == null && !array[i][j].equals("")){
+//                        list.add(array[i][j]);
+//                        map.put(i, list);
+//                    }
+//                    else if(!array[i][j].equals("")) {
+//                        map.get(i).add(array[i][j]);
+//                    }
+//                }
+//            }
+//        }
+        Map<Integer, List<String>> map = arrayConvertToMap(array);
         String result = "";
         System.out.println(map);
         for (Integer i : map.keySet()){
@@ -409,22 +416,23 @@ public class BasicController {
     @RequestMapping(value = "/chooseGradeAndSubject")
     @ResponseBody
     public String chooseGradeAndSubject(@RequestParam(value = "array") String array[][]){
-        String[] grade = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "初一", "初二", "初三", "高一", "高二", "高三"};
-        Map<Integer, List<String>> map = new HashMap<>();
-        for (int i = 0; i < array.length; i++){
-            List<String> list = new ArrayList<>();
-            if (array[i].length != 0){
-                for (int j = 0; j < array[i].length; j++){
-                    if (map.get(i) == null && !array[i][j].equals("")){
-                        list.add(array[i][j]);
-                        map.put(i, list);
-                    }
-                    else if(!array[i][j].equals("")) {
-                        map.get(i).add(array[i][j]);
-                    }
-                }
-            }
-        }
+        String[] grade = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "",  "初一", "初二", "初三", "高一", "高二", "高三"};
+//        Map<Integer, List<String>> map = new HashMap<>();
+//        for (int i = 0; i < array.length; i++){
+//            List<String> list = new ArrayList<>();
+//            if (array[i].length != 0){
+//                for (int j = 0; j < array[i].length; j++){
+//                    if (map.get(i) == null && !array[i][j].equals("")){
+//                        list.add(array[i][j]);
+//                        map.put(i, list);
+//                    }
+//                    else if(!array[i][j].equals("")) {
+//                        map.get(i).add(array[i][j]);
+//                    }
+//                }
+//            }
+//        }
+        Map<Integer, List<String>> map = arrayConvertToMap(array);
         String result = "";
         System.out.println(map);
         for (Integer i : map.keySet()){
@@ -440,8 +448,9 @@ public class BasicController {
 
     @RequestMapping(value = "/viewIntroduction")
     public String viewIntroduction(HttpSession session){
-        int code = 4;
-        session.setAttribute("code", code);
+//        int code = 4;
+//        session.setAttribute("code", code);
+        putCodeAndNumberInSession(4, -1, session);
         return "student/student_home";
     }
 

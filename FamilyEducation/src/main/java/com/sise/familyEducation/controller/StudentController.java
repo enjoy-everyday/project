@@ -70,13 +70,15 @@ public class StudentController {
 
     @RequestMapping(value = "/viewAll")
     public String viewAll(Authentication authentication, HttpSession session){
-        int number = 1;
+//        int number = 1;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         List<Task> tasks = taskService.findTasksByStudentAndDisplay(student, true);
-        session.setAttribute("number", number);
+//        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 1, session);
         session.setAttribute("tasks", tasks);
         session.setAttribute("student", student);
+
         return "student/student_home";
     }
 
@@ -87,11 +89,12 @@ public class StudentController {
 
     @RequestMapping(value = "/accepted")
     public String accepted(Authentication authentication, HttpSession session){
-        int number = 2;
+//        int number = 2;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         List<Task> tasks = taskService.findTasksByStudentAndResult(student, "接受");
-        session.setAttribute("number", number);
+//        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 2, session);
         session.setAttribute("tasks", tasks);
         return "student/student_home";
     }
@@ -103,11 +106,12 @@ public class StudentController {
 
     @RequestMapping(value = "/untreated")
     public String untreated(Authentication authentication, HttpSession session){
-        int number = 3;
+//        int number = 3;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         List<Task> tasks = taskService.findTasksByStudentAndResult(student, "未处理");
-        session.setAttribute("number", number);
+//        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 3, session);
         session.setAttribute("tasks", tasks);
         return "student/student_home";
     }
@@ -119,12 +123,13 @@ public class StudentController {
 
     @RequestMapping(value = "/findAllApplicants")
     public String findAllApplicants(Authentication authentication, HttpSession session){
-        int code = 2;
+//        int code = 2;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         List<Detail> details = detailService.findNoApplicationDetailsByStudentId(student.getId());
         session.setAttribute("details", details);
-        session.setAttribute("code", code);
+        putCodeAndNumberInSession(2, -1, session);
+//        session.setAttribute("code", code);
         return "student/student_home";
     }
 
@@ -135,27 +140,27 @@ public class StudentController {
 
     @RequestMapping(value = "/searchGradesAndSubjects")
     public String searchGradesAndSubjects(@RequestParam(value = "grade") String grade, @RequestParam(value = "subject") String subject, Authentication authentication, HttpSession session){
-        int code = 2;
+//        int code = 2;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
+        List<Detail> details;
         System.out.println(grade);
         System.out.println(subject);
         if (grade.equals("null") && !subject.equals("null")){
-            List<Detail> details = detailService.findNoApplicationDetailsBySubject(student.getId(), subject);
-            session.setAttribute("details", details);
+            details = detailService.findNoApplicationDetailsBySubject(student.getId(), subject);
         }
         else if (!grade.equals("null") && subject.equals("null")){
-            List<Detail> details = detailService.findNoApplicationDetailsByGrade(student.getId(), grade);
-            session.setAttribute("details", details);
+            details = detailService.findNoApplicationDetailsByGrade(student.getId(), grade);
         }
         else if (!grade.equals("null") && !subject.equals("null")){
-            List<Detail> details = detailService.findNoApplicationDetailsByGradeAndSubject(student.getId(), grade, subject);
-            session.setAttribute("details", details);
+            details = detailService.findNoApplicationDetailsByGradeAndSubject(student.getId(), grade, subject);
         }
         else {
             return "redirect:/findAllApplicants";
         }
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
+        session.setAttribute("details", details);
+        putCodeAndNumberInSession(2, -1, session);
         return "student/student_home";
     }
 
@@ -186,7 +191,7 @@ public class StudentController {
     @RequestMapping("/applyForTutor")
     @ResponseBody
     public String applyForTutor(@RequestParam(value = "detail_id") int id, Authentication authentication){
-        float score = 0;
+//        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         if (student.getName() == null){
@@ -204,10 +209,11 @@ public class StudentController {
 //            cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
 //            successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
 //            acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-            calculateStudentRating(student);
-            score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-            student.setScore(score);
-            studentService.saveStudent(student);
+//            calculateStudentTotal(student);
+//            score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//            student.setScore(score);
+//            studentService.saveStudent(student);
+            updateStudentScore(student);
             return "success";
         }
     }
@@ -243,30 +249,33 @@ public class StudentController {
     @RequestMapping("/cancelTheApplication")
     @ResponseBody
     public String cancelTheApplication(@RequestParam(value = "task_id") int id, Authentication authentication, HttpSession session){
-        float score = 0;
+//        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("取消");
-        Message message = new Message();
-        message.setDate(new Date());
-        message.setMessage("取消");
-        message.setStudent(task.getStudent());
-        message.setParent(task.getDetail().getParent());
-        messageService.saveMessage(message);
+//        Message message = new Message();
+//        message.setDate(new Date());
+//        message.setMessage("取消");
+//        message.setStudent(task.getStudent());
+//        message.setParent(task.getDetail().getParent());
+//        messageService.saveMessage(message);
+        saveMessage(task.getDetail().getParent(), student, "取消");
         taskService.saveTask(task);
 //        taskNumber = taskService.countTaskByStudent(student);
 //        refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
 //        cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
 //        successRate = taskService.countTaskStudentAndResult(student, "成功") / taskNumber;
 //        acceptRate = taskService.countTaskStudentAndResult(student, "接受") / taskNumber;
-        calculateStudentRating(student);
-        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-        student.setScore(score);
-        studentService.saveStudent(student);
-        if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
-        }
+//        calculateStudentTotal(student);
+//        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//        student.setScore(score);
+//        studentService.saveStudent(student);
+        updateStudentScore(student);
+//        if (WebsocketConnectListener.bidiMap.get(task.getDetail().getParent().getPhone()) != null){
+//            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
+//        }
+        sendWebsocketMessage(task.getDetail().getParent().getPhone(), task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
         if ((int)session.getAttribute("number") == 2){
             return "accepted";
         }

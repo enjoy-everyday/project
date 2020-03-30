@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.sise.familyEducation.share.Share.putCodeAndNumberInSession;
+import static com.sise.familyEducation.share.Share.taskNumber;
+
 /**
  * @program: FamilyEducation
  * @description: 登录
@@ -97,7 +100,7 @@ public class LoginController {
     public String login(Authentication authentication, HttpServletRequest request, HttpSession session) throws IOException, InterruptedException {
         connectUser = authentication.getName();
         Thread.sleep(500);
-        int code = 0;
+//        int code = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         String role = user.getRole().getRole();
         System.out.println(GetPlaceByIp.getPlace(request));
@@ -107,7 +110,7 @@ public class LoginController {
         session.setAttribute("province", province);
         session.setAttribute("city", city);
         session.setAttribute("authentication", authentication.getName());
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
         session.setAttribute("role", role);
         if (role.equals("学生")){
             Iterable<Parent> parents = parentService.findParentOrderByScoreLimit();
@@ -129,6 +132,7 @@ public class LoginController {
             session.setAttribute("students", students);
             session.setAttribute("rankingBangStudents", rankingBangStudents);
         }
+        putCodeAndNumberInSession(0, -1, session);
         return "student/student_home";
     }
 

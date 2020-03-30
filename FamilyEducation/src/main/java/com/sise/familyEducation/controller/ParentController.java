@@ -57,15 +57,17 @@ public class ParentController {
         Parent parent = parentService.findParentByUser(user);
         User otherUser = userService.findUserById(id);
         Student student = studentService.findStudentByUser(user);
-        Message message = new Message();
-        message.setParent(parent);
-        message.setStudent(student);
-        message.setMessage("邀请");
-        message.setDate(new Date());
-        messageService.saveMessage(message);
-        if (WebsocketConnectListener.bidiMap.get(otherUser.getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(otherUser.getPhone(), "/queue/getResponse", parent.getUsername() + "邀请您去做家教");
-        }
+//        Message message = new Message();
+//        message.setParent(parent);
+//        message.setStudent(student);
+//        message.setMessage("邀请");
+//        message.setDate(new Date());
+//        messageService.saveMessage(message);
+        saveMessage(parent, student, "邀请");
+//        if (WebsocketConnectListener.bidiMap.get(otherUser.getPhone()) != null){
+//            simpMessagingTemplate.convertAndSendToUser(otherUser.getPhone(), "/queue/getResponse", parent.getUsername() + "邀请您去做家教");
+//        }
+        sendWebsocketMessage(otherUser.getPhone(), parent.getUsername() + "邀请您去做家教");
         return "redirect:/pleaseTutor";
     }
 
@@ -76,8 +78,9 @@ public class ParentController {
 
     @RequestMapping("/release")
     public String release(HttpSession session){
-        int code = 1;
-        session.setAttribute("code", code);
+//        int code = 1;
+//        session.setAttribute("code", code);
+        putCodeAndNumberInSession(1, 0, session);
         return "parent/parent_home";
     }
 
@@ -103,9 +106,10 @@ public class ParentController {
     @RequestMapping("/viewCandidates")
     public String viewCandidates(Authentication authentication, HttpSession session){
         Parent parent = parentService.findParentByPhone(authentication.getName());
-        int code = 2;
+//        int code = 2;
         session.setAttribute("parent", parent);
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
+        putCodeAndNumberInSession(2, -1, session);
         return "parent/parent_home";
     }
 
@@ -122,17 +126,18 @@ public class ParentController {
 //        float cancelRate = 0;
 //        float successRate = 0;
 //        float acceptRate = 0;
-        float score = 0;
+//        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("接受");
-        Message message = new Message();
-        message.setDate(new Date());
-        message.setMessage("接受");
-        message.setStudent(task.getStudent());
-        message.setParent(task.getDetail().getParent());
-        messageService.saveMessage(message);
+//        Message message = new Message();
+//        message.setDate(new Date());
+//        message.setMessage("接受");
+//        message.setStudent(task.getStudent());
+//        message.setParent(task.getDetail().getParent());
+//        messageService.saveMessage(message);
+        saveMessage(task.getDetail().getParent(), task.getStudent(), "接受");
         taskService.saveTask(task);
 //        for (Detail detail : parent.getDetails()) {
 //            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
@@ -145,13 +150,15 @@ public class ParentController {
 //        cancelRate = cancelRate / taskNumber;
 //        successRate = successRate / taskNumber;
 //        acceptRate = acceptRate / taskNumber;
-        calculateParentRating(parent);
-        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-        parent.setScore(score);
-        parentService.saveParent(parent);
-        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
-        }
+//        calculateParentTotal(parent);
+//        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//        parent.setScore(score);
+//        parentService.saveParent(parent);
+        updateParentScore(parent);
+//        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+//            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "接受了您的应聘");
+//        }
+        sendWebsocketMessage(task.getStudent().getPhone(), task.getDetail().getParent().getUsername() + "接受了您的应聘");
         return "success";
     }
 
@@ -168,20 +175,21 @@ public class ParentController {
 //        float cancelRate = 0;
 //        float successRate = 0;
 //        float acceptRate = 0;
-        float score = 0;
+//        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
         Task task = taskService.findTaskById(id);
         task.setResult("拒绝");
-        Message message = new Message();
-        message.setDate(new Date());
-        message.setMessage("拒绝");
-        message.setStudent(task.getStudent());
-        message.setParent(task.getDetail().getParent());
-        messageService.saveMessage(message);
+//        Message message = new Message();
+//        message.setDate(new Date());
+//        message.setMessage("拒绝");
+//        message.setStudent(task.getStudent());
+//        message.setParent(task.getDetail().getParent());
+//        messageService.saveMessage(message);
+        saveMessage(task.getDetail().getParent(), task.getStudent(), "拒绝");
         taskService.saveTask(task);
-        calculateParentRating(parent);
-        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
+//        calculateParentTotal(parent);
+//        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
 //        for (Detail detail : parent.getDetails()) {
 //            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
 //            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
@@ -194,11 +202,13 @@ public class ParentController {
 //        successRate = successRate / taskNumber;
 //        acceptRate = acceptRate / taskNumber;
 //        score = ((-(refuseRate) + 1)  + (-(cancelRate) + 1) + successRate + acceptRate) * 100 / 80;
-        parent.setScore(score);
-        parentService.saveParent(parent);
-        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
-            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
-        }
+//        parent.setScore(score);
+//        parentService.saveParent(parent);
+        updateParentScore(parent);
+//        if (WebsocketConnectListener.bidiMap.get(task.getStudent().getPhone()) != null){
+//            simpMessagingTemplate.convertAndSendToUser(task.getStudent().getPhone(), "/queue/getResponse", task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
+//        }
+        sendWebsocketMessage(task.getStudent().getPhone(), task.getDetail().getParent().getUsername() + "拒绝了您的应聘");
         return "success";
     }
 
@@ -209,10 +219,11 @@ public class ParentController {
 
     @RequestMapping(value = "/findAllStudents")
     public String findAllStudents(HttpSession session){
-        int code = 5;
+//        int code = 5;
         List<Student> students = studentService.findAllStudents();
-        session.setAttribute("code", code);
+//        session.setAttribute("code", code);
         session.setAttribute("students", students);
+        putCodeAndNumberInSession(5, -1, session);
         return "student/student_home";
     }
 
@@ -223,12 +234,14 @@ public class ParentController {
 
     @RequestMapping(value = "/findAllPublish")
     public String findAllPublish(Authentication authentication, HttpSession session){
-        int number = 4;
-        Parent parent = parentService.findParentByPhone(authentication.getName());
-        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
-        session.setAttribute("number", number);
-        session.setAttribute("parent", parent);
-        session.setAttribute("details", details);
+        findDetailsByDisplay(authentication, true, session);
+        putCodeAndNumberInSession(1, 4, session);
+//        int number = 4;
+//        Parent parent = parentService.findParentByPhone(authentication.getName());
+//        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
+//        session.setAttribute("number", number);
+//        session.setAttribute("parent", parent);
+//        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -239,12 +252,14 @@ public class ParentController {
 
     @RequestMapping(value = "/findApplied")
     public String findApplied(Authentication authentication, HttpSession session){
-        int number = 5;
-        Parent parent = parentService.findParentByPhone(authentication.getName());
-        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
-        session.setAttribute("number", number);
-        session.setAttribute("parent", parent);
-        session.setAttribute("details", details);
+        findDetailsByDisplay(authentication, true, session);
+        putCodeAndNumberInSession(1, 5, session);
+//        int number = 5;
+//        Parent parent = parentService.findParentByPhone(authentication.getName());
+//        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
+//        session.setAttribute("number", number);
+//        session.setAttribute("parent", parent);
+//        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -255,12 +270,14 @@ public class ParentController {
 
     @RequestMapping(value = "/findAcceptedApplication")
     public String findAcceptedApplication(Authentication authentication, HttpSession session){
-        int number = 6;
-        Parent parent = parentService.findParentByPhone(authentication.getName());
-        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
-        session.setAttribute("number", number);
-        session.setAttribute("parent", parent);
-        session.setAttribute("details", details);
+        findDetailsByDisplay(authentication, true, session);
+        putCodeAndNumberInSession(1, 6, session);
+//        int number = 6;
+//        Parent parent = parentService.findParentByPhone(authentication.getName());
+//        List<Detail> details = detailService.findDetailsByParentAndDisplay(parent, true);
+//        session.setAttribute("number", number);
+//        session.setAttribute("parent", parent);
+//        session.setAttribute("details", details);
         return "student/student_home";
     }
 
@@ -278,14 +295,15 @@ public class ParentController {
         }
         else {
             System.out.println("------------------" + json);
-            Map<String,String> map = new HashMap<>();
-            String string =json.replace("\"", "");
-            String[] array = string.split(";");
-            for(String str : array ){
-                String[] newArray = str.split(",");
-                System.out.println(str);
-                map.put(newArray[0], newArray[1]);
-            }
+//            Map<String,String> map = new HashMap<>();
+//            String string =json.replace("\"", "");
+//            String[] array = string.split(";");
+//            for(String str : array ){
+//                String[] newArray = str.split(",");
+//                System.out.println(str);
+//                map.put(newArray[0], newArray[1]);
+//            }
+            Map<String,String> map = stringConvertToMap(json);
             String[] gradeAndSubject = map.get("teachingGradeAndSubject").split("：");
             String grade = gradeAndSubject[0];
             String subject = gradeAndSubject[1];
@@ -328,8 +346,9 @@ public class ParentController {
 
     @RequestMapping(value = "/releasePage")
     public String releasePage(HttpSession session){
-        int number = 7;
-        session.setAttribute("number", number);
+        putCodeAndNumberInSession(1, 7, session);
+//        int number = 7;
+//        session.setAttribute("number", number);
         return "student/student_home";
     }
 
@@ -353,12 +372,13 @@ public class ParentController {
             return "null";
         }
         else {
+            String replace = list.toString().replace("[", "").replace("]", "");
             if (gradeNumber < 6){
                 if (list.size() == 3){
                     result = grades[gradeNumber] + "：全部科目<br>";
                 }
                 else {
-                    result = grades[gradeNumber] + "：" + list.toString().replace("[", "").replace("]", "") + "<br>";
+                    result = grades[gradeNumber] + "：" + replace + "<br>";
                 }
             }
             else {
@@ -366,7 +386,7 @@ public class ParentController {
                     result = grades[gradeNumber - 1] + "：全部科目<br>";
                 }
                 else {
-                    result = grades[gradeNumber - 1] + "：" + list.toString().replace("[", "").replace("]", "") + "<br>";
+                    result = grades[gradeNumber - 1] + "：" + replace + "<br>";
                 }
             }
             return result;
@@ -394,7 +414,7 @@ public class ParentController {
 
     @RequestMapping(value = "/searchQualificationAndScore")
     public String searchQualificationAndScore(@RequestParam(value = "qualification") String qualification, @RequestParam(value = "score") float score, HttpSession session){
-        int code = 5;
+//        int code = 5;
         List<Student> students;
         switch (qualification) {
             case "博士": {
@@ -414,7 +434,8 @@ public class ParentController {
                 break;
             }
         }
-        session.setAttribute("code", code);
+        putCodeAndNumberInSession(5, -1, session);
+//        session.setAttribute("code", code);
         session.setAttribute("students", students);
         return "student/student_home";
     }
