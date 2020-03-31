@@ -90,12 +90,13 @@ public class StudentController {
     @RequestMapping(value = "/accepted")
     public String accepted(Authentication authentication, HttpSession session){
 //        int number = 2;
-        User user = loginService.findUserByPhone(authentication.getName());
-        Student student = studentService.findStudentByUser(user);
-        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "接受");
+//        User user = loginService.findUserByPhone(authentication.getName());
+//        Student student = studentService.findStudentByUser(user);
+//        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "接受");
 //        session.setAttribute("number", number);
+        findTasksByStudentAndResult(authentication, "接受", session);
         putCodeAndNumberInSession(1, 2, session);
-        session.setAttribute("tasks", tasks);
+//        session.setAttribute("tasks", tasks);
         return "student/student_home";
     }
 
@@ -107,12 +108,13 @@ public class StudentController {
     @RequestMapping(value = "/untreated")
     public String untreated(Authentication authentication, HttpSession session){
 //        int number = 3;
-        User user = loginService.findUserByPhone(authentication.getName());
-        Student student = studentService.findStudentByUser(user);
-        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "未处理");
+//        User user = loginService.findUserByPhone(authentication.getName());
+//        Student student = studentService.findStudentByUser(user);
+//        List<Task> tasks = taskService.findTasksByStudentAndResult(student, "未处理");
 //        session.setAttribute("number", number);
+        findTasksByStudentAndResult(authentication, "未处理", session);
         putCodeAndNumberInSession(1, 3, session);
-        session.setAttribute("tasks", tasks);
+//        session.setAttribute("tasks", tasks);
         return "student/student_home";
     }
 
@@ -144,8 +146,8 @@ public class StudentController {
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
         List<Detail> details;
-        System.out.println(grade);
-        System.out.println(subject);
+//        System.out.println(grade);
+//        System.out.println(subject);
         if (grade.equals("null") && !subject.equals("null")){
             details = detailService.findNoApplicationDetailsBySubject(student.getId(), subject);
         }

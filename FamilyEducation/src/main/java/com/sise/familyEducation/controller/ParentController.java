@@ -105,7 +105,8 @@ public class ParentController {
 
     @RequestMapping("/viewCandidates")
     public String viewCandidates(Authentication authentication, HttpSession session){
-        Parent parent = parentService.findParentByPhone(authentication.getName());
+        User user = loginService.findUserByPhone(authentication.getName());
+        Parent parent = parentService.findParentByUser(user);
 //        int code = 2;
         session.setAttribute("parent", parent);
 //        session.setAttribute("code", code);
@@ -289,7 +290,8 @@ public class ParentController {
     @RequestMapping(value = "/releaseDetails")
     @ResponseBody
     public String releaseDetails(@RequestParam(value = "json") String json, Authentication authentication){
-        Parent parent = parentService.findParentByPhone(authentication.getName());
+        User user = loginService.findUserByPhone(authentication.getName());
+        Parent parent = parentService.findParentByUser(user);
         if (parent.getName() == null){
             return "error";
         }
