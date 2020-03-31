@@ -196,6 +196,18 @@ public class Share {
     }
 
     /**
+     * @date: 2020/3/30
+     * @description: 通过得到学生应聘结果
+     */
+
+    public static void findTasksByStudentAndResult(Authentication authentication, String result, HttpSession session){
+        User user = loginService.findUserByPhone(authentication.getName());
+        Student student = studentService.findStudentByUser(user);
+        List<Task> tasks = taskService.findTasksByStudentAndResult(student, result);
+        session.setAttribute("tasks", tasks);
+    }
+
+    /**
      * @date: 2020/3/29
      * @description: 存入code和number
      */
