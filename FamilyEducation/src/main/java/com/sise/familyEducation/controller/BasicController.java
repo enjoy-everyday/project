@@ -262,6 +262,7 @@ public class BasicController {
     public String deleteInformation(@RequestParam(value = "message_id") int id){
         Message message = messageService.findMessageById(id);
         message.setDisplay(false);
+        message.setState(true);
         messageService.saveMessage(message);
         return "success";
     }

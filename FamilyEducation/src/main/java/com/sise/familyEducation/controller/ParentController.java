@@ -334,7 +334,8 @@ public class ParentController {
             detail.setSubject(subject);
             detail.setTeachingTime(map.get("teachingTime"));
             detail.setPrice(price);
-            detail.setAddress(parent.getProvinceAndCity() + address);
+            detail.setProvinceAndCity(parent.getProvinceAndCity());
+            detail.setAddress(address);
             detailService.saveDetail(detail);
             System.out.println("**************" + map);
             return "success";
