@@ -28,7 +28,7 @@ public class Detail {
     private String address;
     private String grade;
     private String subject;
-    private String context;
+    private String provinceAndCity;
     private String qualification;
     private String goodAtSubjects;
     private String experience;
