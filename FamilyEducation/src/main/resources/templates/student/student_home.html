@@ -58,6 +58,10 @@
             <th:block th:if="${session.code == 5}">
                 <div th:include="/parent/all_students"></div>
             </th:block>
+            <th:block th:if="${session.code == 6}">
+                <div class="col-md-9 padding" th:include="/detail_information"></div>
+                <div class="col-md-3" th:include="/right"></div>
+            </th:block>
         </div>
     </div>
     <div th:include="/websocket"></div>
