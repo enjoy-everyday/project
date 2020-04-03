@@ -1,0 +1,40 @@
+<section id="course_all" class="padding-bottom-half">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 course_detail wow fadeIn" data-wow-delay="400ms">
+            <div class="profile_bg heading_space">
+                <h3 class="bottom20">请家教详细信息</h3>
+                <div class="row">
+                    <div class="profile_text" style="padding-left: 2%;">
+                        <h5><strong>对家教的要求</strong></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget">
+                            <p class="hours">性别：<span th:text="${session.detail.gender}">XXX</span></p>
+                            <p class="hours">经验：<span th:text="${session.detail.experience}">XXX</span></p>
+                            <p class="hours">学历：<span th:text="${session.detail.qualification}">XXX</span></p>
+                            <p class="hours">其它要求：<span th:text="${session.detail.requirement}">XXX</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="profile_text" style="padding-left: 2%;">
+                        <h5><strong>家教内容信息</strong></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="widget heading_space">
+                            <p class="hours">价格：<span th:text="${session.detail.price}">XXX</span></p>
+                            <p class="hours">发布时间：<span th:text="${session.detail.date}">XXX</span></p>
+                            <p class="hours">任教地址：<span th:text="${session.detail.provinceAndCity} + ${session.detail.address}">XXX</span></p>
+                            <p class="hours">任教时间：<span th:text="${session.detail.teachingTime}">XXX</span></p>
+                            <p class="hours">任教年级及科目：<span th:text="${session.detail.grade} + ${session.detail.subject}">XXX</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
