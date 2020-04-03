@@ -97,6 +97,19 @@ public class BasicController {
     }
 
     /**
+     * @date: 2020/4/1
+     * @description: 查看请家教内容信息、重定向
+     */
+
+    @RequestMapping(value = "/detailInformationPag", method = RequestMethod.GET)
+    public String detailInformationPag(@RequestParam(value = "id") int id, HttpSession session){
+        Detail detail = detailService.findDetailById(id);
+        session.setAttribute("detail", detail);
+        return "redirect:/viewDetail";
+    }
+
+
+    /**
      * @date: 2020/3/19
      * @description: 获取省份
      */
@@ -454,6 +467,18 @@ public class BasicController {
         putCodeAndNumberInSession(4, -1, session);
         return "student/student_home";
     }
+
+    /**
+     * @date: 2020/4/1
+     * @description: 请家教内容页面
+     */
+
+    @RequestMapping(value = "/viewDetail")
+    public String viewDetail(HttpSession session){
+        putCodeAndNumberInSession(6, -1, session);
+        return "student/student_home";
+    }
+
 
 
 }

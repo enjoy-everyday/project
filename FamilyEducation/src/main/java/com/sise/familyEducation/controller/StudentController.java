@@ -200,7 +200,7 @@ public class StudentController {
             return "error";
         }
         else {
-            Detail detail = detailService.findDetailsById(id);
+            Detail detail = detailService.findDetailById(id);
             Task task = new Task();
             task.setDate(new Date());
             task.setDetail(detail);

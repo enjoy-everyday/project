@@ -404,7 +404,7 @@ public class ParentController {
     @RequestMapping(value = "/deleteDetail")
     @ResponseBody
     public String deleteDetail(@RequestParam(value = "detail_id") int id){
-        Detail detail = detailService.findDetailsById(id);
+        Detail detail = detailService.findDetailById(id);
         detail.setDisplay(false);
         detailService.saveDetail(detail);
         return "success";

@@ -27,7 +27,7 @@ public class DetailService {
         return detailRepository.findDetailsByParentOrderByDate(parent);
     }
 
-    public Detail findDetailsById(int id){
+    public Detail findDetailById(int id){
         Optional<Detail> detail = detailRepository.findById(id);
         if (detail != null && detail.isPresent()){
             return detail.get();
