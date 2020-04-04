@@ -93,10 +93,10 @@
                                         <p class="hours">接受率：<span>0</span></p>
                                     </th:block>
                                     <th:block th:case="false">
-                                        <p class="hours">拒绝率：<span th:text="${session.refuseTime} / ${session.taskNumber} * 100 + '%'">XXX</span></p>
-                                        <p class="hours">取消率：<span th:text="${session.cancelTime} / ${session.taskNumber} * 100 + '%'">XXX</span></p>
-                                        <p class="hours">成功率：<span th:text="${session.successTime} / ${session.taskNumber} * 100 + '%'">XXX</span></p>
-                                        <p class="hours">接受率：<span th:text="${session.acceptTime} / ${session.taskNumber} * 100 + '%'">XXX</span></p>
+                                        <p class="hours">拒绝率：<span th:text="${session.refuseRate * 100} + '%'">XXX</span></p>
+                                        <p class="hours">取消率：<span th:text="${session.cancelRate * 100} + '%'">XXX</span></p>
+                                        <p class="hours">成功率：<span th:text="${session.successRate * 100} + '%'">XXX</span></p>
+                                        <p class="hours">接受率：<span th:text="${session.acceptRate * 100} + '%'">XXX</span></p>
                                     </th:block>
                                 </th:block>
                             </div>

@@ -9,7 +9,7 @@
                         </ul>
                         <div class="tab_container">
                             <div id="tab1" class="tab_content">
-                                <h3 class="bottom25">城市查询</h3>
+                                <h3 class="bottom25">更改城市位置</h3>
                                 <form class="total_form" th:action="@{/changePosition}"  method="post" id="position">
                                     <div class="form-group">
                                         <label class="select">
@@ -83,23 +83,31 @@
                             </div>
                                 <div th:case="false"  id="tab2" class="tab_content">
                                     <h4 class="bottom25">学历</h4>
-                                    <form class="total_form" method="post">
+                                    <form class="total_form"  th:action="@{/searchQualificationAndScore}" th:name="searchQualificationAndScore" th:id="searchQualificationAndScore" method="post">
                                         <div class="form-group">
                                             <label class="select">
-                                                <select name="" id="">
+                                                <select name="qualification" id="selectQualification">
                                                     <option value="null">所有学历</option>
+                                                    <option value="本科">本科及以上</option>
+                                                    <option value="硕士">硕士及以上</option>
+                                                    <option value="博士">博士及以上</option>
                                                 </select>
                                             </label>
                                         </div>
                                         <h4 class="bottom25">综合评分</h4>
                                         <div class="form-group">
                                             <label class="select">
-                                                <select name="" id="">
-                                                    <option value="null">所有评分</option>
+                                                <select name="score" id="selectScore">
+                                                    <option value="0">所有评分</option>
+                                                    <option value="1">1星及以上</option>
+                                                    <option value="2">2星及以上</option>
+                                                    <option value="3">3星及以上</option>
+                                                    <option value="4">4星及以上</option>
+                                                    <option value="5">5星</option>
                                                 </select>
                                             </label>
                                         </div>
-                                        <button id=""  class="btn_common blue border_radius">搜索</button>
+                                        <button id="screenStudents"  class="btn_common blue border_radius">搜索</button>
                                     </form>
                                 </div>
                             </th:block>
