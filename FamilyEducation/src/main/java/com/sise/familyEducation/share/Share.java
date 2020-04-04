@@ -40,6 +40,10 @@ public class Share {
     public static float cancelTime = 0;
     public static float successTime = 0;
     public static float acceptTime = 0;
+    public static float refuseRate = 0;
+    public static float cancelRate = 0;
+    public static float successRate = 0;
+    public static float acceptRate = 0;
     public static float score = 0;
 
     /**
@@ -71,13 +75,24 @@ public class Share {
     }
 
     /**
+     * @date: 2020/4/3
+     * @description: 计算应聘率，拒绝率等等
+     */
+
+    public static void calculateRate(){
+        refuseRate = ((float)((int)(refuseTime / taskNumber * 1000))) / 1000;
+        cancelRate = ((float)((int)(cancelTime / taskNumber * 1000))) / 1000;
+        successRate = ((float)((int)(successTime / taskNumber * 1000))) / 1000;
+        acceptRate = ((float)((int)(acceptTime / taskNumber * 1000))) / 1000;
+    }
+
+    /**
      * @date: 2020/3/29
      * @description: 得到学生评分并存入session
      */
 
     public static void getStudentScore(Student student, HttpSession session){
-        score = student.getScore();
-        calculateStudentTotal(student);
+        updateStudentScore(student);
         putAboutTaskInSession(session);
     }
 
@@ -87,8 +102,7 @@ public class Share {
      */
 
     public static void getParentScore(Parent parent, HttpSession session){
-        score = parent.getScore();
-        calculateParentTotal(parent);
+        updateParentScore(parent);
         putAboutTaskInSession(session);
     }
 
@@ -100,7 +114,7 @@ public class Share {
     public static void updateStudentScore(Student student){
         calculateStudentTotal(student);
         score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-        student.setScore(score);
+        student.setScore(((float)((int)(score * 100))) / 100);
         studentService.saveStudent(student);
     }
 
@@ -112,7 +126,7 @@ public class Share {
     public static void updateParentScore(Parent parent){
         calculateParentTotal(parent);
         score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
-        parent.setScore(score);
+        parent.setScore(((float)((int)(score * 100))) / 100);
         parentService.saveParent(parent);
     }
 
@@ -231,5 +245,19 @@ public class Share {
         session.setAttribute("successTime", successTime);
         session.setAttribute("acceptTime", acceptTime);
     }
+
+    /**
+     * @date: 2020/4/3
+     * @description: 存入关于应聘率等的session
+     */
+
+    public static void putRateInSession(HttpSession session){
+        session.setAttribute("taskNumber", taskNumber);
+        session.setAttribute("refuseRate", refuseRate);
+        session.setAttribute("cancelRate", cancelRate);
+        session.setAttribute("successRate", successRate);
+        session.setAttribute("acceptRate", acceptRate);
+    }
+
 
 }

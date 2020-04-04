@@ -50,10 +50,10 @@ public class BasicController {
     @RequestMapping(value = "/introductionPage", method = RequestMethod.GET)
     public String introductionPage(@RequestParam(value = "id") int id, HttpSession session){
 //        float taskNumber = 0;
-        float refuseRate = 0;
-        float cancelRate = 0;
-        float successRate = 0;
-        float acceptRate = 0;
+//        float refuseRate = 0;
+//        float cancelRate = 0;
+//        float successRate = 0;
+//        float acceptRate = 0;
         long allDetailNumber = detailService.countAllDetail();
         User otherUser = userService.findUserById(id);
         String role = otherUser.getRole().getRole();
@@ -82,16 +82,18 @@ public class BasicController {
             session.setAttribute("otherUser", otherParent);
         }
         if (taskNumber != 0) {
-            refuseRate = refuseTime / taskNumber;
-            cancelRate = cancelTime / taskNumber;
-            successRate = successTime / taskNumber;
-            acceptRate = acceptTime / taskNumber;
+//            refuseRate = ((float)((int)(refuseTime / taskNumber * 100))) / 100;
+//            cancelRate = ((float)((int)(cancelTime / taskNumber * 100))) / 100;
+//            successRate = ((float)((int)(successTime / taskNumber * 100))) / 100;
+//            acceptRate = ((float)((int)(acceptTime / taskNumber * 100))) / 100;
+            calculateRate();
         }
-        session.setAttribute("taskNumber", taskNumber);
-        session.setAttribute("refuseRate", refuseRate);
-        session.setAttribute("cancelRate", cancelRate);
-        session.setAttribute("successRate", successRate);
-        session.setAttribute("acceptRate", acceptRate);
+//        session.setAttribute("taskNumber", taskNumber);
+//        session.setAttribute("refuseRate", refuseRate);
+//        session.setAttribute("cancelRate", cancelRate);
+//        session.setAttribute("successRate", successRate);
+//        session.setAttribute("acceptRate", acceptRate);
+        putRateInSession(session);
         session.setAttribute("allDetailNumber", allDetailNumber);
         return "redirect:/viewIntroduction";
     }
@@ -210,6 +212,8 @@ public class BasicController {
 //        session.setAttribute("acceptTime", acceptTime);
 //        session.setAttribute("code", code);
 //        session.setAttribute("number", number);
+        calculateRate();
+        putRateInSession(session);
         putCodeAndNumberInSession(1, 0, session);
         session.setAttribute("allDetailNumber", allDetailNumber);
         return "student/student_home";
