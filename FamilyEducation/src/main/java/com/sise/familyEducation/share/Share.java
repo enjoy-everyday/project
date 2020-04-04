@@ -10,8 +10,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
