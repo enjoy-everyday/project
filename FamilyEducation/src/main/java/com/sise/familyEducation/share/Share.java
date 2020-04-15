@@ -23,8 +23,6 @@ import java.util.*;
 
 public class Share {
 
-    private static UserService userService = BeanUtils.getBean(UserService.class);
-    private static BasicService basicService = BeanUtils.getBean(BasicService.class);
     private static LoginService loginService = BeanUtils.getBean(LoginService.class);
     private static DetailService detailService = BeanUtils.getBean(DetailService.class);
     private static TaskService taskService = BeanUtils.getBean(TaskService.class);
@@ -34,15 +32,15 @@ public class Share {
     private static SimpMessagingTemplate simpMessagingTemplate = BeanUtils.getBean(SimpMessagingTemplate.class);
 
     public static float taskNumber = 0;
-    public static float refuseTime = 0;
-    public static float cancelTime = 0;
-    public static float successTime = 0;
-    public static float acceptTime = 0;
-    public static float refuseRate = 0;
-    public static float cancelRate = 0;
-    public static float successRate = 0;
-    public static float acceptRate = 0;
-    public static float score = 0;
+    private static float refuseTime = 0;
+    private static float cancelTime = 0;
+    private static float successTime = 0;
+    private static float acceptTime = 0;
+    private static float refuseRate = 0;
+    private static float cancelRate = 0;
+    private static float successRate = 0;
+    private static float acceptRate = 0;
+    private static float score = 0;
 
     /**
      * @date: 2020/3/29
@@ -218,6 +216,19 @@ public class Share {
         List<Task> tasks = taskService.findTasksByStudentAndResult(student, result);
         session.setAttribute("tasks", tasks);
     }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 更新task结果
+     */
+
+    public static Task updateTaskResult(int id, String result){
+        Task task = taskService.findTaskById(id);
+        task.setResult(result);
+        taskService.saveTask(task);
+        return task;
+    }
+
 
     /**
      * @date: 2020/3/29
