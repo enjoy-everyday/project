@@ -254,8 +254,9 @@ public class StudentController {
 //        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Student student = studentService.findStudentByUser(user);
-        Task task = taskService.findTaskById(id);
-        task.setResult("取消");
+        Task task = updateTaskResult(id, "取消");
+//        Task task = taskService.findTaskById(id);
+//        task.setResult("取消");
 //        Message message = new Message();
 //        message.setDate(new Date());
 //        message.setMessage("取消");
@@ -263,7 +264,7 @@ public class StudentController {
 //        message.setParent(task.getDetail().getParent());
 //        messageService.saveMessage(message);
         saveMessage(task.getDetail().getParent(), student, "取消");
-        taskService.saveTask(task);
+//        taskService.saveTask(task);
 //        taskNumber = taskService.countTaskByStudent(student);
 //        refuseRate = taskService.countTaskStudentAndResult(student, "拒绝") / taskNumber;
 //        cancelRate = taskService.countTaskStudentAndResult(student, "取消") / taskNumber;
@@ -278,9 +279,8 @@ public class StudentController {
 //            simpMessagingTemplate.convertAndSendToUser(task.getDetail().getParent().getPhone(), "/queue/getResponse", task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
 //        }
         sendWebsocketMessage(task.getDetail().getParent().getPhone(), task.getStudent().getUsername() + "取消了编号为" + task.getDetail().getId() + "的应聘");
-        if ((int)session.getAttribute("number") == 2){
+        if ((int)session.getAttribute("number") == 2)
             return "accepted";
-        }
         return "untreated";
     }
 

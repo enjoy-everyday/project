@@ -46,6 +46,8 @@ public class ParentController {
     @Autowired
     private HistoricalDetailService historicalDetailService;
 
+    private String[] grades = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "", "初一", "初二", "初三", "高一", "高二", "高三"};
+
     /**
      * @date: 2020/2/3
      * @description: 请家教、重定向
@@ -130,8 +132,9 @@ public class ParentController {
 //        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
-        Task task = taskService.findTaskById(id);
-        task.setResult("接受");
+        Task task = updateTaskResult(id, "接受");
+//        Task task = taskService.findTaskById(id);
+//        task.setResult("接受");
 //        Message message = new Message();
 //        message.setDate(new Date());
 //        message.setMessage("接受");
@@ -139,7 +142,7 @@ public class ParentController {
 //        message.setParent(task.getDetail().getParent());
 //        messageService.saveMessage(message);
         saveMessage(task.getDetail().getParent(), task.getStudent(), "接受");
-        taskService.saveTask(task);
+//        taskService.saveTask(task);
 //        for (Detail detail : parent.getDetails()) {
 //            taskNumber = taskNumber + taskService.countTaskByDetail(detail);
 //            refuseRate = refuseRate + taskService.countTaskDetailAndResult(detail, "拒绝");
@@ -179,8 +182,9 @@ public class ParentController {
 //        float score = 0;
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
-        Task task = taskService.findTaskById(id);
-        task.setResult("拒绝");
+        Task task = updateTaskResult(id, "拒绝");
+//        Task task = taskService.findTaskById(id);
+//        task.setResult("拒绝");
 //        Message message = new Message();
 //        message.setDate(new Date());
 //        message.setMessage("拒绝");
@@ -188,7 +192,7 @@ public class ParentController {
 //        message.setParent(task.getDetail().getParent());
 //        messageService.saveMessage(message);
         saveMessage(task.getDetail().getParent(), task.getStudent(), "拒绝");
-        taskService.saveTask(task);
+//        taskService.saveTask(task);
 //        calculateParentTotal(parent);
 //        score = ((-(refuseTime / taskNumber) + 1)  + (-(cancelTime / taskNumber) + 1) + (successTime / taskNumber) + (acceptTime / taskNumber)) * 100 / 80;
 //        for (Detail detail : parent.getDetails()) {
@@ -292,11 +296,11 @@ public class ParentController {
     public String releaseDetails(@RequestParam(value = "json") String json, Authentication authentication){
         User user = loginService.findUserByPhone(authentication.getName());
         Parent parent = parentService.findParentByUser(user);
-        if (parent.getName() == null){
+        if (parent.getName() == null)
             return "error";
-        }
-        else {
-            System.out.println("------------------" + json);
+        return saveDetail(json, parent);
+//        else {
+//            System.out.println("------------------" + json);
 //            Map<String,String> map = new HashMap<>();
 //            String string =json.replace("\"", "");
 //            String[] array = string.split(";");
@@ -305,41 +309,39 @@ public class ParentController {
 //                System.out.println(str);
 //                map.put(newArray[0], newArray[1]);
 //            }
-            Map<String,String> map = stringConvertToMap(json);
-            String[] gradeAndSubject = map.get("teachingGradeAndSubject").split("：");
-            String grade = gradeAndSubject[0];
-            String subject = gradeAndSubject[1];
-            String price = "";
-            String address = "";
-            if (map.get("calculation").equals("hours")){
-                price = map.get("price") + "元/小时";
-            }
-            else {
-                price = map.get("price") + "元/次";
-            }
-            if (!"null".equals(map.get("otherPlace"))){
-                address = parent.getAddress();
-            }
-            else {
-                address = map.get("otherPlace");
-            }
-            Detail detail = new Detail();
-            detail.setDate(new Date());
-            detail.setParent(parent);
-            detail.setGender(map.get("gender").charAt(0));
-            detail.setQualification(map.get("qualification"));
-            detail.setExperience(map.get("experience"));
-            detail.setRequirement(map.get("otherRequirement"));
-            detail.setGrade(grade);
-            detail.setSubject(subject);
-            detail.setTeachingTime(map.get("teachingTime"));
-            detail.setPrice(price);
-            detail.setProvinceAndCity(parent.getProvinceAndCity());
-            detail.setAddress(address);
-            detailService.saveDetail(detail);
-            System.out.println("**************" + map);
-            return "success";
-        }
+//            Map<String,String> map = stringConvertToMap(json);
+//            String price = "";
+//            String address = "";
+//            if (map.get("calculation").equals("hours")){
+//                price = map.get("price") + "元/小时"
+//            }
+//            else {
+//                price = map.get("price") + "元/次";
+//            }
+//            if (!"null".equals(map.get("otherPlace"))){
+//                address = parent.getAddress();
+//            }
+//            else {
+//                address = map.get("otherPlace");
+//            }
+//            String[] gradeAndSubject = map.get("teachingGradeAndSubject").split("：");
+//            Detail detail = new Detail();
+//            detail.setDate(new Date());
+//            detail.setParent(parent);
+//            detail.setGender(map.get("gender").charAt(0));
+//            detail.setQualification(map.get("qualification"));
+//            detail.setExperience(map.get("experience"));
+//            detail.setRequirement(map.get("otherRequirement"));
+//            detail.setGrade(gradeAndSubject[0]);
+//            detail.setSubject(gradeAndSubject[1]);
+//            detail.setTeachingTime(map.get("teachingTime"));
+//            detail.setPrice(price);
+//            detail.setProvinceAndCity(parent.getProvinceAndCity());
+//            detail.setAddress(address);
+//            detailService.saveDetail(detail);
+//            System.out.println("**************" + map);
+//            return "success";
+//        }
     }
 
     /**
@@ -363,37 +365,36 @@ public class ParentController {
     @RequestMapping(value = "/choiceTeachingGradeAndSubject")
     @ResponseBody
     public String choiceTeachingGradeAndSubject(@RequestParam(value = "array") String[] array, @RequestParam(value = "gradeNumber")int gradeNumber){
-        String[] grades = {"小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级", "初一", "初二", "初三", "高一", "高二", "高三"};
-        String result = "";
         List<String> list = new ArrayList<>();
         for (int i = 0; i < array.length; i++){
             if (!array[i].equals("")){
                 list.add(array[i]);
             }
         }
-        if (list.size() == 0){
+        if (list.size() == 0)
             return "null";
-        }
-        else {
-            String replace = list.toString().replace("[", "").replace("]", "");
-            if (gradeNumber < 6){
-                if (list.size() == 3){
-                    result = grades[gradeNumber] + "：全部科目<br>";
-                }
-                else {
-                    result = grades[gradeNumber] + "：" + replace + "<br>";
-                }
-            }
-            else {
-                if (list.size() == 9){
-                    result = grades[gradeNumber - 1] + "：全部科目<br>";
-                }
-                else {
-                    result = grades[gradeNumber - 1] + "：" + replace + "<br>";
-                }
-            }
-            return result;
-        }
+        return numberOfSubjects(gradeNumber, list);
+//        }
+//        else {
+//            String replace = list.toString().replace("[", "").replace("]", "");
+//            if (gradeNumber < 6){
+//                if (list.size() == 3){
+//                    result = grades[gradeNumber] + "：全部科目<br>";
+//                }
+//                else {
+//                    result = grades[gradeNumber] + "：" + replace + "<br>";
+//                }
+//            }
+//            else {
+//                if (list.size() == 9){
+//                    result = grades[gradeNumber - 1] + "：全部科目<br>";
+//                }
+//                else {
+//                    result = grades[gradeNumber - 1] + "：" + replace + "<br>";
+//                }
+//            }
+//            return result;
+//        }
     }
 
     /**
@@ -418,28 +419,29 @@ public class ParentController {
     @RequestMapping(value = "/searchQualificationAndScore")
     public String searchQualificationAndScore(@RequestParam(value = "qualification") String qualification, @RequestParam(value = "score") float score, HttpSession session){
 //        int code = 5;
-        List<Student> students;
-        switch (qualification) {
-            case "博士": {
-                students = studentService.findStudentsByQualificationAndScore(qualification, score);
-                break;
-            }
-            case "硕士": {
-                students = studentService.findStudentsByQualificationLikeAndScore(score);
-                break;
-            }
-            case "本科": {
-                students = studentService.findStudentsByQualificationNotAndScore("大专", score);
-                break;
-            }
-            default: {
-                students = studentService.findStudentsByQualificationNotAndScore(qualification, score);
-                break;
-            }
-        }
+//        List<Student> students;
+//        switch (qualification) {
+//            case "博士": {
+//                students = studentService.findStudentsByQualificationAndScore(qualification, score);
+//                break;
+//            }
+//            case "硕士": {
+//                students = studentService.findStudentsByQualificationLikeAndScore(score);
+//                break;
+//            }
+//            case "本科": {
+//                students = studentService.findStudentsByQualificationNotAndScore("大专", score);
+//                break;
+//            }
+//            default: {
+//                students = studentService.findStudentsByQualificationNotAndScore(qualification, score);
+//                break;
+//            }
+//        }
+//        List<Student> students = getStudentsByQualificationAndScore(qualification, score);
+        session.setAttribute("students", getStudentsByQualificationAndScore(qualification, score));
         putCodeAndNumberInSession(5, -1, session);
 //        session.setAttribute("code", code);
-        session.setAttribute("students", students);
         return "student/student_home";
     }
 
@@ -452,6 +454,95 @@ public class ParentController {
     public String pleaseTutor(){
         return "/findAllStudents";
     }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 获得查询学生集合
+     */
+
+    private List<Student> getStudentsByQualificationAndScore(String qualification, float score){
+        if (qualification.equals("博士"))
+            return studentService.findStudentsByQualificationAndScore(qualification, score);
+        if (qualification.equals("硕士"))
+            return studentService.findStudentsByQualificationLikeAndScore(score);
+        if (qualification.equals("本科"))
+            return studentService.findStudentsByQualificationNotAndScore("大专", score);
+        return studentService.findStudentsByQualificationNotAndScore(qualification, score);
+    }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 判断是否选择全部科目
+     */
+
+    private String selectAllAccounts(int gradeNumber, List<String> list, int maxListSize){
+        if (list.size() == maxListSize)
+            return grades[gradeNumber] + "：全部科目<br>";
+        return grades[gradeNumber] + "：" + list.toString().replace("[", "").replace("]", "") + "<br>";
+    }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 判断总科目数
+     */
+
+    private String numberOfSubjects(int gradeNumber, List<String> list){
+        if (gradeNumber < 6)
+            return selectAllAccounts(gradeNumber, list, 3);
+        return selectAllAccounts(gradeNumber, list, 9);
+    }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 计算价格的规则
+     */
+
+    private String priceRules(Map<String,String> map){
+        if (map.get("calculation").equals("hours"))
+            return map.get("price") + "元/小时";
+        return map.get("price") + "元/次";
+    }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 任教地点选择
+     */
+
+    private String teachingPlace(Map<String,String> map, Parent parent){
+        if (!"null".equals(map.get("otherPlace")))
+            return parent.getAddress();
+        return map.get("otherPlace");
+    }
+
+    /**
+     * @date: 2020/4/13
+     * @description: 将招聘信息保存到数据库
+     */
+
+    private String saveDetail(String json, Parent parent){
+        Map<String, String> map = stringConvertToMap(json);
+        String[] gradeAndSubject = map.get("teachingGradeAndSubject").split("：");
+        Detail detail = new Detail();
+        detail.setDate(new Date());
+        detail.setParent(parent);
+        detail.setGender(map.get("gender").charAt(0));
+        detail.setQualification(map.get("qualification"));
+        detail.setExperience(map.get("experience"));
+        detail.setRequirement(map.get("otherRequirement"));
+        detail.setGrade(gradeAndSubject[0]);
+        detail.setSubject(gradeAndSubject[1]);
+        detail.setTeachingTime(map.get("teachingTime"));
+        detail.setPrice(priceRules(map));
+        detail.setProvinceAndCity(parent.getProvinceAndCity());
+        detail.setAddress(teachingPlace(map, parent));
+        detailService.saveDetail(detail);
+        return "success";
+    }
+
+
+
+
+
 
 
 }
